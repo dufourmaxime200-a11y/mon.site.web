@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Esprit Sportif – Recettes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; color: #222; background: #fff; line-height: 1.6; }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 80px; background: white; position: sticky; top: 0;
+      z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header h1 { color: #e63946; font-size: 26px; font-weight: 700; }
+    nav a { margin: 0 15px; text-decoration: none; color: #333; font-weight: 500; transition: 0.3s; }
+    nav a:hover { color: #e63946; }
+    .menu-deroulant { position: relative; display: inline-block; }
+    .menu-deroulant .sous-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: white; border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); min-width: 180px; z-index: 5000;
+    }
+    .menu-deroulant .sous-menu a { display: block; padding: 10px 15px; color: #333; text-decoration: none; transition: 0.3s; }
+    .menu-deroulant .sous-menu a:hover { background: #f5f5f5; color: #e63946; }
+    .menu-deroulant:hover .sous-menu { display: block; }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: white; text-align: center; padding: 120px 20px;
+    }
+    .hero h2 { font-size: 48px; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 20px; opacity: 0.9; margin-bottom: 28px; }
+    .btn { background: #e63946; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    .btn:hover { background: #c02735; }
+
+    .filtres { display: flex; justify-content: center; gap: 12px; padding: 40px 20px 10px; flex-wrap: wrap; }
+    .filtre-btn {
+      padding: 10px 22px; border-radius: 30px; border: 2px solid #e63946;
+      background: white; color: #e63946; font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.25s;
+    }
+    .filtre-btn:hover, .filtre-btn.actif { background: #e63946; color: white; }
+
+    .section-recettes { padding: 50px 80px; }
+    .section-recettes h2 { font-size: 26px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .section-recettes .sous-titre { font-size: 14px; color: #888; margin-bottom: 28px; }
+    .sep { border: none; border-top: 2px solid #f2f2f2; margin: 0 80px 50px; }
+
+    .badge { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+    .badge-muscu   { background: #fde8ea; color: #e63946; }
+    .badge-cardio  { background: #e8f4fd; color: #0077cc; }
+    .badge-poids   { background: #e8fdf0; color: #1a9c4e; }
+    .badge-vege    { background: #f0fde8; color: #4a7c1a; }
+    .badge-dessert { background: #fdf4e8; color: #c47a1a; }
+
+    /* Sous-catégorie dessert dans une section */
+    .sous-cat-titre {
+      font-size: 18px; font-weight: 700; color: #c47a1a;
+      margin: 36px 0 16px; padding-left: 12px;
+      border-left: 4px solid #c47a1a;
+    }
+
+    .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 26px; }
+
+    .card {
+      background: #fff; border-radius: 14px; box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+      overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
+    .card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 11px; }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .card-title { font-size: 16px; font-weight: 700; color: #1a1a1a; flex: 1; }
+    .card-meta { display: flex; gap: 12px; font-size: 12px; color: #666; flex-wrap: wrap; }
+
+    .nutri-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 8px; overflow: hidden; border: 1px solid #e8e8e8; }
+    .nutri-table thead tr { background: #f8f8f8; }
+    .nutri-table th { padding: 7px 10px; text-align: left; font-weight: 600; color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .nutri-table td { padding: 6px 10px; color: #333; border-top: 1px solid #f0f0f0; }
+    .nutri-table tr.sub td { padding-left: 20px; color: #666; font-size: 11.5px; background: #fafafa; }
+    .nutri-table tr.sub td:first-child::before { content: "↳ "; color: #aaa; }
+    .nutri-table td:last-child { font-weight: 600; text-align: right; color: #222; }
+    .nutri-table tr.highlight td { background: #fef3f2; font-weight: 600; }
+
+    .accordion { border-top: 1px solid #f0f0f0; margin-top: 2px; }
+    .accordion-btn {
+      width: 100%; background: none; border: none; padding: 9px 0;
+      font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 600;
+      color: #e63946; text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .accordion-btn::after { content: '▾'; font-size: 15px; transition: transform 0.25s; }
+    .accordion-btn.open::after { transform: rotate(-180deg); }
+    .accordion-content { display: none; padding: 5px 0 10px; font-size: 13px; color: #444; line-height: 1.7; }
+    .accordion-content ul, .accordion-content ol { padding-left: 18px; }
+    .accordion-content li { margin-bottom: 3px; }
+
+    footer { text-align: center; padding: 40px 20px; background: #222; color: white; margin-top: 60px; }
+
+    @media (max-width: 768px) {
+      header { padding: 16px 20px; }
+      .section-recettes { padding: 30px 20px; }
+      .sep { margin: 0 20px 40px; }
+      .hero h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Esprit Sportif</h1>
+  <nav>
+    <div class="menu-deroulant">
+      <a href="#">Programmes</a>
+      <div class="sous-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="Running.html">Running</a>
+        <a href="Triathlon.html">Triathlon</a>
+      </div>
+    </div>
+    <a href="#santé">Santé</a>
+    <div class="menu-deroulant">
+      <a href="#">Nutrition</a>
+      <div class="sous-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="hero">
+  <h2>🍽️ Recettes sportives</h2>
+  <p>Des recettes adaptées à tes objectifs : prise de masse, endurance, perte de poids ou végétarien.</p>
+  <a href="#muscu" class="btn">Voir les recettes</a>
+</div>
+
+<div class="filtres">
+  <button class="filtre-btn actif" onclick="filtrer('tous',this)">Toutes</button>
+  <button class="filtre-btn" onclick="filtrer('muscu',this)">💪 Musculation</button>
+  <button class="filtre-btn" onclick="filtrer('cardio',this)">🏃 Cardio / Endurance</button>
+  <button class="filtre-btn" onclick="filtrer('poids',this)">🥗 Perte de poids</button>
+  <button class="filtre-btn" onclick="filtrer('vege',this)">🌿 Végétarien</button>
+</div>
+
+<!-- ===================== HELPER MACRO ===================== -->
+<!-- Chaque card suit ce squelette :
+  img | card-body [ card-header | card-meta | nutri-table | accordion x2 ] -->
+
+<!-- ======================== MUSCULATION ======================== -->
+<div class="section-recettes" id="muscu" data-cat="muscu">
+  <h2>💪 Musculation <span class="badge badge-muscu">Riche en protéines</span></h2>
+  <p class="sous-titre">Plats principaux riches en protéines pour soutenir la prise de muscle et la récupération — et des desserts protéinés pour finir en beauté.</p>
+
+  <!-- ── PLATS ── -->
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=600&q=80" alt="Omelette protéinée">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Omelette protéinée au fromage blanc</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 10 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>480 kcal</td></tr>
+          <tr><td>Protéines</td><td>42 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>28 g</td></tr><tr class="sub"><td>dont saturés</td><td>9 g</td></tr><tr class="sub"><td>dont insaturés</td><td>17 g</td></tr>
+          <tr><td>Fibres</td><td>0,5 g</td></tr><tr><td>Sel</td><td>0,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 œufs</li><li>100 g fromage blanc 0%</li><li>30 g gruyère râpé</li><li>Sel, poivre, ciboulette, 1 c.à.c huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Battre œufs + fromage blanc + assaisonnement.</li><li>Chauffer l'huile, verser le mélange, cuire 2–3 min.</li><li>Ajouter le gruyère, replier et servir.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1604503468506-a8da13d11d36?auto=format&fit=crop&w=600&q=80" alt="Bowl poulet riz">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Bowl poulet riz & légumes</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>620 kcal</td></tr>
+          <tr><td>Protéines</td><td>52 g</td></tr>
+          <tr><td>Glucides</td><td>65 g</td></tr><tr class="sub"><td>dont sucres</td><td>6 g</td></tr>
+          <tr><td>Lipides</td><td>11 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g blanc de poulet</li><li>100 g riz basmati</li><li>1 courgette, 1 poivron rouge</li><li>Sauce soja, ail, gingembre, huile de sésame</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire le riz 12 min.</li><li>Faire revenir le poulet en lanières avec l'ail et le gingembre 6–7 min.</li><li>Ajouter les légumes 5 min, déglacer à la sauce soja.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80" alt="Saumon quinoa">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Saumon vapeur & quinoa</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>550 kcal</td></tr>
+          <tr><td>Protéines</td><td>48 g</td></tr>
+          <tr><td>Glucides</td><td>42 g</td></tr><tr class="sub"><td>dont sucres</td><td>2 g</td></tr>
+          <tr><td>Lipides</td><td>18 g</td></tr><tr class="sub"><td>dont saturés</td><td>3,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>13 g</td></tr>
+          <tr><td>Fibres</td><td>3,5 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g pavé de saumon</li><li>80 g quinoa (cru)</li><li>100 g épinards frais, citron, aneth</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire le quinoa dans 2× son volume d'eau, 15 min.</li><li>Cuire le saumon à la vapeur 10–12 min.</li><li>Servir avec les épinards et le citron.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80" alt="Steak patate douce">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Steak haché & patate douce rôtie</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>590 kcal</td></tr>
+          <tr><td>Protéines</td><td>46 g</td></tr>
+          <tr><td>Glucides</td><td>55 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>9 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,9 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g steak haché 5% MG</li><li>1 patate douce (250 g)</li><li>Paprika, ail, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Four 200°C — cubes de patate douce assaisonnés, 25 min.</li><li>Griller le steak 3–4 min chaque côté.</li><li>Servir avec salade verte.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Poulet brocoli">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Poulet grillé mariné & brocoli vapeur</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>410 kcal</td></tr>
+          <tr><td>Protéines</td><td>55 g</td></tr>
+          <tr><td>Glucides</td><td>10 g</td></tr><tr class="sub"><td>dont sucres</td><td>3 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>11 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>250 g blanc de poulet</li><li>200 g brocoli</li><li>Citron, ail, paprika fumé, herbes, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire mariner le poulet 30 min. Griller 5–6 min chaque côté.</li><li>Cuire le brocoli à la vapeur 8 min. Servir.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1519984388953-d2406bc725e1?auto=format&fit=crop&w=600&q=80" alt="Bowl thon avocat">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Bowl thon, avocat & riz complet</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>520 kcal</td></tr>
+          <tr><td>Protéines</td><td>40 g</td></tr>
+          <tr><td>Glucides</td><td>48 g</td></tr><tr class="sub"><td>dont sucres</td><td>3 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>1 boîte thon au naturel (140 g), ½ avocat</li><li>100 g riz complet cuit</li><li>Sauce soja, graines de sésame, oignons nouveaux</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Assembler riz + thon égoutté + avocat en cubes.</li><li>Assaisonner sauce soja + sésame + oignons nouveaux.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Wrap poulet houmous">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Wrap poulet rôti & houmous</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>520 kcal</td></tr>
+          <tr><td>Protéines</td><td>44 g</td></tr>
+          <tr><td>Glucides</td><td>46 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>11 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>1,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>1 tortilla complète, 180 g poulet rôti</li><li>3 c.à.s houmous, roquette, tomates, concombre</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Étaler le houmous sur la tortilla.</li><li>Garnir avec poulet émincé, légumes. Rouler serré.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Boeuf wok">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Bœuf sauté au wok & légumes croquants</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>480 kcal</td></tr>
+          <tr><td>Protéines</td><td>46 g</td></tr>
+          <tr><td>Glucides</td><td>28 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>18 g</td></tr><tr class="sub"><td>dont saturés</td><td>5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>11 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>1,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>220 g bœuf (rumsteck), poivron, carotte, brocoli, champignons</li><li>Sauce soja, huile de sésame, ail, gingembre, sésame</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mariner le bœuf en lanières 15 min. Saisir 2–3 min à feu vif.</li><li>Faire sauter les légumes 4 min. Réunir, garnir de sésame.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80" alt="Crevettes lentilles">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Crevettes à l'ail & lentilles vertes</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>430 kcal</td></tr>
+          <tr><td>Protéines</td><td>45 g</td></tr>
+          <tr><td>Glucides</td><td>36 g</td></tr><tr class="sub"><td>dont sucres</td><td>3 g</td></tr>
+          <tr><td>Lipides</td><td>10 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>7 g</td></tr>
+          <tr><td>Fibres</td><td>9 g</td></tr><tr><td>Sel</td><td>1,0 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g crevettes décortiquées, 150 g lentilles vertes cuites</li><li>3 gousses d'ail, persil, citron, piment doux, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir l'ail 1 min. Ajouter les crevettes, cuire 3–4 min.</li><li>Ajouter les lentilles chaudes + citron + persil.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80" alt="Falafels tzatziki">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Falafels de pois chiches & tzatziki</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 35 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>510 kcal</td></tr>
+          <tr><td>Protéines</td><td>28 g</td></tr>
+          <tr><td>Glucides</td><td>58 g</td></tr><tr class="sub"><td>dont sucres</td><td>7 g</td></tr>
+          <tr><td>Lipides</td><td>14 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>10 g</td></tr>
+          <tr><td>Fibres</td><td>9 g</td></tr><tr><td>Sel</td><td>0,7 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g pois chiches égouttés, ail, persil, cumin, farine complète</li><li>200 g yaourt grec, ½ concombre, aneth, citron</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer pois chiches + épices + farine. Former des boules.</li><li>Four 200°C, 20 min. Mélanger tzatziki séparément.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1571748982800-fa51082c2224?auto=format&fit=crop&w=600&q=80" alt="Overnight oats">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Overnight oats protéiné</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 5 min + nuit</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>430 kcal</td></tr>
+          <tr><td>Protéines</td><td>38 g</td></tr>
+          <tr><td>Glucides</td><td>50 g</td></tr><tr class="sub"><td>dont sucres</td><td>14 g</td></tr>
+          <tr><td>Lipides</td><td>8 g</td></tr><tr class="sub"><td>dont saturés</td><td>1,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5,5 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,3 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>80 g flocons d'avoine, 30 g whey vanille</li><li>200 ml lait écrémé, 100 g fromage blanc 0%</li><li>1 c.à.s beurre de cacahuète, 1 banane</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mélanger tous les ingrédients. Réfrigérer toute la nuit.</li><li>Le matin, ajouter beurre de cacahuète + banane tranchée.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1607532941433-304659e8198a?auto=format&fit=crop&w=600&q=80" alt="Dinde legumes">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Escalope de dinde & légumes sautés</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>380 kcal</td></tr>
+          <tr><td>Protéines</td><td>48 g</td></tr>
+          <tr><td>Glucides</td><td>18 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>10 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>7 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g escalope de dinde, poivron, courgette, champignons</li><li>Ail, herbes de Provence, huile d'olive, sauce soja</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Griller la dinde assaisonnée 4 min chaque côté.</li><li>Faire sauter les légumes 5 min à l'ail. Servir ensemble.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&q=80" alt="Crevettes chou-fleur">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Crevettes sautées & riz de chou-fleur</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>290 kcal</td></tr>
+          <tr><td>Protéines</td><td>32 g</td></tr>
+          <tr><td>Glucides</td><td>14 g</td></tr><tr class="sub"><td>dont sucres</td><td>6 g</td></tr>
+          <tr><td>Lipides</td><td>9 g</td></tr><tr class="sub"><td>dont saturés</td><td>1,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>6 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>1,4 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g crevettes, ½ chou-fleur, 1 œuf</li><li>Ail, gingembre, sauce soja allégée, poivron rouge</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer le chou-fleur en grains, sauter à sec 5 min.</li><li>Faire revenir crevettes + légumes. Ajouter le chou-fleur + œuf brouillé + sauce soja.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80" alt="Riz saute thon">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Riz sauté thon & légumes</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>560 kcal</td></tr>
+          <tr><td>Protéines</td><td>36 g</td></tr>
+          <tr><td>Glucides</td><td>78 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>8 g</td></tr><tr class="sub"><td>dont saturés</td><td>1,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5,5 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,5 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>100 g riz complet, 1 boîte thon au naturel</li><li>Carotte, poivron, petits pois, sauce soja, 1 œuf, ail, gingembre</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire et refroidir le riz. Sauter les légumes avec ail + gingembre.</li><li>Ajouter le riz, créer un puits pour l'œuf brouillé. Incorporer thon + sauce soja.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80" alt="Cabillaud vapeur">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Cabillaud vapeur & légumes croquants</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>230 kcal</td></tr>
+          <tr><td>Protéines</td><td>38 g</td></tr>
+          <tr><td>Glucides</td><td>8 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,8 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3,5 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g cabillaud, carotte, haricots verts, courgette</li><li>Citron, herbes de Provence, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire le cabillaud à la vapeur 10 min avec herbes + citron.</li><li>Cuire les légumes à la vapeur 8 min. Servir avec un filet d'huile.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1512852939750-1305098529bf?auto=format&fit=crop&w=600&q=80" alt="Salade poulet avocat">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Salade poulet grillé & avocat</div><span class="badge badge-muscu">Muscu</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>340 kcal</td></tr>
+          <tr><td>Protéines</td><td>34 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g poulet grillé, ½ avocat, salade mélangée</li><li>Tomates cerises, concombre, vinaigrette citron-moutarde</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Griller le poulet. Dresser la salade avec tous les légumes.</li><li>Ajouter poulet + avocat en cubes. Assaisonner.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div><!-- fin grille plats -->
+
+  <!-- ── DESSERTS MUSCU ── -->
+  <p class="sous-cat-titre">🍮 Desserts & collations protéinés</p>
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1571748982800-fa51082c2224?auto=format&fit=crop&w=600&q=80" alt="Cookies protéinés">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Cookies protéinés avoine & chocolat noir</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 12 cookies</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par cookie</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>145 kcal</td></tr>
+          <tr><td>Protéines</td><td>6 g</td></tr>
+          <tr><td>Glucides</td><td>18 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>2,5 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g flocons d'avoine, 2 bananes très mûres</li><li>60 g whey protéine, 60 g pépites chocolat noir 70%</li><li>2 c.à.s beurre de cacahuète, cannelle</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Préchauffer four 180°C. Écraser les bananes, mélanger tous les ingrédients.</li><li>Former 12 boules, aplatir sur plaque. Cuire 12–14 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&w=600&q=80" alt="Muffins protéinés">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Muffins protéinés myrtilles & avoine</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 8 muffins</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par muffin</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>165 kcal</td></tr>
+          <tr><td>Protéines</td><td>9 g</td></tr>
+          <tr><td>Glucides</td><td>20 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g flocons d'avoine, 60 g whey vanille</li><li>2 œufs, 150 g yaourt grec 0%, 3 c.à.s miel</li><li>150 g myrtilles, 1 c.à.c levure</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Four 180°C. Mixer les flocons en farine grossière.</li><li>Mélanger tous les ingrédients, incorporer les myrtilles.</li><li>Répartir en 8 moules. Cuire 18–20 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80" alt="Brownie haricots noirs">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Brownie protéiné aux haricots noirs</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 9 parts</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par part</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>180 kcal</td></tr>
+          <tr><td>Protéines</td><td>8 g</td></tr>
+          <tr><td>Glucides</td><td>22 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3,5 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g haricots noirs égouttés, 3 œufs</li><li>4 c.à.s cacao non sucré, 4 c.à.s miel ou sirop d'érable</li><li>1 c.à.c levure, 50 g pépites chocolat noir</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer les haricots en purée lisse. Ajouter œufs, cacao, miel, levure.</li><li>Verser dans moule huilé, parsemer de pépites. Four 175°C, 20–22 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=600&q=80" alt="Energy balls">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Energy balls dattes, noix & cacao</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 15 min + 30 min frigo</span><span>🍽️ 15 boules</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par boule</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>95 kcal</td></tr>
+          <tr><td>Protéines</td><td>2 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>4,5 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,02 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g dattes Medjool, 80 g noix mélangées</li><li>2 c.à.s cacao non sucré, 2 c.à.s flocons d'avoine</li><li>Vanille, noix de coco râpée pour rouler</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer dattes + noix + cacao + flocons + vanille jusqu'à pâte homogène.</li><li>Former 15 boules, rouler dans la noix de coco. Réfrigérer 30 min.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div><!-- fin desserts muscu -->
+</div>
+
+<hr class="sep">
+
+<!-- ======================== CARDIO ======================== -->
+<div class="section-recettes" id="cardio" data-cat="cardio">
+  <h2>🏃 Cardio & Endurance <span class="badge badge-cardio">Recharge glucidique</span></h2>
+  <p class="sous-titre">Plats riches en glucides complexes pour recharger les réserves d'énergie — et des desserts pour récupérer avec plaisir.</p>
+
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=600&q=80" alt="Pâtes bolognaise">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Pâtes complètes bolognaise légère</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>680 kcal</td></tr>
+          <tr><td>Protéines</td><td>38 g</td></tr>
+          <tr><td>Glucides</td><td>90 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>12 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>7 g</td></tr>
+          <tr><td>Fibres</td><td>8 g</td></tr><tr><td>Sel</td><td>1,0 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g pâtes complètes, 250 g viande hachée 5% MG</li><li>Tomates pelées, oignon, ail, herbes de Provence</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir oignon + ail, ajouter la viande.</li><li>Ajouter tomates + herbes, mijoter 20 min. Cuire les pâtes al dente.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80" alt="Pancakes banane avoine">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Pancakes banane & avoine</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>420 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>72 g</td></tr><tr class="sub"><td>dont sucres</td><td>22 g</td></tr>
+          <tr><td>Lipides</td><td>8 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 bananes mûres, 80 g flocons d'avoine, 2 œufs, miel, cannelle</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Écraser les bananes, mélanger avec œufs + flocons + miel + cannelle.</li><li>Cuire de petits pancakes à feu moyen, 2 min par face.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80" alt="Dal lentilles">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Lentilles corail & riz (dal végétarien)</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>580 kcal</td></tr>
+          <tr><td>Protéines</td><td>30 g</td></tr>
+          <tr><td>Glucides</td><td>92 g</td></tr><tr class="sub"><td>dont sucres</td><td>6 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>2,5 g</td></tr>
+          <tr><td>Fibres</td><td>10 g</td></tr><tr><td>Sel</td><td>0,5 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g lentilles corail, 100 g riz basmati</li><li>Lait de coco léger, oignon, ail, curcuma, cumin, garam masala, épinards</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir oignon + ail + épices. Ajouter lentilles + lait de coco + eau. Cuire 20 min.</li><li>Cuire le riz séparément. Ajouter épinards en fin de cuisson.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80" alt="Smoothie myrtilles">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Smoothie recharge myrtilles & avoine</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 5 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>380 kcal</td></tr>
+          <tr><td>Protéines</td><td>16 g</td></tr>
+          <tr><td>Glucides</td><td>68 g</td></tr><tr class="sub"><td>dont sucres</td><td>30 g</td></tr>
+          <tr><td>Lipides</td><td>6 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>4 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g myrtilles, 50 g flocons d'avoine, 1 banane, 200 ml lait, miel</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Placer tous les ingrédients dans un blender. Mixer jusqu'à texture lisse.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&w=600&q=80" alt="Tartines beurre cacahuète">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Tartines beurre de cacahuète & banane</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 5 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>460 kcal</td></tr>
+          <tr><td>Protéines</td><td>15 g</td></tr>
+          <tr><td>Glucides</td><td>62 g</td></tr><tr class="sub"><td>dont sucres</td><td>18 g</td></tr>
+          <tr><td>Lipides</td><td>17 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,5 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>3 tranches pain complet, 2 c.à.s beurre de cacahuète naturel, 1 banane, miel, graines de chia</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Toaster le pain. Étaler le beurre de cacahuète.</li><li>Disposer les rondelles de banane, ajouter miel + graines de chia.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1539136788836-5699e78bfc75?auto=format&fit=crop&w=600&q=80" alt="Porridge fruits secs">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Porridge énergétique aux fruits secs</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 10 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>490 kcal</td></tr>
+          <tr><td>Protéines</td><td>14 g</td></tr>
+          <tr><td>Glucides</td><td>76 g</td></tr><tr class="sub"><td>dont sucres</td><td>24 g</td></tr>
+          <tr><td>Lipides</td><td>14 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>10 g</td></tr>
+          <tr><td>Fibres</td><td>8 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>80 g flocons d'avoine, 250 ml lait d'avoine, miel</li><li>30 g noix mélangées, 30 g raisins secs, cannelle</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire les flocons dans le lait d'avoine 5 min à feu doux.</li><li>Ajouter miel + cannelle. Garnir de noix et fruits secs.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80" alt="Risotto champignons">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Risotto aux champignons & parmesan</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 35 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>640 kcal</td></tr>
+          <tr><td>Protéines</td><td>22 g</td></tr>
+          <tr><td>Glucides</td><td>96 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>6 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>1,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g riz arborio, 300 g champignons mélangés</li><li>800 ml bouillon chaud, 40 g parmesan, oignon, ail, thym, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir oignon + ail + champignons. Nacrer le riz 2 min.</li><li>Ajouter le bouillon louche par louche en remuant, 18–20 min. Finir avec le parmesan.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80" alt="Toast avocat oeuf poché">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Toast avocat & œuf poché sur pain complet</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 10 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>430 kcal</td></tr>
+          <tr><td>Protéines</td><td>20 g</td></tr>
+          <tr><td>Glucides</td><td>38 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>22 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>16 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 tranches pain complet, 1 avocat, 2 œufs</li><li>Citron, sel, poivre, piment, sésame, ciboulette</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Toaster le pain. Écraser l'avocat avec citron + piment.</li><li>Pocher les œufs 3 min. Étaler avocat sur les toasts, déposer les œufs.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=600&q=80" alt="Gnocchi sauce tomate">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Gnocchi patate douce sauce tomate fraîche</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 35 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>610 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>105 g</td></tr><tr class="sub"><td>dont sucres</td><td>12 g</td></tr>
+          <tr><td>Lipides</td><td>12 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,9 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g patates douces cuites, 120 g farine complète, 1 œuf</li><li>400 g tomates fraîches, basilic, ail, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Écraser les patates + farine + œuf → pâte. Former des gnocchi, pocher 2 min.</li><li>Mijoter tomates + ail + basilic 15 min. Napper les gnocchi.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80" alt="Granola maison">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Granola maison & lait végétal</div><span class="badge badge-cardio">Cardio</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 4 portions</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>420 kcal</td></tr>
+          <tr><td>Protéines</td><td>11 g</td></tr>
+          <tr><td>Glucides</td><td>58 g</td></tr><tr class="sub"><td>dont sucres</td><td>16 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>300 g flocons d'avoine, 60 g noix de cajou + amandes</li><li>3 c.à.s miel, 3 c.à.s huile de coco, cannelle, 50 g raisins secs</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mélanger tout sauf les raisins. Étaler sur plaque. Four 170°C, 20 min en remuant à mi-cuisson.</li><li>Laisser refroidir, ajouter les raisins. Servir avec lait végétal.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DESSERTS CARDIO ── -->
+  <p class="sous-cat-titre">🍮 Desserts & en-cas énergétiques</p>
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80" alt="Chia pudding mangue">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Chia pudding mangue & lait de coco</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 5 min + nuit</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>280 kcal</td></tr>
+          <tr><td>Protéines</td><td>7 g</td></tr>
+          <tr><td>Glucides</td><td>28 g</td></tr><tr class="sub"><td>dont sucres</td><td>16 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>11 g</td></tr><tr class="sub"><td>dont insaturés</td><td>4 g</td></tr>
+          <tr><td>Fibres</td><td>10 g</td></tr><tr><td>Sel</td><td>0,05 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>60 g graines de chia, 300 ml lait de coco léger</li><li>1 c.à.s miel, vanille, 1 mangue, noix de coco râpée, menthe</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mélanger chia + lait de coco + miel + vanille. Remuer, laisser 10 min, remuer à nouveau.</li><li>Réfrigérer toute la nuit. Servir avec la mangue en dés et la noix de coco.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1570145820259-b5b80c5c8bd6?auto=format&fit=crop&w=600&q=80" alt="Tarte pommes cannelle">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Tarte fine aux pommes & cannelle</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 35 min</span><span>🍽️ 6 parts</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par part</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>190 kcal</td></tr>
+          <tr><td>Protéines</td><td>4 g</td></tr>
+          <tr><td>Glucides</td><td>32 g</td></tr><tr class="sub"><td>dont sucres</td><td>14 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3,5 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>1 pâte brisée allégée, 4 pommes Golden</li><li>2 c.à.s miel, 1 c.à.c cannelle, 1 c.à.c huile de coco</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Four 200°C. Étaler la pâte. Disposer les pommes en fines tranches en rosace.</li><li>Badigeonner miel + huile de coco, saupoudrer de cannelle. Cuire 25–28 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80" alt="Compote pomme poire">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Compote maison pomme poire & épices</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 4 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>95 kcal</td></tr>
+          <tr><td>Protéines</td><td>0,5 g</td></tr>
+          <tr><td>Glucides</td><td>22 g</td></tr><tr class="sub"><td>dont sucres</td><td>20 g</td></tr>
+          <tr><td>Lipides</td><td>0,3 g</td></tr><tr class="sub"><td>dont saturés</td><td>0 g</td></tr><tr class="sub"><td>dont insaturés</td><td>0,2 g</td></tr>
+          <tr><td>Fibres</td><td>3,5 g</td></tr><tr><td>Sel</td><td>0 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 pommes, 2 poires, cannelle, gingembre en poudre, 1 c.à.s miel, 3 c.à.s eau</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire les fruits en morceaux avec eau + épices 15 min à feu doux à couvert.</li><li>Écraser à la fourchette ou mixer. Ajuster le sucre avec le miel.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ======================== PERTE DE POIDS ======================== -->
+<div class="section-recettes" id="poids" data-cat="poids">
+  <h2>🥗 Perte de poids <span class="badge badge-poids">Faible en calories</span></h2>
+  <p class="sous-titre">Recettes rassasiantes et légères — et des desserts sains pour se faire plaisir sans culpabilité.</p>
+
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1512852939750-1305098529bf?auto=format&fit=crop&w=600&q=80" alt="Salade poulet avocat">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Salade poulet grillé & avocat</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>340 kcal</td></tr>
+          <tr><td>Protéines</td><td>34 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g poulet grillé, ½ avocat, salade mélangée</li><li>Tomates cerises, concombre, vinaigrette citron-moutarde</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Griller le poulet. Dresser la salade avec tous les légumes.</li><li>Couper poulet + avocat en dés. Assaisonner.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&w=600&q=80" alt="Soupe légumes">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Soupe de légumes protéinée</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>220 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>24 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>4 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 carottes, 2 courgettes, 1 poireau, 100 g pois chiches</li><li>800 ml bouillon de légumes, 100 g poulet effiloché, thym, laurier</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir les légumes 3 min. Ajouter bouillon + herbes + pois chiches. Cuire 20 min.</li><li>Ajouter le poulet en fin de cuisson. Rectifier l'assaisonnement.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=600&q=80" alt="Oeufs brouillés champignons">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Œufs brouillés épinards & champignons</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 10 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>260 kcal</td></tr>
+          <tr><td>Protéines</td><td>22 g</td></tr>
+          <tr><td>Glucides</td><td>6 g</td></tr><tr class="sub"><td>dont sucres</td><td>2 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>10 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,5 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>3 œufs, 100 g épinards frais, 100 g champignons de Paris, ail, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir champignons + ail jusqu'à évaporation. Ajouter les épinards 1 min.</li><li>Battre les œufs, verser à feu doux en remuant constamment.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=600&q=80" alt="Wrap courgette thon">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Wrap courgette, thon & fromage blanc</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>280 kcal</td></tr>
+          <tr><td>Protéines</td><td>30 g</td></tr>
+          <tr><td>Glucides</td><td>18 g</td></tr><tr class="sub"><td>dont sucres</td><td>6 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>0,7 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>1 grande courgette (en lamelles), 1 boîte thon au naturel</li><li>100 g fromage blanc 0%, tomates cerises, herbes fraîches, citron</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Éplucher la courgette en larges lamelles. Mélanger thon + fromage blanc + herbes + citron.</li><li>Garnir les lamelles, rouler et maintenir avec un cure-dent.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1607532941433-304659e8198a?auto=format&fit=crop&w=600&q=80" alt="Cabillaud légumes">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Cabillaud vapeur & légumes croquants</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>230 kcal</td></tr>
+          <tr><td>Protéines</td><td>38 g</td></tr>
+          <tr><td>Glucides</td><td>8 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,8 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3,5 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g cabillaud, carotte, haricots verts, courgette, herbes, citron, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire le cabillaud à la vapeur 10 min avec herbes + citron.</li><li>Cuire les légumes à la vapeur 8 min (rester croquants). Filet d'huile d'olive au service.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80" alt="Gaspacho">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Gaspacho maison aux légumes</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 10 min + 1h frigo</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>110 kcal</td></tr>
+          <tr><td>Protéines</td><td>3 g</td></tr>
+          <tr><td>Glucides</td><td>14 g</td></tr><tr class="sub"><td>dont sucres</td><td>11 g</td></tr>
+          <tr><td>Lipides</td><td>4 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>0,4 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 tomates mûres, 1 concombre, 1 poivron rouge, 1 gousse d'ail</li><li>Huile d'olive, vinaigre de vin, sel, basilic</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer tous les légumes. Assaisonner avec huile + vinaigre + sel + basilic.</li><li>Réfrigérer au moins 1h. Servir bien frais.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1609167830220-7164aa360951?auto=format&fit=crop&w=600&q=80" alt="Galette sarrasin">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Galette sarrasin, jambon & légumes</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>310 kcal</td></tr>
+          <tr><td>Protéines</td><td>22 g</td></tr>
+          <tr><td>Glucides</td><td>34 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>9 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,4 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>1 galette de sarrasin, 2 tranches jambon blanc dégraissé</li><li>1 œuf, épinards frais, champignons, moutarde</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir épinards + champignons 3 min. Chauffer la galette.</li><li>Casser l'œuf au centre, disposer jambon + légumes. Plier les bords.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1564834744159-ff0ea41ba4b9?auto=format&fit=crop&w=600&q=80" alt="Dinde ratatouille">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Escalope de dinde & ratatouille légère</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 35 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>295 kcal</td></tr>
+          <tr><td>Protéines</td><td>38 g</td></tr>
+          <tr><td>Glucides</td><td>16 g</td></tr><tr class="sub"><td>dont sucres</td><td>12 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,7 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 escalopes de dinde (200 g chacune)</li><li>Aubergine, courgette, tomates, poivron, ail, thym, basilic</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mijoter les légumes avec ail + thym 25 min à feu doux.</li><li>Griller les escalopes 4 min chaque côté. Servir sur la ratatouille.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&q=80" alt="Konjac poulet">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Bouillon poulet & vermicelles de konjac</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>190 kcal</td></tr>
+          <tr><td>Protéines</td><td>26 g</td></tr>
+          <tr><td>Glucides</td><td>8 g</td></tr><tr class="sub"><td>dont sucres</td><td>4 g</td></tr>
+          <tr><td>Lipides</td><td>5 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>1,0 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g poulet effiloché, 1 paquet vermicelles konjac</li><li>600 ml bouillon de poulet dégraissé, carotte, champignons, gingembre, sauce soja légère, citron</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Porter le bouillon à frémissement avec le gingembre râpé. Ajouter les légumes.</li><li>Ajouter poulet + vermicelles rincés + sauce soja + citron. Servir chaud.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Salade composée légère">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Salade composée légère quinoa & œuf dur</div><span class="badge badge-poids">Perte de poids</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>310 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>32 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>12 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>60 g quinoa cuit, 2 œufs durs, tomates cerises, concombre</li><li>Épinards, radis, vinaigrette légère citron-moutarde</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Cuire les œufs 10 min, refroidir et écaler. Cuire le quinoa.</li><li>Assembler tous les légumes + quinoa + œufs coupés en 4. Assaisonner.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DESSERTS PERTE DE POIDS ── -->
+  <p class="sous-cat-titre">🍮 Desserts légers & sans culpabilité</p>
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80" alt="Yaourt fruits rouges">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Yaourt grec & fruits rouges</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 2 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>160 kcal</td></tr>
+          <tr><td>Protéines</td><td>14 g</td></tr>
+          <tr><td>Glucides</td><td>18 g</td></tr><tr class="sub"><td>dont sucres</td><td>14 g</td></tr>
+          <tr><td>Lipides</td><td>2 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>1 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>0,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>150 g yaourt grec 0%, 100 g fruits rouges, graines de lin, menthe</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Verser le yaourt dans un bol. Disposer les fruits rouges par-dessus.</li><li>Parsemer de graines de lin et décorer avec la menthe.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80" alt="Nice cream banane">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Nice cream banane & beurre de cacahuète</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 5 min + 4h congélateur</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>220 kcal</td></tr>
+          <tr><td>Protéines</td><td>5 g</td></tr>
+          <tr><td>Glucides</td><td>38 g</td></tr><tr class="sub"><td>dont sucres</td><td>24 g</td></tr>
+          <tr><td>Lipides</td><td>6 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>4 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>0,05 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 bananes congelées, 2 c.à.s beurre de cacahuète naturel, vanille, pépites chocolat noir</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Congeler les rondelles de banane au moins 4h.</li><li>Mixer avec le beurre de cacahuète + vanille jusqu'à texture crémeuse. Garnir de pépites.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" alt="Mousse chocolat avocat">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Mousse au chocolat à l'avocat</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 10 min + 1h frigo</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>310 kcal</td></tr>
+          <tr><td>Protéines</td><td>6 g</td></tr>
+          <tr><td>Glucides</td><td>28 g</td></tr><tr class="sub"><td>dont sucres</td><td>14 g</td></tr>
+          <tr><td>Lipides</td><td>20 g</td></tr><tr class="sub"><td>dont saturés</td><td>5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>14 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,05 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 avocats mûrs, 3 c.à.s cacao non sucré, 3 c.à.s miel</li><li>Vanille, 2 c.à.s lait végétal, éclats de noisettes</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer la chair d'avocat + cacao + miel + vanille + lait végétal jusqu'à texture lisse.</li><li>Répartir en verrines, réfrigérer 1h. Garnir de noisettes.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80" alt="Panna cotta légère">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Panna cotta légère yaourt & fruits rouges</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 10 min + 3h frigo</span><span>🍽️ 4 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>140 kcal</td></tr>
+          <tr><td>Protéines</td><td>9 g</td></tr>
+          <tr><td>Glucides</td><td>18 g</td></tr><tr class="sub"><td>dont sucres</td><td>16 g</td></tr>
+          <tr><td>Lipides</td><td>3 g</td></tr><tr class="sub"><td>dont saturés</td><td>0,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>2 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g yaourt grec 0%, 200 ml lait écrémé</li><li>2 feuilles gélatine, 2 c.à.s miel, vanille, 200 g fruits rouges</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire tremper la gélatine 5 min. Chauffer le lait + miel + vanille. Incorporer la gélatine.</li><li>Mélanger avec le yaourt. Verser en verrines. Réfrigérer 3h. Servir avec les fruits rouges.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ======================== VÉGÉTARIEN ======================== -->
+<div class="section-recettes" id="vege" data-cat="vege">
+  <h2>🌿 Végétarien <span class="badge badge-vege">Sans viande</span></h2>
+  <p class="sous-titre">Recettes 100% végétariennes équilibrées — et des desserts végétaliens pour finir sur une note sucrée.</p>
+
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Buddha bowl">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Buddha bowl quinoa & légumes rôtis</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>480 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>64 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>2 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>9 g</td></tr><tr><td>Sel</td><td>0,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>80 g quinoa, betterave, carotte, courgette, 50 g pois chiches rôtis, ½ avocat</li><li>Sauce tahini : tahini + citron + eau + ail, graines de sésame</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Rôtir les légumes + pois chiches au four 200°C, 20 min. Cuire le quinoa.</li><li>Assembler le bowl, arroser de tahini, parsemer de sésame.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Curry pois chiches">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Curry de pois chiches & épinards</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>440 kcal</td></tr>
+          <tr><td>Protéines</td><td>20 g</td></tr>
+          <tr><td>Glucides</td><td>58 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>12 g</td></tr><tr class="sub"><td>dont saturés</td><td>7 g</td></tr><tr class="sub"><td>dont insaturés</td><td>4 g</td></tr>
+          <tr><td>Fibres</td><td>11 g</td></tr><tr><td>Sel</td><td>0,7 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g pois chiches, 200 g épinards, tomates concassées, lait de coco léger</li><li>Curry, curcuma, gingembre, ail, oignon</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir oignon + ail + épices. Ajouter tomates + lait de coco. Mijoter 10 min.</li><li>Ajouter les pois chiches 5 min. Incorporer les épinards en fin de cuisson.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Frittata légumes chèvre">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Frittata légumes & fromage de chèvre</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>360 kcal</td></tr>
+          <tr><td>Protéines</td><td>26 g</td></tr>
+          <tr><td>Glucides</td><td>8 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>24 g</td></tr><tr class="sub"><td>dont saturés</td><td>9 g</td></tr><tr class="sub"><td>dont insaturés</td><td>13 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,9 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>6 œufs, 1 poivron, 1 courgette, 1 oignon, 80 g fromage de chèvre frais</li><li>Herbes de Provence, sel, poivre, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir les légumes émincés 5 min. Verser les œufs battus + herbes.</li><li>Émietter le chèvre. Cuire 5 min à feu doux, puis 5 min au gril.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&w=600&q=80" alt="Soupe miso tofu">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Soupe miso & tofu aux champignons</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 15 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>180 kcal</td></tr>
+          <tr><td>Protéines</td><td>14 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>3 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>5 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>2,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g tofu ferme, 150 g champignons shiitake</li><li>2 c.à.s pâte miso blanc, 800 ml eau, oignons nouveaux, algues wakame</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Porter l'eau à frémissement. Ajouter les champignons. Dissoudre le miso dans un peu d'eau tiède, ajouter.</li><li>Ajouter le tofu en cubes + algues. Servir avec les oignons nouveaux.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80" alt="Pâtes pesto légumes">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Pâtes aux légumes grillés & pesto maison</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>560 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>72 g</td></tr><tr class="sub"><td>dont sucres</td><td>7 g</td></tr>
+          <tr><td>Lipides</td><td>22 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>16 g</td></tr>
+          <tr><td>Fibres</td><td>6 g</td></tr><tr><td>Sel</td><td>0,5 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g pâtes complètes, courgette, poivron, aubergine</li><li>Pesto maison : basilic, pignons, parmesan, ail, huile d'olive</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Griller les légumes 15 min au four 220°C. Mixer les ingrédients du pesto.</li><li>Cuire les pâtes. Mélanger avec pesto + légumes + eau de cuisson.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=600&q=80" alt="Salade lentilles feta">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Salade lentilles, feta & tomates cerises</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>390 kcal</td></tr>
+          <tr><td>Protéines</td><td>22 g</td></tr>
+          <tr><td>Glucides</td><td>44 g</td></tr><tr class="sub"><td>dont sucres</td><td>6 g</td></tr>
+          <tr><td>Lipides</td><td>14 g</td></tr><tr class="sub"><td>dont saturés</td><td>5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>10 g</td></tr><tr><td>Sel</td><td>1,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g lentilles vertes cuites, 80 g feta, 150 g tomates cerises</li><li>½ concombre, oignon rouge, huile d'olive, vinaigre balsamique, moutarde</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Couper tomates + concombre + oignon rouge. Émietter la feta.</li><li>Mélanger tout avec les lentilles et assaisonner.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80" alt="Tofu mariné riz">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Tofu mariné & riz aux légumes sautés</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 1 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>500 kcal</td></tr>
+          <tr><td>Protéines</td><td>28 g</td></tr>
+          <tr><td>Glucides</td><td>58 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>16 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>12 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,8 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g tofu ferme, 100 g riz basmati</li><li>Marinade : sauce soja, gingembre, ail, huile de sésame, miel</li><li>Carotte, poivron, oignons nouveaux</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mariner le tofu en cubes 30 min. Faire dorer 3–4 min chaque côté.</li><li>Faire sauter les légumes à l'huile de sésame. Servir sur riz + reste de marinade.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1604152135912-04a022e23696?auto=format&fit=crop&w=600&q=80" alt="Galettes haricots maïs">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Galettes de haricots rouges & maïs</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 25 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>420 kcal</td></tr>
+          <tr><td>Protéines</td><td>20 g</td></tr>
+          <tr><td>Glucides</td><td>62 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>9 g</td></tr><tr class="sub"><td>dont saturés</td><td>1,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>6,5 g</td></tr>
+          <tr><td>Fibres</td><td>12 g</td></tr><tr><td>Sel</td><td>0,7 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g haricots rouges, 100 g maïs, 1 œuf, 50 g chapelure complète</li><li>Cumin, paprika, ail, coriandre, sel</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Écraser les haricots partiellement. Mélanger avec maïs + œuf + chapelure + épices.</li><li>Former des galettes, cuire à la poêle huilée 4 min chaque côté.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80" alt="Tacos végétariens">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Tacos végétariens haricots noirs & maïs</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>460 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>68 g</td></tr><tr class="sub"><td>dont sucres</td><td>7 g</td></tr>
+          <tr><td>Lipides</td><td>12 g</td></tr><tr class="sub"><td>dont saturés</td><td>4 g</td></tr><tr class="sub"><td>dont insaturés</td><td>7 g</td></tr>
+          <tr><td>Fibres</td><td>12 g</td></tr><tr><td>Sel</td><td>0,9 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 tortillas de maïs, 400 g haricots noirs, 100 g maïs, 1 poivron rouge</li><li>Cumin, paprika fumé, ail, yaourt grec, coriandre, citron vert, avocat</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Faire revenir ail + épices. Ajouter haricots + maïs 5 min. Griller le poivron.</li><li>Garnir les tortillas chaudes avec tout. Finir citron vert + yaourt grec.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=600&q=80" alt="Gratin courgettes">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Gratin de courgettes au fromage & herbes</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 40 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>320 kcal</td></tr>
+          <tr><td>Protéines</td><td>18 g</td></tr>
+          <tr><td>Glucides</td><td>16 g</td></tr><tr class="sub"><td>dont sucres</td><td>8 g</td></tr>
+          <tr><td>Lipides</td><td>20 g</td></tr><tr class="sub"><td>dont saturés</td><td>10 g</td></tr><tr class="sub"><td>dont insaturés</td><td>8 g</td></tr>
+          <tr><td>Fibres</td><td>3 g</td></tr><tr><td>Sel</td><td>1,1 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>4 courgettes moyennes, 2 œufs, 100 ml crème légère</li><li>80 g gruyère râpé, ail, thym, persil</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Râper les courgettes, faire dégorger 10 min avec du sel, bien essorer.</li><li>Mélanger avec œufs + crème + moitié gruyère + herbes. Verser dans plat huilé.</li><li>Parsemer du reste de gruyère. Four 180°C, 30 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80" alt="Riz cantonais végétarien">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Riz cantonais végétarien aux œufs</div><span class="badge badge-vege">Végétarien</span></div>
+        <div class="card-meta"><span>⏱️ 20 min</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>490 kcal</td></tr>
+          <tr><td>Protéines</td><td>20 g</td></tr>
+          <tr><td>Glucides</td><td>70 g</td></tr><tr class="sub"><td>dont sucres</td><td>5 g</td></tr>
+          <tr><td>Lipides</td><td>14 g</td></tr><tr class="sub"><td>dont saturés</td><td>2,5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>10 g</td></tr>
+          <tr><td>Fibres</td><td>4 g</td></tr><tr><td>Sel</td><td>1,6 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g riz cuit (veille), 3 œufs, 100 g petits pois, carotte, oignons nouveaux, ail, sauce soja, huile de sésame, gingembre</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Chauffer le wok à feu vif avec l'huile de sésame. Faire revenir ail + gingembre + légumes 3 min.</li><li>Pousser sur le côté, brouiller les œufs. Ajouter le riz + sauce soja. Garnir d'oignons nouveaux.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DESSERTS VÉGÉTARIEN ── -->
+  <p class="sous-cat-titre">🍮 Desserts végétaliens</p>
+  <div class="grille">
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" alt="Mousse chocolat avocat">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Mousse au chocolat noir à l'avocat</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 10 min + 1h frigo</span><span>🍽️ 2 pers.</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>1 portion</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>310 kcal</td></tr>
+          <tr><td>Protéines</td><td>6 g</td></tr>
+          <tr><td>Glucides</td><td>28 g</td></tr><tr class="sub"><td>dont sucres</td><td>14 g</td></tr>
+          <tr><td>Lipides</td><td>20 g</td></tr><tr class="sub"><td>dont saturés</td><td>5 g</td></tr><tr class="sub"><td>dont insaturés</td><td>14 g</td></tr>
+          <tr><td>Fibres</td><td>7 g</td></tr><tr><td>Sel</td><td>0,05 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>2 avocats mûrs, 3 c.à.s cacao non sucré, 3 c.à.s miel ou sirop d'agave</li><li>Vanille, 2 c.à.s lait végétal, éclats de noisettes</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer avocat + cacao + miel + vanille + lait végétal jusqu'à texture lisse et crémeuse.</li><li>Verser en verrines, réfrigérer 1h. Garnir d'éclats de noisettes.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=600&q=80" alt="Brownie haricots noirs">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Brownie fondant aux haricots noirs</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 30 min</span><span>🍽️ 9 parts</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par part</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>180 kcal</td></tr>
+          <tr><td>Protéines</td><td>8 g</td></tr>
+          <tr><td>Glucides</td><td>22 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>7 g</td></tr><tr class="sub"><td>dont saturés</td><td>3 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3,5 g</td></tr>
+          <tr><td>Fibres</td><td>5 g</td></tr><tr><td>Sel</td><td>0,2 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>400 g haricots noirs égouttés, 3 œufs, 4 c.à.s cacao non sucré</li><li>4 c.à.s miel, 1 c.à.c levure, 50 g pépites chocolat noir 70%</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer haricots en purée lisse. Ajouter œufs + cacao + miel + levure.</li><li>Verser en moule huilé, parsemer de pépites. Four 175°C, 20–22 min.</li></ol></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=600&q=80" alt="Energy balls">
+      <div class="card-body">
+        <div class="card-header"><div class="card-title">Energy balls dattes & noix</div><span class="badge badge-dessert">Dessert</span></div>
+        <div class="card-meta"><span>⏱️ 15 min + 30 min frigo</span><span>🍽️ 15 boules</span></div>
+        <table class="nutri-table"><thead><tr><th>Valeur nutritionnelle</th><th>Par boule</th></tr></thead><tbody>
+          <tr class="highlight"><td>Énergie</td><td>95 kcal</td></tr>
+          <tr><td>Protéines</td><td>2 g</td></tr>
+          <tr><td>Glucides</td><td>12 g</td></tr><tr class="sub"><td>dont sucres</td><td>10 g</td></tr>
+          <tr><td>Lipides</td><td>4,5 g</td></tr><tr class="sub"><td>dont saturés</td><td>1 g</td></tr><tr class="sub"><td>dont insaturés</td><td>3 g</td></tr>
+          <tr><td>Fibres</td><td>2 g</td></tr><tr><td>Sel</td><td>0,02 g</td></tr>
+        </tbody></table>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">🛒 Ingrédients</button><div class="accordion-content"><ul><li>200 g dattes Medjool dénoyautées, 80 g noix mélangées</li><li>2 c.à.s cacao non sucré, 2 c.à.s flocons d'avoine, vanille, noix de coco râpée</li></ul></div></div>
+        <div class="accordion"><button class="accordion-btn" onclick="toggle(this)">👨‍🍳 Préparation</button><div class="accordion-content"><ol><li>Mixer dattes + noix + cacao + flocons + vanille jusqu'à pâte homogène.</li><li>Former 15 boules, rouler dans la noix de coco. Réfrigérer 30 min.</li></ol></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Esprit Sportif</p>
+</footer>
+
+<script>
+  function toggle(btn) {
+    btn.classList.toggle('open');
+    const content = btn.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function filtrer(cat, btnClique) {
+    document.querySelectorAll('.filtre-btn').forEach(b => b.classList.remove('actif'));
+    btnClique.classList.add('actif');
+    document.querySelectorAll('.section-recettes').forEach(s => {
+      s.style.display = (cat === 'tous' || s.dataset.cat === cat) ? 'block' : 'none';
+    });
+    document.querySelectorAll('.sep').forEach(s => {
+      s.style.display = cat === 'tous' ? 'block' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

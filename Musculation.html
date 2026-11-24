@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Esprit Sportif - Accueil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #222;
+      background-color: #fff;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 80px;
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 { color: #e63946; font-size: 26px; font-weight: 700; }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover { color: #e63946; }
+
+    /* Menu déroulant nutrition */
+    .menu-deroulant { position: relative; display: inline-block; }
+    .menu-deroulant .sous-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      min-width: 180px;
+      z-index: 5000;
+    }
+    .menu-deroulant .sous-menu a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .menu-deroulant .sous-menu a:hover { background: #f5f5f5; color: #e63946; }
+    .menu-deroulant:hover .sous-menu { display: block; }
+
+    /* Hero */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 150px 20px;
+    }
+
+    .hero h2 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
+    .hero p { font-size: 20px; margin-bottom: 25px; }
+
+    .btn {
+      background: #e63946; color: white; padding: 12px 30px;
+      border-radius: 30px; text-decoration: none; font-weight: bold;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #c02735; }
+
+    section { padding: 80px 100px; text-align: center; }
+
+    .programmes {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .programme {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .programme:hover { transform: translateY(-5px); }
+
+    .programme img {
+      width: 100%; border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .programme h3 { color: #e63946; margin-bottom: 10px; }
+
+    .temoignages { background: #fef3f2; padding: 80px 60px; }
+
+    .temoignage {
+      max-width: 700px; margin: 20px auto;
+      background: white; padding: 30px;
+      border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    footer { text-align: center; padding: 40px 20px; background: #222; color: white; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Esprit Sportif</h1>
+  <nav>
+      
+    <div class="menu-deroulant">
+      <a href="#">Programmes</a>
+      <div class="sous-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="cardio.html">Cardio</a>
+      </div>
+    </div>
+
+
+    <a href="#santé">Santé</a>
+
+    <div class="menu-deroulant">
+      <a href="#">Nutrition</a>
+      <div class="sous-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="bien manger.html">bien manger</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+<section class="hero">
+  <h2>Transforme ton corps et ton esprit</h2>
+  <p>Découvre nos programmes complets d’entraînement.</p>
+  <a href="#programmes" class="btn">Voir les programmes</a>
+</section>
+
+
+<section id="programmes">
+<h2>Programmes de musculation par muscle</h2>
+
+  <div class="programmes">
+
+    <a href="pectoraux.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\programme-musculation-pectoraux.webp" alt="Pectoraux" >
+    <h3>Programmes Pectoraux</h3>
+    </a>
+
+    <a href="abdo.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\25228409lpw-25233147-mega-une-jpg_10130720.webp" alt="abdo">
+    <h3>Programmes abdo</h3>
+
+    <a href="dos.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\wikifit-entrainement-programmes-comment-devenir-plus-fort-aux-tractions.jpg" alt="dos">
+    <h3>Programmes dos</h3>
+    </a>
+
+    <a href="épaules.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\musculation-epaules.jpg" alt="épaules">
+    <h3>Programmes épaules</h3>
+
+    <a href="bras.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\shutterstock_1357073057.jpg" alt="bras">
+    <h3>Programmes bras</h3>
+
+    <a href="jambes fessiers.html" class="programme">
+    <img src="C:\Users\lepti\Desktop\CIEL\Projet site web\image\sumo-squat-header-1.jpg" alt="jambes fessiers">
+    <h3>Programmes jambes fessiers</h3>
+    </a>
+
+    <section id="programmes">
+    <h2>Programmes de musculation par catégorie</h2>
+
+   <div class="programmes">
+
+    <a href="Programmes de musculation débutants.html" class="programme">
+    <img src=https://www.fitnessheroes.fr/wp-content/uploads/2015/04/programme-musculation-debutant.jpg alt="débutants" >
+    <h3>Programmes débutants</h3>
+    </a>
+
+    <a href="Programmes de musculation élastique.html" class="programme">
+    <img src=https://www.lequipe.fr/_medias/img-photo-jpg/le-front-squat-avec-un-elastique-cooltraining/1500000001495724/0:0,1199:899-828-623-75/42605.jpg alt="élastique" >
+    <h3>Programmes élastique</h3>
+    </a>
+
+     <a href="Programmes de musculation maison.html" class="programme">
+    <img src=https://contents.mediadecathlon.com/p2194111/k$2140bde7832c6495c1936d2af589c2fa/1800x0/3253pt2169/6506xcr3904/musculation-avec-materiel.jpg alt="maison" >
+    <h3>Programmes maison</h3>
+    </a>
+
+    <a href="Programmes de musculation poids du corps.html" class="programme">
+    <img src=https://contents.mediadecathlon.com/s943036/k$106d9c8b3c41b5ebc42df3381bddad25/1800x0/4752pt3168/7798xcr6336/musculation-poids-corps-dips.jpg alt="poids du corps" >
+    <h3>Programmes poids du corps</h3>
+    </a>
+
+    <a href="Programmes perte de poids.html" class="programme">
+    <img src=https://nutriandco.com/img/cms/Articles/programme-musculation-perte-de-poids.jpg alt="perte de poids" >
+    <h3>Programmes perte de poids</h3>
+
+    <a href="Programmes de musculation femme enceinte.html" class="programme">
+    <img src=https://www.docteur-fitness.com/wp-content/uploads/2023/11/programme-musculation-femme-enceinte.jpg alt="femme enceinte" >
+    <h3>Programmes femme enceinte</h3>
+
+    <a href="renforcement musculaire pour la course à pied.html" class="programme">
+    <img src=https://courir-mieux.fr/wp-content/uploads/2024/01/S04-et-05_SD_Article_Couv.png alt="renforcement musculaire pour la course à pied" >
+    <h3>renforcement musculaire pour la course à pied</h3>
+
+    </a>
+  </div>
+</section>
+
+<p><a href="C:\Users\lepti\Desktop\CIEL\Projet site web\page\CV.pdf" target="_blank">Voir mon CV</a></p>
+
+</body>
+</html>
