@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recettes — Esprit Sportif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--rouge:#e63946;--rouge-dark:#b02532;--noir:#0a0a0a;--gris-fonce:#141414;--gris-clair:#888;--blanc:#fff;--blanc-off:#f5f5f5;--font-title:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--blanc);color:var(--noir);overflow-x:hidden}
+.accent{color:var(--rouge)}.stroke{-webkit-text-stroke:1.5px var(--noir);color:transparent}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 64px;transition:background .4s,padding .4s}
+nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);padding:16px 64px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.nav-logo{font-family:var(--font-title);font-size:28px;letter-spacing:2px;color:var(--noir);text-decoration:none}
+.nav-logo span{color:var(--rouge)}
+.nav-links{display:flex;align-items:center;gap:40px;list-style:none}
+.nav-links a{font-size:14px;font-weight:500;color:var(--noir);text-decoration:none;letter-spacing:.5px;position:relative;transition:color .2s}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1.5px;background:var(--rouge);transition:width .3s}
+.nav-links a:hover{color:var(--rouge)}.nav-links a:hover::after{width:100%}
+.nav-drop{position:relative}.nav-drop>a::after{display:none}
+.nav-drop-menu{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);background:var(--blanc);border:1px solid rgba(0,0,0,.07);border-radius:10px;min-width:180px;box-shadow:0 12px 40px rgba(0,0,0,.1);overflow:hidden}
+.nav-drop-menu a{display:block;padding:11px 18px;font-size:13.5px}
+.nav-drop-menu a::after{display:none}
+.nav-drop-menu a:hover{background:var(--blanc-off)}
+.nav-drop:hover .nav-drop-menu{display:block}
+.nav-cta{background:var(--rouge);color:var(--blanc)!important;padding:10px 22px;border-radius:6px}
+.nav-cta:hover{background:var(--rouge-dark)}.nav-cta::after{display:none!important}
+
+/* HERO */
+.hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:140px 64px 80px;position:relative;z-index:2}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--rouge);margin-bottom:28px;opacity:0;animation:fadeUp .7s .2s forwards}
+.hero-tag::before{content:'';width:28px;height:2px;background:var(--rouge)}
+.hero-title{font-family:var(--font-title);font-size:clamp(70px,8vw,116px);line-height:.92;letter-spacing:1px;margin-bottom:28px;opacity:0;animation:fadeUp .8s .35s forwards}
+.hero-sub{font-size:17px;font-weight:300;color:var(--gris-clair);line-height:1.65;max-width:420px;margin-bottom:44px;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-actions{display:flex;align-items:center;gap:20px;opacity:0;animation:fadeUp .8s .65s forwards}
+.btn-primary{background:var(--rouge);color:var(--blanc);padding:15px 32px;border-radius:6px;font-size:15px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(230,57,70,.35);transition:background .2s,transform .2s}
+.btn-primary:hover{background:var(--rouge-dark);transform:translateY(-2px)}
+.btn-ghost{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--noir);text-decoration:none;transition:gap .25s}
+.btn-ghost:hover{gap:14px}
+.arrow{width:36px;height:36px;border:1.5px solid var(--noir);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero-stats{display:flex;gap:36px;margin-top:56px;padding-top:40px;border-top:1px solid rgba(0,0,0,.08);opacity:0;animation:fadeUp .8s .8s forwards}
+.stat-num{font-family:var(--font-title);font-size:38px;line-height:1}
+.stat-num span{color:var(--rouge)}
+.stat-label{font-size:12px;font-weight:500;color:var(--gris-clair);margin-top:4px}
+.hero-right{position:relative;overflow:hidden;background:var(--gris-fonce)}
+.hero-right img{width:100%;height:100%;object-fit:cover;animation:heroImg 1.2s .1s both}
+.hero-right::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,var(--blanc) 0%,transparent 30%);z-index:1}
+.hero-badge{position:absolute;bottom:48px;right:40px;z-index:3;background:var(--noir);color:var(--blanc);padding:18px 22px;border-radius:12px;text-align:center;animation:fadeUp .9s 1s both}
+.hero-badge-num{font-family:var(--font-title);font-size:38px;color:var(--rouge);line-height:1}
+.hero-badge-text{font-size:11px;font-weight:500;color:#aaa;margin-top:4px}
+
+/* TICKER */
+.ticker{background:var(--rouge);padding:14px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:ticker 24s linear infinite}
+.ticker-item{font-family:var(--font-title);font-size:20px;letter-spacing:3px;color:var(--blanc);padding:0 48px}
+.ticker-dot{color:rgba(255,255,255,.4)}
+
+/* SECTIONS */
+section{padding:110px 64px}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--rouge);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-tag::before{content:'';width:22px;height:2px;background:var(--rouge)}
+.section-title{font-family:var(--font-title);font-size:clamp(42px,5vw,68px);line-height:.95;letter-spacing:.5px;margin-bottom:16px}
+.section-desc{font-size:16px;font-weight:300;color:var(--gris-clair);max-width:480px;line-height:1.7}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:24px}
+
+/* FILTRES */
+.filters{display:flex;flex-direction:column;gap:14px;margin-bottom:44px}
+.f-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.f-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gris-clair);min-width:90px}
+.chip{background:var(--blanc);border:1.5px solid rgba(0,0,0,.1);padding:9px 18px;border-radius:20px;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--rouge)}
+.chip.active{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.count{font-size:13px;color:var(--gris-clair);margin-bottom:24px}
+
+/* RECETTES */
+#recettes{background:var(--blanc-off)}
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.rec-card{background:var(--blanc);border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s;text-align:left;font-family:var(--font-body);color:var(--noir);padding:0;display:block;width:100%}
+.rec-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1)}
+.rec-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--gris-fonce)}
+.rec-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.rec-card:hover .rec-img img{transform:scale(1.06)}
+.rec-tag{position:absolute;top:16px;left:16px;background:var(--rouge);color:var(--blanc);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:4px}
+.rec-time{position:absolute;top:16px;right:16px;background:rgba(10,10,10,.75);color:var(--blanc);font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px}
+.rec-body{padding:24px}
+.rec-type{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gris-clair);margin-bottom:6px}
+.rec-title{font-family:var(--font-title);font-size:27px;line-height:1;margin-bottom:18px}
+.macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.macro{background:var(--blanc-off);border-radius:8px;padding:10px 4px;text-align:center}
+.macro b{display:block;font-family:var(--font-title);font-size:20px;line-height:1}
+.macro span{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gris-clair)}
+.macro.k b{color:var(--rouge)}
+.empty{padding:60px 0;text-align:center;color:var(--gris-clair)}
+
+/* REPERES */
+#reperes{background:var(--gris-fonce)}
+#reperes .section-title{color:var(--blanc)}#reperes .section-desc{color:rgba(255,255,255,.4)}
+.rep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.rep-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:36px;transition:border-color .3s,background .3s}
+.rep-card:hover{border-color:rgba(230,57,70,.5);background:rgba(255,255,255,.06)}
+.rep-icon{font-size:30px;margin-bottom:16px;display:block}
+.rep-title{font-family:var(--font-title);font-size:30px;color:var(--blanc);margin-bottom:10px}
+.rep-text{font-size:13.5px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:22px}
+.rep-row{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(255,255,255,.6)}
+.rep-row b{font-family:var(--font-title);font-size:19px;color:var(--rouge);letter-spacing:.5px;font-weight:400}
+
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:200;background:rgba(10,10,10,.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.modal-box{background:var(--blanc);border-radius:18px;max-width:880px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:.85fr 1.15fr;animation:fadeUp .4s both;position:relative}
+.modal-img{background:var(--gris-fonce);min-height:300px}
+.modal-img img{width:100%;height:100%;object-fit:cover}
+.modal-body{padding:40px 36px}
+.modal-close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:none;background:var(--noir);color:var(--blanc);font-size:16px;cursor:pointer;z-index:2;transition:background .2s}
+.modal-close:hover{background:var(--rouge)}
+.m-title{font-family:var(--font-title);font-size:40px;line-height:.95;margin:6px 0 18px}
+.m-h{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--rouge);margin:24px 0 10px}
+.m-list{padding-left:18px;font-size:14px;font-weight:300;line-height:1.8}
+.m-steps{list-style:none;counter-reset:s}
+.m-steps li{counter-increment:s;display:flex;gap:12px;font-size:14px;font-weight:300;line-height:1.65;margin-bottom:10px}
+.m-steps li::before{content:counter(s);font-family:var(--font-title);font-size:20px;color:var(--rouge);line-height:1.2}
+.m-tip{margin-top:20px;background:var(--blanc-off);border-left:3px solid var(--rouge);padding:14px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.6}
+
+/* CTA + FOOTER */
+.cta-strip{background:var(--rouge);padding:80px 64px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cta-strip::before{content:'MIAM';font-family:var(--font-title);font-size:300px;color:rgba(255,255,255,.05);position:absolute;right:-20px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none}
+.cta-title{font-family:var(--font-title);font-size:clamp(40px,5vw,72px);color:var(--blanc);line-height:.95}
+.btn-white{background:var(--blanc);color:var(--rouge);padding:16px 36px;border-radius:6px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;position:relative;transition:transform .2s}
+.btn-white:hover{transform:translateY(-2px)}
+footer{background:var(--noir);color:var(--blanc);padding:80px 64px 40px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:64px;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-logo{font-family:var(--font-title);font-size:32px;letter-spacing:2px;margin-bottom:16px}
+.footer-logo span{color:var(--rouge)}
+.footer-tagline{font-size:14px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:28px;max-width:260px}
+.footer-socials{display:flex;gap:12px}
+.social-btn{width:38px;height:38px;border:1px solid rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(255,255,255,.5);text-decoration:none;transition:.2s}
+.social-btn:hover{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.footer-col-title{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px}
+.footer-links{list-style:none}.footer-links li{margin-bottom:10px}
+.footer-links a{font-size:14px;font-weight:300;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--blanc)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy,.footer-bottom a{font-size:13px;color:rgba(255,255,255,.25);text-decoration:none}
+.footer-bottom ul{display:flex;gap:24px;list-style:none}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes heroImg{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+@keyframes ticker{to{transform:translateX(-50%)}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* MOBILE */
+@media(max-width:1024px){
+nav,nav.scrolled{padding:16px 28px}.nav-links{gap:20px}
+.hero{grid-template-columns:1fr;min-height:auto}.hero-left{padding:120px 28px 60px}.hero-right{height:50vh}.hero-right::before{display:none}
+section{padding:80px 28px}.rec-grid{grid-template-columns:1fr 1fr}.rep-grid{grid-template-columns:1fr}
+.cta-strip{padding:60px 28px}footer{padding:60px 28px 32px}.footer-top{grid-template-columns:1fr 1fr;gap:36px}
+.modal-box{grid-template-columns:1fr}.modal-img{min-height:200px;max-height:240px}}
+@media(max-width:640px){
+.nav-links{display:none}.rec-grid,.footer-top{grid-template-columns:1fr}.hero-stats{gap:20px;flex-wrap:wrap}
+.f-label{min-width:100%}.modal-body{padding:28px 22px}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <a href="#">Programmes ▾</a>
+      <div class="nav-drop-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="Cardio.html">Cardio</a>
+        <a href="Mobilite.html">Mobilité</a>
+      </div>
+    </li>
+    <li><a href="#reperes">Santé</a></li>
+    <li class="nav-drop">
+      <a href="#">Nutrition ▾</a>
+      <div class="nav-drop-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </li>
+    <li><a href="#recettes" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">Nutrition & Performance</span>
+    <h1 class="hero-title">MANGE<br>POUR<br><span class="accent">PERFORMER</span></h1>
+    <p class="hero-sub">Des recettes simples, savoureuses et chiffrées, pensées pour ton objectif : prendre de la masse, gagner en endurance ou perdre du poids.</p>
+    <div class="hero-actions">
+      <a href="#recettes" class="btn-primary">Voir les recettes</a>
+      <a href="#reperes" class="btn-ghost">Repères macros <span class="arrow">→</span></a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">100<span> recettes</span></div><div class="stat-label">Détaillées pas à pas</div></div>
+      <div><div class="stat-num">3<span> objectifs</span></div><div class="stat-label">Masse · Endurance · Sèche</div></div>
+      <div><div class="stat-num">35<span> min</span></div><div class="stat-label">Maximum par recette</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=85" alt="Assiette saine et colorée">
+    <div class="hero-badge"><div class="hero-badge-num">P·G·L</div><div class="hero-badge-text">MACROS<br>SUR CHAQUE RECETTE</div></div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">PRISE DE MASSE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ENDURANCE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PERTE DE POIDS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PETIT-DÉJEUNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">DÉJEUNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">DÎNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">SNACK</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PRISE DE MASSE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ENDURANCE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PERTE DE POIDS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PETIT-DÉJEUNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">DÉJEUNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">DÎNER</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">SNACK</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<section id="recettes">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Nos recettes</div>
+      <h2 class="section-title reveal d1">TROUVE TA <span class="accent">RECETTE</span><br>SELON TON <span class="stroke">OBJECTIF</span></h2>
+    </div>
+    <p class="section-desc reveal d2">Filtre par objectif et par repas, puis clique sur une recette pour voir les ingrédients et les étapes.</p>
+  </div>
+  <div class="filters">
+    <div class="f-row" id="f-obj"><span class="f-label">Objectif</span></div>
+    <div class="f-row" id="f-type"><span class="f-label">Repas</span></div>
+  </div>
+  <p class="count" id="count"></p>
+  <div class="rec-grid" id="rec-grid"></div>
+</section>
+
+<section id="reperes">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Repères nutritionnels</div>
+      <h2 class="section-title reveal d1" style="color:#fff">LES <span class="accent">MACROS</span><br>SELON TON BUT</h2>
+    </div>
+    <p class="section-desc reveal d2">Des repères moyens pour un adulte en bonne santé. Adapte-les à ton poids, ton activité et l'avis d'un professionnel.</p>
+  </div>
+  <div class="rep-grid">
+    <div class="rep-card reveal"><span class="rep-icon">💪</span><div class="rep-title">PRISE DE MASSE</div>
+      <p class="rep-text">Un léger surplus calorique avec assez de protéines pour construire du muscle.</p>
+      <div class="rep-row"><span>Calories</span><b>+250 à 400 kcal</b></div>
+      <div class="rep-row"><span>Protéines</span><b>1,6-2,2 g / kg</b></div>
+      <div class="rep-row"><span>Glucides</span><b>4-6 g / kg</b></div></div>
+    <div class="rep-card reveal d1"><span class="rep-icon">🏃</span><div class="rep-title">ENDURANCE</div>
+      <p class="rep-text">Des glucides en quantité pour remplir les réserves d'énergie avant et après l'effort.</p>
+      <div class="rep-row"><span>Calories</span><b>Selon le volume</b></div>
+      <div class="rep-row"><span>Protéines</span><b>1,2-1,6 g / kg</b></div>
+      <div class="rep-row"><span>Glucides</span><b>5-8 g / kg</b></div></div>
+    <div class="rep-card reveal d2"><span class="rep-icon">🔥</span><div class="rep-title">PERTE DE POIDS</div>
+      <p class="rep-text">Un déficit modéré, riche en protéines et en fibres pour garder le muscle et la satiété.</p>
+      <div class="rep-row"><span>Calories</span><b>−300 à 500 kcal</b></div>
+      <div class="rep-row"><span>Protéines</span><b>1,8-2,2 g / kg</b></div>
+      <div class="rep-row"><span>Fibres</span><b>25-35 g / jour</b></div></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2 class="cta-title reveal">UN PLAN<br>POUR TA SEMAINE ?</h2>
+  <a href="plans-alimentaires.html" class="btn-white reveal d2">Voir les plans alimentaires</a>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">ESPRIT<span>.</span>SPORTIF</div>
+      <p class="footer-tagline">Forge ton corps, libère ton potentiel. Des programmes conçus pour des résultats réels.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+        <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+        <a href="#" class="social-btn" aria-label="TikTok">♪</a>
+        <a href="#" class="social-btn" aria-label="Twitter">✕</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Programmes</div>
+      <ul class="footer-links">
+        <li><a href="Musculation.html">Musculation</a></li>
+        <li><a href="Triathlon.html">Triathlon</a></li>
+        <li><a href="Running.html">Running</a></li>
+        <li><a href="Rester en forme.html">Rester en forme</a></li>
+        <li><a href="Anatomie.html">Anatomie</a></li>
+        <li><a href="Mobilite.html">Mobilité</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Nutrition</div>
+      <ul class="footer-links">
+        <li><a href="recettes.html">Recettes</a></li>
+        <li><a href="plans-alimentaires.html">Plans alimentaires</a></li>
+        <li><a href="conseils-nutrition.html">Conseils Nutrition</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Infos</div>
+      <ul class="footer-links">
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <ul><li><a href="#">CGU</a></li><li><a href="#">Cookies</a></li><li><a href="#">Accessibilité</a></li></ul>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="m-close" aria-label="Fermer">✕</button>
+    <div class="modal-img"><img id="m-img" src="" alt=""></div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+const navbar=document.getElementById('navbar');
+addEventListener('scroll',()=>navbar.classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const U=id=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`;
+const OBJ={masse:'Prise de masse',endu:'Endurance',poids:'Perte de poids'};
+const TYPE={pdj:'Petit-déjeuner',dej:'Déjeuner',din:'Dîner',snack:'Snack'};
+/* k = kcal, p = protéines, g = glucides, l = lipides (par portion) */
+const recettes=[
+{t:'Porridge protéiné banane',o:'masse',r:'pdj',min:10,img:'1493770348161-369560ae357d',k:520,p:32,g:68,l:12,
+ ing:['80 g de flocons d\'avoine','250 ml de lait','1 banane','30 g de whey vanille','1 c. à soupe de beurre de cacahuète'],
+ st:['Fais chauffer le lait avec l\'avoine 4 à 5 minutes en remuant.','Hors du feu, ajoute la whey et mélange vite pour éviter les grumeaux.','Verse dans un bol, ajoute la banane en rondelles et le beurre de cacahuète.'],
+ tip:'Prépare-le la veille en « overnight oats » : tu gagnes 5 minutes le matin.'},
+{t:'Omelette épinards & feta',o:'poids',r:'pdj',min:10,img:'1482049016688-2d3e1b311543',k:340,p:27,g:5,l:24,
+ ing:['3 œufs','50 g d\'épinards frais','40 g de feta','1 c. à café d\'huile d\'olive','Poivre'],
+ st:['Fais tomber les épinards 1 minute à la poêle avec l\'huile.','Bats les œufs, verse-les sur les épinards et laisse prendre à feu doux.','Ajoute la feta émiettée, replie l\'omelette et sers aussitôt.'],
+ tip:'La feta est déjà salée : inutile de saler l\'omelette.'},
+{t:'Bowl poulet, riz & brocoli',o:'masse',r:'dej',min:25,img:'1512621776951-a57141f2eefd',k:650,p:48,g:72,l:16,
+ ing:['150 g de blanc de poulet','80 g de riz (poids sec)','150 g de brocoli','1 c. à soupe de sauce soja','1 c. à café d\'huile d\'olive','Ail, paprika'],
+ st:['Cuis le riz selon les indications du paquet.','Coupe le poulet en dés et fais-le dorer 6 à 8 minutes avec l\'ail et le paprika.','Cuis le brocoli 5 minutes à la vapeur.','Assemble dans un bol et arrose de sauce soja.'],
+ tip:'Cuisine le double : ce bol se conserve 3 jours au frigo.'},
+{t:'Salade quinoa, thon & avocat',o:'poids',r:'dej',min:15,img:'1546069901-ba9599a7e63c',k:430,p:34,g:30,l:18,
+ ing:['60 g de quinoa (poids sec)','1 boîte de thon au naturel','½ avocat','Tomates cerises, concombre','Jus de citron, huile d\'olive'],
+ st:['Cuis le quinoa 12 minutes, égoutte et laisse tiédir.','Coupe les légumes et l\'avocat en dés.','Mélange avec le thon émietté, assaisonne de citron et d\'un filet d\'huile.'],
+ tip:'Rince bien le quinoa avant cuisson pour enlever son amertume.'},
+{t:'Pâtes complètes saumon-épinards',o:'endu',r:'din',min:20,img:'1467003909585-2f8a72700288',k:610,p:38,g:70,l:18,
+ ing:['90 g de pâtes complètes (poids sec)','1 pavé de saumon (120 g)','100 g d\'épinards','2 c. à soupe de fromage frais','Citron, aneth'],
+ st:['Cuis les pâtes al dente.','Fais cuire le saumon 4 minutes par face puis émiette-le.','Ajoute les épinards et le fromage frais dans la poêle jusqu\'à ce qu\'ils fondent.','Mélange avec les pâtes et ajoute un peu de citron.'],
+ tip:'Idéal la veille d\'une longue sortie : les glucides complexes rechargent les réserves.'},
+{t:'Curry pois chiches & patate douce',o:'endu',r:'din',min:35,img:'1540189549336-e6e99c3679fe',k:540,p:20,g:82,l:14,
+ ing:['200 g de patate douce','120 g de pois chiches cuits','150 ml de lait de coco léger','1 oignon','1 c. à soupe de pâte de curry','Coriandre'],
+ st:['Fais revenir l\'oignon, ajoute la pâte de curry 1 minute.','Ajoute la patate douce en cubes, le lait de coco et un peu d\'eau.','Laisse mijoter 15 minutes puis ajoute les pois chiches 5 minutes.','Termine avec la coriandre fraîche.'],
+ tip:'Sers-le avec 60 g de riz basmati pour un repas encore plus riche en énergie.'},
+{t:'Cabillaud & légumes rôtis',o:'poids',r:'din',min:25,img:'1504674900247-0877df9cc836',k:320,p:38,g:18,l:10,
+ ing:['150 g de dos de cabillaud','1 courgette','1 poivron','1 c. à soupe d\'huile d\'olive','Citron, thym, sel, poivre'],
+ st:['Préchauffe le four à 200 °C.','Coupe les légumes, mélange-les avec l\'huile et enfourne 10 minutes.','Ajoute le cabillaud avec le citron et le thym, puis cuis 12 minutes de plus.'],
+ tip:'Le poisson est cuit quand la chair s\'effeuille facilement à la fourchette.'},
+{t:'Energy balls dattes-amandes',o:'endu',r:'snack',min:15,img:'1490645935967-10de6ba17061',k:180,p:5,g:26,l:7,
+ ing:['8 dattes Medjool dénoyautées','40 g d\'amandes','30 g de flocons d\'avoine','1 c. à soupe de cacao','(2 boules par portion)'],
+ st:['Mixe les amandes puis ajoute les dattes, l\'avoine et le cacao.','Mixe jusqu\'à obtenir une pâte qui se tient.','Forme des boules et garde-les au frais 30 minutes.'],
+ tip:'Parfait à emporter pendant une sortie longue ou juste avant une séance.'},
+{t:'Skyr, fruits rouges & granola',o:'poids',r:'snack',min:5,img:'1493770348161-369560ae357d',k:220,p:22,g:24,l:4,
+ ing:['150 g de skyr nature','80 g de fruits rouges','20 g de granola','1 c. à café de miel'],
+ st:['Verse le skyr dans un bol.','Ajoute les fruits rouges et le granola juste avant de servir.','Termine par un filet de miel.'],
+ tip:'Choisis un granola peu sucré pour garder des calories raisonnables.'},
+{t:'Shake prise de masse',o:'masse',r:'snack',min:5,img:'1512621776951-a57141f2eefd',k:480,p:35,g:55,l:14,
+ ing:['300 ml de lait','1 banane','40 g de flocons d\'avoine','30 g de whey','1 c. à soupe de purée d\'amandes'],
+ st:['Place tous les ingrédients dans un blender.','Mixe 1 minute jusqu\'à une texture lisse.','Bois-le dans l\'heure qui suit la séance ou entre deux repas.'],
+ tip:'Ajoute des glaçons pour une texture plus épaisse et plus fraîche.'},
+/* ---------- PETITS-DÉJEUNERS ---------- */
+{t:'Pancakes avoine protéinés',o:'masse',r:'pdj',min:15,img:'1484723091739-30a097e8f929',k:540,p:34,g:62,l:15,
+ ing:['70 g de flocons d\'avoine mixés','1 banane','2 œufs','30 g de whey','1 c. à café de levure','Un peu de miel'],
+ st:['Mixe tous les ingrédients jusqu\'à obtenir une pâte lisse.','Cuis des petits pancakes 2 minutes par face dans une poêle antiadhésive.','Sers avec des fruits et un filet de miel.'],
+ tip:'Garde la pâte 5 minutes au repos pour des pancakes plus moelleux.'},
+{t:'Toast avocat & œuf poché',o:'endu',r:'pdj',min:12,img:'1519708227418-c8fd9a32b7a2',k:430,p:19,g:38,l:22,
+ ing:['2 tranches de pain complet','½ avocat','2 œufs','Citron, piment, sel, poivre'],
+ st:['Grille le pain.','Écrase l\'avocat avec le citron et assaisonne.','Pose les œufs pochés (3 minutes dans l\'eau frémissante) sur les tartines.'],
+ tip:'Un filet de vinaigre dans l\'eau aide le blanc à rester bien compact.'},
+{t:'Chia pudding coco & mangue',o:'poids',r:'pdj',min:5,img:'1495521821757-a1efb6729352',k:290,p:11,g:30,l:14,
+ ing:['30 g de graines de chia','200 ml de lait de coco léger','½ mangue','1 c. à café de sirop d\'érable'],
+ st:['Mélange le chia, le lait de coco et le sirop.','Laisse gonfler au frais au moins 4 heures, idéalement une nuit.','Ajoute la mangue en dés au moment de servir.'],
+ tip:'Remue après 15 minutes pour éviter les grumeaux de chia.'},
+{t:'Œufs brouillés saumon fumé',o:'masse',r:'pdj',min:10,img:'1525351484163-7529414344d8',k:510,p:36,g:34,l:26,
+ ing:['3 œufs','60 g de saumon fumé','2 tranches de pain complet','1 c. à café de beurre','Ciboulette'],
+ st:['Fais cuire les œufs doucement dans le beurre en remuant.','Toaste le pain.','Dépose les œufs et le saumon sur les tartines, parsème de ciboulette.'],
+ tip:'Retire les œufs du feu quand ils sont encore un peu crémeux : ils finissent de cuire seuls.'},
+{t:'Smoothie bowl fruits rouges',o:'endu',r:'pdj',min:8,img:'1490645935967-10de6ba17061',k:400,p:18,g:62,l:9,
+ ing:['150 g de fruits rouges surgelés','1 banane','150 g de yaourt grec','20 g de granola','1 c. à café de graines de lin'],
+ st:['Mixe les fruits, la banane et le yaourt en une crème épaisse.','Verse dans un bol.','Ajoute le granola et les graines.'],
+ tip:'Utilise des fruits surgelés pour une texture glacée sans ajouter de glaçons.'},
+/* ---------- DÉJEUNERS ---------- */
+{t:'Wrap dinde & crudités',o:'poids',r:'dej',min:10,img:'1432139555190-58524dae6a55',k:380,p:32,g:36,l:11,
+ ing:['1 wrap complet','100 g de blanc de dinde','Salade, tomate, concombre','2 c. à soupe de fromage blanc','Moutarde, herbes'],
+ st:['Mélange le fromage blanc avec la moutarde et les herbes.','Étale sur le wrap, ajoute la dinde et les crudités.','Roule serré et coupe en deux.'],
+ tip:'Enveloppe-le dans du papier cuisson : il se transporte facilement.'},
+{t:'Riz sauté poulet & œuf',o:'masse',r:'dej',min:20,img:'1512058564366-18510be2db19',k:680,p:46,g:80,l:17,
+ ing:['100 g de riz cuit refroidi','150 g de poulet en dés','1 œuf','Petits pois, carottes','2 c. à soupe de sauce soja'],
+ st:['Fais dorer le poulet à feu vif 5 minutes.','Ajoute les légumes puis le riz et fais sauter 3 minutes.','Pousse sur le côté, brouille l\'œuf dans la poêle puis mélange avec la sauce soja.'],
+ tip:'Du riz de la veille donne un meilleur résultat : les grains ne collent pas.'},
+{t:'Salade lentilles & feta',o:'endu',r:'dej',min:15,img:'1546069901-ba9599a7e63c',k:520,p:28,g:62,l:16,
+ ing:['150 g de lentilles cuites','40 g de feta','Tomates cerises, oignon rouge','Persil','Huile d\'olive, vinaigre'],
+ st:['Rince et égoutte les lentilles.','Coupe les légumes et émiette la feta.','Mélange le tout et assaisonne avec l\'huile et le vinaigre.'],
+ tip:'Les lentilles apportent fer, fibres et glucides lents : parfaites avant un entraînement.'},
+{t:'Steak haché & patate douce',o:'masse',r:'dej',min:30,img:'1555939594-58d7cb561ad1',k:640,p:42,g:60,l:24,
+ ing:['150 g de steak haché 5 % MG','250 g de patate douce','Haricots verts','1 c. à café d\'huile d\'olive','Paprika'],
+ st:['Coupe la patate douce en frites et enfourne 25 minutes à 200 °C avec le paprika.','Cuis les haricots verts 8 minutes.','Fais saisir le steak 3 à 4 minutes par face.'],
+ tip:'Choisis un steak à 5 % de matière grasse pour limiter les lipides.'},
+{t:'Soupe lentilles corail & carotte',o:'poids',r:'dej',min:25,img:'1547592180-85f173990554',k:310,p:17,g:48,l:5,
+ ing:['70 g de lentilles corail','2 carottes','1 oignon','500 ml de bouillon de légumes','Cumin, coriandre'],
+ st:['Fais revenir l\'oignon, ajoute les carottes et le cumin.','Verse les lentilles et le bouillon, cuis 15 minutes.','Mixe pour une texture veloutée.'],
+ tip:'Elle est très rassasiante : parfaite en déficit calorique.'},
+{t:'Buddha bowl pois chiches & légumes',o:'endu',r:'dej',min:25,img:'1540189549336-e6e99c3679fe',k:560,p:22,g:78,l:17,
+ ing:['100 g de pois chiches cuits','80 g de quinoa cuit','½ patate douce rôtie','Chou rouge, carotte','1 c. à soupe de tahini'],
+ st:['Rôtis la patate douce 20 minutes à 200 °C.','Assemble le quinoa, les pois chiches et les légumes dans un bol.','Nappe de tahini dilué avec un peu de citron et d\'eau.'],
+ tip:'Prépare les éléments en avance et assemble le bol au dernier moment.'},
+/* ---------- DÎNERS ---------- */
+{t:'Bœuf sauté & brocoli',o:'masse',r:'din',min:20,img:'1555939594-58d7cb561ad1',k:620,p:45,g:66,l:18,
+ ing:['150 g de bœuf maigre en lamelles','150 g de brocoli','80 g de riz cru','Gingembre, ail','2 c. à soupe de sauce soja'],
+ st:['Cuis le riz.','Saisis le bœuf à feu vif 2 minutes avec l\'ail et le gingembre.','Ajoute le brocoli et la sauce soja, fais sauter 4 minutes.'],
+ tip:'Ne surcharge pas la poêle : la viande doit dorer, pas bouillir.'},
+{t:'Pâtes bolognaise de dinde',o:'endu',r:'din',min:30,img:'1473093295043-cdd812d0e601',k:640,p:42,g:78,l:15,
+ ing:['90 g de pâtes complètes','120 g de dinde hachée','200 g de tomates concassées','1 oignon, 1 carotte','Basilic, origan'],
+ st:['Fais revenir l\'oignon et la carotte râpée, ajoute la dinde.','Verse les tomates et laisse mijoter 15 minutes.','Cuis les pâtes et mélange avec la sauce.'],
+ tip:'Une cuillère de concentré de tomate renforce le goût sans graisse.'},
+{t:'Courgettes farcies à la dinde',o:'poids',r:'din',min:35,img:'1432139555190-58524dae6a55',k:350,p:35,g:18,l:15,
+ ing:['2 courgettes','150 g de dinde hachée','1 oignon','30 g de parmesan','Tomates concassées, herbes'],
+ st:['Creuse les courgettes coupées en deux et garde la chair.','Fais revenir la chair avec l\'oignon et la dinde, ajoute les tomates.','Farcis, parsème de parmesan et enfourne 20 minutes à 190 °C.'],
+ tip:'Précuis les courgettes 5 minutes au micro-ondes pour gagner du temps au four.'},
+{t:'Tofu sauté aux légumes',o:'poids',r:'din',min:20,img:'1512058564366-18510be2db19',k:360,p:24,g:28,l:16,
+ ing:['150 g de tofu ferme','Poivron, courgette, champignons','1 c. à soupe de sauce soja','1 c. à café d\'huile de sésame','Gingembre'],
+ st:['Presse le tofu et coupe-le en cubes.','Fais-le dorer 6 minutes à la poêle.','Ajoute les légumes et la sauce soja, sauté 5 minutes.'],
+ tip:'Presser le tofu 10 minutes dans un torchon le rend plus croustillant.'},
+{t:'Risotto champignons & poulet',o:'masse',r:'din',min:35,img:'1473093295043-cdd812d0e601',k:660,p:44,g:76,l:18,
+ ing:['80 g de riz arborio','120 g de poulet en dés','150 g de champignons','500 ml de bouillon','20 g de parmesan'],
+ st:['Fais dorer le poulet et les champignons, réserve.','Nacre le riz 1 minute puis ajoute le bouillon louche par louche pendant 18 minutes.','Incorpore le poulet et le parmesan hors du feu.'],
+ tip:'Remue souvent : l\'amidon du riz crée le côté crémeux.'},
+{t:'Saumon & quinoa aux légumes verts',o:'endu',r:'din',min:25,img:'1467003909585-2f8a72700288',k:590,p:40,g:52,l:23,
+ ing:['1 pavé de saumon (130 g)','70 g de quinoa cru','Asperges ou haricots verts','Citron','Huile d\'olive'],
+ st:['Cuis le quinoa 12 minutes.','Fais cuire le saumon à la poêle 4 minutes par face.','Fais sauter les légumes 5 minutes et assemble avec le citron.'],
+ tip:'Le saumon apporte des oméga-3 qui aident à limiter l\'inflammation après l\'effort.'},
+/* ---------- SNACKS ---------- */
+{t:'Fromage blanc, noix & miel',o:'poids',r:'snack',min:3,img:'1493770348161-369560ae357d',k:210,p:20,g:15,l:8,
+ ing:['150 g de fromage blanc 0 %','15 g de noix','1 c. à café de miel','Cannelle'],
+ st:['Verse le fromage blanc dans un bol.','Ajoute les noix concassées, le miel et la cannelle.'],
+ tip:'Riche en caséine, il est idéal en collation du soir.'},
+{t:'Houmous & bâtonnets de légumes',o:'poids',r:'snack',min:10,img:'1540189549336-e6e99c3679fe',k:230,p:9,g:24,l:11,
+ ing:['100 g de pois chiches cuits','1 c. à soupe de tahini','Jus de citron, ail','Carottes, concombre, céleri'],
+ st:['Mixe les pois chiches avec le tahini, le citron, l\'ail et un peu d\'eau.','Coupe les légumes en bâtonnets.','Trempe et croque.'],
+ tip:'Ajoute un peu d\'eau de cuisson des pois chiches pour un houmous plus onctueux.'},
+{t:'Barres granola maison',o:'endu',r:'snack',min:25,img:'1490645935967-10de6ba17061',k:240,p:7,g:32,l:10,
+ ing:['100 g de flocons d\'avoine','40 g de miel','40 g de purée d\'amande','30 g de fruits secs','(1 barre par portion)'],
+ st:['Mélange tous les ingrédients.','Tasse dans un moule tapissé de papier cuisson.','Cuis 15 minutes à 170 °C puis laisse refroidir et coupe en barres.'],
+ tip:'Elles se gardent 5 jours dans une boîte hermétique.'},
+{t:'Cookie protéiné chocolat',o:'masse',r:'snack',min:20,img:'1484723091739-30a097e8f929',k:320,p:24,g:30,l:11,
+ ing:['40 g de flocons d\'avoine mixés','30 g de whey chocolat','1 œuf','10 g de pépites de chocolat','1 c. à soupe de lait'],
+ st:['Mélange tous les ingrédients en une pâte épaisse.','Forme un gros cookie sur une plaque.','Cuis 10 à 12 minutes à 180 °C.'],
+ tip:'Sors-le quand le centre est encore un peu mou : il durcira en refroidissant.'},
+{t:'Toast banane & beurre de cacahuète',o:'endu',r:'snack',min:5,img:'1519708227418-c8fd9a32b7a2',k:310,p:11,g:44,l:11,
+ ing:['2 tranches de pain complet','1 banane','1 c. à soupe de beurre de cacahuète','Cannelle'],
+ st:['Grille le pain et tartine de beurre de cacahuète.','Ajoute la banane en rondelles et saupoudre de cannelle.'],
+ tip:'Excellent 45 à 60 minutes avant une séance : énergie rapide et durable.'},
+{t:'Smoothie vert détox',o:'poids',r:'snack',min:5,img:'1495521821757-a1efb6729352',k:190,p:8,g:34,l:3,
+ ing:['1 poignée d\'épinards','½ pomme verte','½ concombre','150 g de yaourt nature','Jus de citron'],
+ st:['Mets tous les ingrédients dans un blender.','Mixe 1 minute et bois frais.'],
+ tip:'Ajoute un peu de gingembre frais pour relever le goût.'},
+{t:'Riz au lait protéiné',o:'masse',r:'snack',min:20,img:'1493770348161-369560ae357d',k:420,p:28,g:58,l:8,
+ ing:['60 g de riz rond','300 ml de lait','25 g de whey vanille','1 c. à café de sucre ou miel'],
+ st:['Fais cuire le riz dans le lait à feu doux 15 minutes en remuant.','Hors du feu, laisse tiédir 2 minutes puis incorpore la whey.','Sers tiède ou froid.'],
+ tip:'Ne mets jamais la whey sur feu vif, elle grumellerait.'}
+];
+
+/* ===== 70 RECETTES SUPPLÉMENTAIRES — macros calculées automatiquement =====
+   Base : [nom, kcal, prot, gluc, lip] pour 100 g, + [poids unité, singulier, pluriel] si compté à la pièce.
+   Dans une recette : [clé, grammes] — ou [clé, nombre] pour les ingrédients comptés à la pièce. */
+const DB={
+po:['blanc de poulet',120,23,0,2],di:['escalope de dinde',110,24,0,1.5],bo:['bœuf maigre 5 % MG',137,21,0,5],sa:['pavé de saumon',200,20,0,13],
+cb:['cabillaud',82,18,0,.7],th:['thon au naturel',110,25,0,1],cv:['crevettes',85,18,.5,1],to:['tofu ferme',120,13,2,7],te:['tempeh',190,19,9,11],
+fb:['fromage blanc 0 %',46,8,4,.2],sk:['skyr nature',63,11,4,.2],yg:['yaourt grec',100,9,4,5],la:['lait demi-écrémé',46,3.3,4.8,1.6],wh:['whey',380,80,6,6],
+av:['flocons d\'avoine',370,13,60,7],ri:['riz (poids sec)',355,7,78,.6],pa:['pâtes complètes (poids sec)',350,13,66,2.5],qu:['quinoa (poids sec)',368,14,64,6],
+ps:['patate douce',86,1.6,20,.1],pt:['pommes de terre',80,2,17,.1],le:['lentilles cuites',116,9,20,.4],pc:['pois chiches cuits',139,8,22,2.6],hr:['haricots rouges cuits',127,9,22,.5],
+br:['brocoli',34,2.8,4,.4],ep:['épinards',23,2.9,1.4,.4],cu:['courgettes',17,1.2,2.5,.3],pv:['poivron',27,1,5,.2],tm:['tomates',18,.9,3,.2],tc:['tomates concassées',24,1.2,4,.3],
+ct:['carottes',41,.9,8,.2],ch:['champignons',22,3,2,.3],hv:['haricots verts',31,1.8,5,.2],cn:['concombre',15,.7,3,.1],sl:['salade verte',15,1.4,2,.2],on:['oignon',40,1,9,.1],
+ao:['avocat',160,2,2,15],fr:['fruits rouges',45,1,9,.3],mg:['mangue',60,.8,15,.4],am:['amandes',600,20,10,52],nx:['noix',650,15,7,65],cs:['graines de chia',490,17,42,31],
+pr:['parmesan',400,36,0,28],fe:['feta',260,14,4,21],mz:['mozzarella',250,18,2,19],co:['lait de coco léger',70,.7,2,7],so:['sauce soja',60,8,5,0],ho:['houmous',250,8,14,18],cho:['chocolat noir',550,7,45,35],
+oe:['',143,12.6,.7,9.5,50,'œuf','œufs'],pn:['',250,9,43,3,35,'tranche de pain complet','tranches de pain complet'],bn:['',90,1,20,.3,120,'banane','bananes'],
+pm:['',52,.3,14,.2,150,'pomme','pommes'],da:['',280,2.5,70,.4,25,'datte','dattes'],wr:['',300,9,50,7,60,'wrap complet','wraps complets'],
+bc:['',590,25,16,50,16,'c. à soupe de beurre de cacahuète','c. à soupe de beurre de cacahuète'],mi:['',300,.3,80,0,20,'c. à soupe de miel','c. à soupe de miel'],
+hu:['',900,0,0,100,13,'c. à soupe d\'huile d\'olive','c. à soupe d\'huile d\'olive']};
+const TIPS={masse:'Parfait après une séance de musculation pour soutenir la récupération musculaire.',endu:'Un bon repas pour recharger les réserves d\'énergie avant ou après l\'effort.',poids:'Rassasiant et léger en calories : idéal pour tenir un déficit sans avoir faim.'};
+const POOL={pdj:['1493770348161-369560ae357d','1482049016688-2d3e1b311543','1495521821757-a1efb6729352','1484723091739-30a097e8f929','1525351484163-7529414344d8','1519708227418-c8fd9a32b7a2'],
+dej:['1512621776951-a57141f2eefd','1546069901-ba9599a7e63c','1512058564366-18510be2db19','1540189549336-e6e99c3679fe','1432139555190-58524dae6a55','1547592180-85f173990554'],
+din:['1467003909585-2f8a72700288','1504674900247-0877df9cc836','1473093295043-cdd812d0e601','1555939594-58d7cb561ad1','1540189549336-e6e99c3679fe'],
+snack:['1490645935967-10de6ba17061','1493770348161-369560ae357d','1495521821757-a1efb6729352','1519708227418-c8fd9a32b7a2']};
+const RAW=[
+/* Petits-déjeuners */
+['Bowl skyr, avoine & banane','masse','pdj',5,[['sk',200],['av',50],['bn',1],['am',15],['mi',1]],'Verse le skyr dans un bol.|Ajoute l\'avoine, la banane en rondelles et les amandes.|Termine par le miel.'],
+['Omelette poulet & poivron','masse','pdj',15,[['oe',4],['po',80],['pv',80],['pn',2],['hu',1]],'Fais dorer le poulet en dés et le poivron dans l\'huile.|Verse les œufs battus et laisse cuire à feu doux.|Sers avec le pain grillé.'],
+['Tartines fromage blanc & fruits rouges','poids','pdj',5,[['pn',2],['fb',150],['fr',80]],'Grille le pain.|Tartine de fromage blanc.|Dépose les fruits rouges par-dessus.'],
+['Granola maison & yaourt grec','endu','pdj',5,[['yg',200],['av',50],['fr',100],['mi',1],['am',15]],'Toaste l\'avoine et les amandes 3 minutes à sec.|Verse le yaourt dans un bol.|Ajoute le granola, les fruits et le miel.'],
+['Crêpes protéinées à la banane','masse','pdj',15,[['av',60],['bn',1],['oe',2],['wh',30],['la',100]],'Mixe tous les ingrédients.|Cuis de fines crêpes 1 à 2 minutes par face.|Garnis de fruits.'],
+['Muffins œuf & épinards','poids','pdj',25,[['oe',3],['ep',60],['fe',30],['ch',60]],'Fais revenir les épinards et les champignons.|Mélange avec les œufs battus et la feta.|Verse en moules et cuis 15 minutes à 180 °C.'],
+['Overnight oats pomme-cannelle','endu','pdj',5,[['av',70],['la',200],['pm',1],['cs',15],['mi',1]],'Mélange l\'avoine, le lait, le chia et la cannelle.|Laisse reposer une nuit au frigo.|Ajoute la pomme râpée et le miel.'],
+['Pain perdu protéiné','masse','pdj',15,[['pn',3],['oe',2],['la',100],['wh',20],['bn',1]],'Mélange les œufs, le lait et la whey.|Trempe le pain puis fais-le dorer à la poêle.|Sers avec la banane.'],
+['Shakshuka légère','poids','pdj',20,[['oe',3],['tc',200],['pv',80],['on',50],['hu',1]],'Fais revenir l\'oignon et le poivron dans l\'huile.|Ajoute les tomates et laisse mijoter 8 minutes.|Casse les œufs dessus et cuis 5 minutes à couvert.'],
+['Bowl œufs, patate douce & épinards','endu','pdj',25,[['oe',3],['ps',200],['ep',60],['hu',1]],'Rôtis la patate douce en cubes 20 minutes à 200 °C.|Fais sauter les épinards.|Ajoute les œufs au plat.'],
+['Yaourt grec, mangue & chia','poids','pdj',5,[['yg',150],['mg',100],['cs',15]],'Mélange le yaourt et le chia.|Laisse gonfler 10 minutes.|Ajoute la mangue en dés.'],
+['Porridge chocolat-cacahuète','masse','pdj',10,[['av',80],['la',250],['wh',30],['bc',1],['cho',10]],'Cuis l\'avoine dans le lait 5 minutes.|Incorpore la whey hors du feu.|Ajoute le beurre de cacahuète et le chocolat râpé.'],
+['Tartine houmous & œuf dur','endu','pdj',12,[['pn',2],['ho',50],['oe',2],['tm',80]],'Cuis les œufs 9 minutes dans l\'eau bouillante.|Tartine le pain grillé de houmous.|Ajoute les tomates et les œufs en tranches.'],
+['Smoothie banane-avoine','endu','pdj',5,[['bn',1],['av',40],['la',250],['mi',1]],'Place tout dans un blender.|Mixe 1 minute.|Bois aussitôt.'],
+['Fromage blanc, pomme & noix','poids','pdj',5,[['fb',200],['pm',1],['nx',15]],'Coupe la pomme en dés.|Mélange avec le fromage blanc.|Parsème de noix concassées.'],
+['Wrap œuf, dinde & avocat','masse','pdj',10,[['wr',1],['oe',2],['di',60],['ao',50]],'Brouille les œufs.|Garnis le wrap de dinde, d\'œufs et d\'avocat écrasé.|Roule serré.'],
+['Pancakes banane-œuf','poids','pdj',10,[['bn',1],['oe',2],['av',30]],'Écrase la banane et mélange avec les œufs et l\'avoine.|Cuis de petits pancakes 2 minutes par face.|Sers nature ou avec des fruits.'],
+/* Déjeuners */
+['Poulet teriyaki & riz','masse','dej',25,[['po',150],['ri',90],['br',120],['so',15],['mi',1]],'Cuis le riz.|Fais dorer le poulet, ajoute le brocoli puis la sauce soja et le miel.|Laisse caraméliser 2 minutes et sers sur le riz.'],
+['Pâtes au thon & tomates','endu','dej',20,[['pa',90],['th',100],['tm',150],['hu',1],['on',40]],'Cuis les pâtes.|Fais revenir l\'oignon et les tomates dans l\'huile.|Ajoute le thon émietté puis mélange avec les pâtes.'],
+['Chili sin carne','endu','dej',30,[['hr',200],['tc',200],['on',60],['pv',80],['ri',60]],'Fais revenir l\'oignon et le poivron.|Ajoute les haricots, les tomates et les épices, mijote 15 minutes.|Sers avec le riz.'],
+['Salade poulet, avocat & œuf','poids','dej',15,[['po',120],['ao',50],['oe',1],['sl',100],['tm',100]],'Cuis le poulet à la poêle et coupe-le en lamelles.|Cuis l\'œuf dur.|Assemble la salade avec l\'avocat et un filet de citron.'],
+['Poke bowl saumon','endu','dej',20,[['sa',120],['ri',80],['ao',50],['cn',80],['so',15]],'Cuis le riz et laisse-le tiédir.|Coupe le saumon cru ou cuit en cubes.|Dispose dans un bol avec l\'avocat, le concombre et la sauce soja.'],
+['Burger de dinde maison','masse','dej',20,[['di',150],['pn',2],['ao',40],['sl',40],['tm',60]],'Façonne un steak de dinde et cuis-le 4 minutes par face.|Toaste le pain.|Monte le burger avec l\'avocat, la salade et la tomate.'],
+['Gratin de courgettes & dinde','poids','dej',35,[['cu',250],['di',120],['mz',40],['tc',100]],'Fais dorer la dinde avec les tomates.|Alterne dans un plat avec les courgettes en rondelles.|Ajoute la mozzarella et enfourne 25 minutes à 190 °C.'],
+['Tortilla dinde & haricots','masse','dej',20,[['wr',2],['di',120],['hr',80],['pv',60],['mz',30]],'Fais sauter la dinde avec le poivron.|Garnis les wraps avec les haricots et la mozzarella.|Fais dorer à la poêle 2 minutes par face.'],
+['Salade de lentilles & thon','poids','dej',10,[['le',150],['th',80],['cn',80],['on',30],['hu',1]],'Égoutte les lentilles.|Coupe les légumes en dés.|Mélange avec le thon et assaisonne.'],
+['Pâtes pesto poulet','masse','dej',20,[['pa',100],['po',150],['tm',100],['pr',20],['hu',1]],'Cuis les pâtes et fais dorer le poulet.|Ajoute les tomates et le parmesan.|Mélange avec un filet d\'huile.'],
+['Bowl crevettes & quinoa','endu','dej',20,[['cv',150],['qu',70],['ao',50],['cn',80]],'Cuis le quinoa.|Fais sauter les crevettes 3 minutes.|Assemble avec l\'avocat et le concombre.'],
+['Saumon & pommes de terre','masse','dej',30,[['pt',300],['sa',130],['hv',100],['hu',1]],'Cuis les pommes de terre à la vapeur 20 minutes.|Fais cuire le saumon à la poêle 4 minutes par face.|Sers avec les haricots verts.'],
+['Salade grecque au poulet','poids','dej',15,[['po',120],['fe',40],['cn',100],['tm',100],['hu',1],['on',30]],'Cuis et coupe le poulet.|Coupe les légumes en gros dés.|Ajoute la feta et assaisonne.'],
+['Soupe de légumes & poulet','poids','dej',30,[['po',100],['ct',100],['cu',100],['pt',100],['on',40]],'Fais revenir l\'oignon.|Ajoute les légumes, le poulet et de l\'eau, cuis 20 minutes.|Mixe en partie selon la texture voulue.'],
+['Taboulé de quinoa & pois chiches','endu','dej',20,[['qu',70],['cn',100],['tm',100],['pc',100],['hu',1]],'Cuis le quinoa et laisse refroidir.|Coupe les légumes en petits dés.|Mélange avec les pois chiches, l\'huile et le citron.'],
+['Omelette roulée au thon','poids','dej',10,[['oe',3],['th',60],['ep',50],['hu',1]],'Fais tomber les épinards.|Verse les œufs battus et laisse prendre.|Ajoute le thon, roule et sers.'],
+['Poêlée tempeh & riz','endu','dej',20,[['te',120],['ri',80],['br',100],['so',15],['hu',1]],'Cuis le riz.|Fais dorer le tempeh en dés dans l\'huile.|Ajoute le brocoli et la sauce soja.'],
+['Wrap houmous & poulet','endu','dej',10,[['wr',1],['ho',50],['po',100],['sl',40],['tm',60]],'Tartine le wrap de houmous.|Ajoute le poulet, la salade et la tomate.|Roule et coupe en deux.'],
+/* Dîners */
+['Poulet rôti & pommes de terre','masse','din',35,[['po',180],['pt',250],['hv',100],['hu',1]],'Coupe les pommes de terre et enfourne 25 minutes à 200 °C.|Ajoute le poulet assaisonné pour les 20 dernières minutes.|Cuis les haricots verts à la vapeur.'],
+['Crevettes à l\'ail & pâtes','endu','din',20,[['cv',150],['pa',80],['cu',100],['hu',1]],'Cuis les pâtes.|Fais sauter les crevettes et les courgettes avec l\'ail.|Mélange et ajoute du citron.'],
+['Dinde crémeuse aux champignons & riz','masse','din',25,[['di',160],['ri',80],['ch',100],['yg',50]],'Cuis le riz.|Fais dorer la dinde et les champignons.|Ajoute le yaourt hors du feu et sers sur le riz.'],
+['Chili con carne léger','masse','din',35,[['bo',150],['hr',120],['tc',200],['on',60],['pv',60],['ri',50]],'Fais dorer le bœuf avec l\'oignon.|Ajoute les haricots, les tomates et le poivron, mijote 20 minutes.|Sers avec le riz.'],
+['Saumon teriyaki & brocoli','endu','din',20,[['sa',130],['br',150],['ri',70],['so',15],['mi',1]],'Cuis le riz et le brocoli.|Fais dorer le saumon puis nappe de sauce soja et de miel.|Sers ensemble.'],
+['Cabillaud en papillote','poids','din',25,[['cb',150],['cu',100],['ct',80],['tm',80],['hu',1]],'Place le poisson et les légumes sur du papier cuisson.|Arrose d\'huile et de citron, ferme la papillote.|Cuis 20 minutes à 190 °C.'],
+['Poêlée de crevettes & légumes','poids','din',15,[['cv',150],['pv',100],['cu',100],['br',80],['hu',1]],'Fais sauter les légumes 6 minutes.|Ajoute les crevettes pour 3 minutes.|Assaisonne de citron et d\'épices.'],
+['Lasagnes de courgette','poids','din',35,[['cu',300],['bo',100],['tc',150],['mz',40]],'Coupe les courgettes en lanières fines.|Alterne avec la viande cuite à la tomate dans un plat.|Ajoute la mozzarella et cuis 20 minutes à 190 °C.'],
+['Poulet citron & haricots verts','poids','din',25,[['po',150],['hv',150],['pt',100],['hu',1]],'Fais dorer le poulet avec le jus de citron.|Cuis les haricots et les pommes de terre à la vapeur.|Sers avec le jus de cuisson.'],
+['Dal de lentilles & lait de coco','endu','din',30,[['le',200],['co',100],['on',60],['tc',100],['ri',60]],'Fais revenir l\'oignon et les épices.|Ajoute les lentilles, les tomates et le lait de coco, mijote 15 minutes.|Sers avec le riz.'],
+['Steak & purée de patate douce','masse','din',30,[['bo',170],['ps',250],['ep',80],['hu',1]],'Cuis la patate douce 15 minutes et écrase-la.|Saisis le steak 3 minutes par face.|Fais tomber les épinards dans l\'huile.'],
+['Brochettes de dinde & légumes','poids','din',25,[['di',160],['pv',100],['cu',100],['on',60],['hu',1]],'Enfile la dinde et les légumes sur des piques.|Badigeonne d\'huile et d\'épices.|Cuis 12 minutes en les retournant.'],
+['Pâtes poulet & champignons','masse','din',25,[['pa',90],['po',130],['ch',150],['yg',60],['pr',15]],'Cuis les pâtes.|Fais dorer le poulet et les champignons.|Ajoute le yaourt et le parmesan, puis mélange.'],
+['Curry de poulet & coco','masse','din',30,[['po',150],['co',100],['ri',80],['pv',80],['on',40]],'Fais revenir l\'oignon avec le curry.|Ajoute le poulet, le poivron et le lait de coco, mijote 15 minutes.|Sers avec le riz.'],
+['Gratin patate douce & thon','endu','din',35,[['ps',250],['th',100],['mz',40],['ep',60]],'Cuis les patates douces en rondelles 10 minutes.|Alterne avec le thon et les épinards dans un plat.|Ajoute la mozzarella et gratine 15 minutes.'],
+['Tofu teriyaki & riz','endu','din',25,[['to',150],['ri',80],['br',120],['so',15],['mi',1]],'Fais dorer le tofu en cubes.|Ajoute le brocoli, la sauce soja et le miel.|Sers sur le riz.'],
+['Haricots rouges, riz & poivron','endu','din',25,[['hr',150],['ri',70],['pv',80],['tc',100],['on',40]],'Cuis le riz.|Fais mijoter l\'oignon, le poivron, les tomates et les haricots.|Sers ensemble.'],
+['Poisson blanc & ratatouille','poids','din',30,[['cb',150],['cu',100],['pv',80],['tm',100],['on',40],['hu',1]],'Fais revenir les légumes 15 minutes dans l\'huile.|Cuis le poisson à la vapeur ou au four.|Sers sur la ratatouille.'],
+['Omelette complète du soir','poids','din',15,[['oe',4],['ch',100],['ep',50],['hu',1]],'Fais sauter les champignons et les épinards.|Verse les œufs battus.|Plie et sers chaud.'],
+['Pizza wrap poulet-mozzarella','masse','din',15,[['wr',2],['po',120],['tc',80],['mz',50]],'Tartine les wraps de tomate.|Ajoute le poulet et la mozzarella.|Enfourne 8 minutes à 200 °C.'],
+/* Snacks */
+['Boules avoine-chocolat','masse','snack',10,[['av',40],['wh',30],['bc',1],['cho',15]],'Mélange tous les ingrédients avec un peu d\'eau.|Forme des boules.|Garde 20 minutes au frais.'],
+['Pomme & beurre de cacahuète','endu','snack',3,[['pm',1],['bc',1]],'Coupe la pomme en quartiers.|Trempe dans le beurre de cacahuète.'],
+['Yaourt grec & fruits rouges','poids','snack',3,[['yg',150],['fr',100]],'Verse le yaourt dans un bol.|Ajoute les fruits rouges.'],
+['Œufs durs & concombre','poids','snack',12,[['oe',2],['cn',100]],'Cuis les œufs 9 minutes.|Écale-les et coupe en deux.|Sers avec le concombre en rondelles.'],
+['Tartine thon & avocat','poids','snack',5,[['pn',2],['th',60],['ao',30]],'Grille le pain.|Écrase l\'avocat dessus.|Ajoute le thon émietté.'],
+['Smoothie mangue & yaourt','endu','snack',5,[['mg',150],['yg',120],['la',100]],'Mixe tous les ingrédients.|Ajoute des glaçons si tu veux plus frais.'],
+['Mix noix & dattes','endu','snack',2,[['am',25],['da',2]],'Mélange les amandes et les dattes coupées.|Emporte dans une petite boîte.'],
+['Banane & fromage blanc','poids','snack',3,[['bn',1],['fb',150]],'Coupe la banane en rondelles.|Mélange avec le fromage blanc.'],
+['Milkshake chocolat protéiné','masse','snack',5,[['la',300],['wh',30],['bn',1],['cho',10]],'Mixe tous les ingrédients 1 minute.|Bois frais dans l\'heure après la séance.'],
+['Roulés de dinde au houmous','poids','snack',5,[['di',80],['ho',40],['sl',30]],'Étale le houmous sur la dinde.|Ajoute la salade et roule.'],
+['Overnight protéiné cacao','masse','snack',5,[['av',50],['la',200],['wh',30],['cs',10]],'Mélange tous les ingrédients dans un pot.|Laisse reposer une nuit au frigo.'],
+['Pudding de chia chocolat','poids','snack',5,[['cs',30],['la',200],['cho',10]],'Mélange le chia, le lait et le chocolat râpé.|Laisse gonfler 4 heures au frais.'],
+['Tartine miel & banane','endu','snack',5,[['pn',2],['bn',1],['mi',1]],'Grille le pain.|Ajoute les rondelles de banane et un filet de miel.'],
+['Chips de patate douce maison','endu','snack',30,[['ps',200],['hu',1]],'Coupe la patate douce en fines tranches et enrobe d\'huile.|Cuis 20 minutes à 190 °C en retournant à mi-cuisson.'],
+['Compote pomme-cannelle','poids','snack',20,[['pm',2]],'Épluche et coupe les pommes.|Cuis à feu doux avec un peu d\'eau et de la cannelle 15 minutes.|Écrase à la fourchette.']];
+const disp=(k,q)=>{const d=DB[k];if(d[5])return `${q} ${q>1?d[7]:d[6]}`;return `${q} g ${/^[aeiouyhéèœ]/i.test(d[0])?'d\'':'de '}${d[0]}`};
+const idx={pdj:0,dej:0,din:0,snack:0};
+RAW.forEach(([t,o,r,min,c,s])=>{
+ const m={k:0,p:0,g:0,l:0};
+ c.forEach(([key,q])=>{const d=DB[key],f=(d[5]?q*d[5]:q)/100;m.k+=d[1]*f;m.p+=d[2]*f;m.g+=d[3]*f;m.l+=d[4]*f});
+ recettes.push({t,o,r,min,img:POOL[r][idx[r]++%POOL[r].length],k:Math.round(m.k),p:Math.round(m.p),g:Math.round(m.g),l:Math.round(m.l),ing:c.map(([k,q])=>disp(k,q)),st:s.split('|'),tip:TIPS[o]});
+});
+
+let fo='all',ft='all';
+const mk=(id,label,key,cur)=>`<button class="chip${cur===id?' active':''}" data-${key}="${id}">${label}</button>`;
+function chips(){
+ document.getElementById('f-obj').innerHTML='<span class="f-label">Objectif</span>'+mk('all','Tous','o',fo)+Object.keys(OBJ).map(k=>mk(k,OBJ[k],'o',fo)).join('');
+ document.getElementById('f-type').innerHTML='<span class="f-label">Repas</span>'+mk('all','Tous','t',ft)+Object.keys(TYPE).map(k=>mk(k,TYPE[k],'t',ft)).join('');
+}
+function render(){
+ chips();
+ const list=recettes.map((r,i)=>({...r,i})).filter(r=>(fo==='all'||r.o===fo)&&(ft==='all'||r.r===ft));
+ document.getElementById('count').textContent=list.length+(list.length>1?' recettes':' recette');
+ document.getElementById('rec-grid').innerHTML=list.length?list.map(r=>`<button class="rec-card" data-i="${r.i}">
+  <div class="rec-img"><img src="${U(r.img)}" alt="${r.t}" loading="lazy"><span class="rec-tag">${OBJ[r.o]}</span><span class="rec-time">⏱ ${r.min} min</span></div>
+  <div class="rec-body"><div class="rec-type">${TYPE[r.r]}</div><div class="rec-title">${r.t.toUpperCase()}</div>
+  <div class="macros"><div class="macro k"><b>${r.k}</b><span>kcal</span></div><div class="macro"><b>${r.p}g</b><span>Prot.</span></div><div class="macro"><b>${r.g}g</b><span>Gluc.</span></div><div class="macro"><b>${r.l}g</b><span>Lip.</span></div></div></div></button>`).join(''):'<p class="empty">Aucune recette pour cette combinaison. Essaie un autre filtre.</p>';
+}
+document.getElementById('f-obj').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){fo=b.dataset.o;render()}});
+document.getElementById('f-type').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){ft=b.dataset.t;render()}});
+
+const modal=document.getElementById('modal');
+function openR(i){
+ const r=recettes[i];
+ document.getElementById('m-img').src=U(r.img);document.getElementById('m-img').alt=r.t;
+ document.getElementById('m-body').innerHTML=`<div class="rec-type">${TYPE[r.r]} · ${OBJ[r.o]} · ⏱ ${r.min} min</div><h3 class="m-title">${r.t.toUpperCase()}</h3>
+ <div class="macros"><div class="macro k"><b>${r.k}</b><span>kcal</span></div><div class="macro"><b>${r.p}g</b><span>Prot.</span></div><div class="macro"><b>${r.g}g</b><span>Gluc.</span></div><div class="macro"><b>${r.l}g</b><span>Lip.</span></div></div>
+ <div class="m-h">Ingrédients · 1 portion</div><ul class="m-list">${r.ing.map(x=>`<li>${x}</li>`).join('')}</ul>
+ <div class="m-h">Préparation</div><ol class="m-steps">${r.st.map(x=>`<li><span>${x}</span></li>`).join('')}</ol>
+ <div class="m-tip"><b>Astuce :</b> ${r.tip}</div>`;
+ modal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeR(){modal.classList.remove('open');document.body.style.overflow=''}
+document.getElementById('rec-grid').addEventListener('click',e=>{const c=e.target.closest('.rec-card');if(c)openR(+c.dataset.i)});
+document.getElementById('m-close').addEventListener('click',closeR);
+modal.addEventListener('click',e=>{if(e.target===modal)closeR()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeR()});
+render();
+</script>
+</body>
+</html>

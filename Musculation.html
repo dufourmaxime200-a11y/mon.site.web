@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musculation — Esprit Sportif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--rouge:#e63946;--rouge-dark:#b02532;--noir:#0a0a0a;--gris-fonce:#141414;--gris-clair:#888;--blanc:#fff;--blanc-off:#f5f5f5;--font-title:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--blanc);color:var(--noir);overflow-x:hidden}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 64px;transition:background .4s,padding .4s}
+nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);padding:16px 64px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.nav-logo{font-family:var(--font-title);font-size:28px;letter-spacing:2px;color:var(--blanc);text-decoration:none;transition:color .4s}
+nav.scrolled .nav-logo{color:var(--noir)}
+.nav-logo span{color:var(--rouge)}
+.nav-links{display:flex;align-items:center;gap:40px;list-style:none}
+.nav-links a{font-size:14px;font-weight:500;color:var(--blanc);text-decoration:none;letter-spacing:.5px;position:relative;transition:color .2s}
+nav.scrolled .nav-links a{color:var(--noir)}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1.5px;background:var(--rouge);transition:width .3s}
+.nav-links a:hover{color:var(--rouge)!important}.nav-links a:hover::after{width:100%}
+.nav-drop{position:relative}.nav-drop>a::after{display:none}
+.nav-drop-menu{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);background:var(--blanc);border:1px solid rgba(0,0,0,.07);border-radius:10px;min-width:180px;box-shadow:0 12px 40px rgba(0,0,0,.1);overflow:hidden}
+.nav-drop-menu a{display:block;padding:11px 18px;font-size:13.5px;color:var(--noir)!important}
+.nav-drop-menu a::after{display:none}
+.nav-drop-menu a:hover{background:var(--blanc-off)}
+.nav-drop:hover .nav-drop-menu{display:block}
+.nav-cta{background:var(--rouge);color:var(--blanc)!important;padding:10px 22px;border-radius:6px}
+.nav-cta:hover{background:var(--rouge-dark)}.nav-cta::after{display:none!important}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:heroZoom 1.4s ease both}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,.9) 0%,rgba(10,10,10,.55) 50%,rgba(10,10,10,.2) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 64px 100px;max-width:760px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--rouge);margin-bottom:24px;opacity:0;animation:fadeUp .7s .3s forwards}
+.hero-tag::before{content:'';width:28px;height:2px;background:var(--rouge)}
+.hero-title{font-family:var(--font-title);font-size:clamp(80px,10vw,148px);line-height:.88;letter-spacing:2px;color:var(--blanc);margin-bottom:32px;opacity:0;animation:fadeUp .9s .45s forwards}
+.accent{color:var(--rouge)}
+.stroke{-webkit-text-stroke:2px rgba(255,255,255,.5);color:transparent}
+.hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.7;max-width:430px;margin-bottom:44px;opacity:0;animation:fadeUp .8s .6s forwards}
+.hero-actions{display:flex;align-items:center;gap:20px;opacity:0;animation:fadeUp .8s .75s forwards}
+.btn-primary{background:var(--rouge);color:var(--blanc);padding:15px 32px;border-radius:6px;font-size:15px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(230,57,70,.4);transition:background .2s,transform .2s}
+.btn-primary:hover{background:var(--rouge-dark);transform:translateY(-2px)}
+.btn-ghost-white{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:rgba(255,255,255,.8);text-decoration:none;transition:gap .25s}
+.btn-ghost-white:hover{gap:14px}
+.arrow{width:36px;height:36px;border:1.5px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero-stats{display:flex;gap:40px;margin-top:64px;padding-top:40px;border-top:1px solid rgba(255,255,255,.1);opacity:0;animation:fadeUp .8s .9s forwards}
+.stat-num{font-family:var(--font-title);font-size:40px;color:var(--blanc);line-height:1}
+.stat-num span{color:var(--rouge)}
+.stat-label{font-size:12px;font-weight:500;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* TICKER */
+.ticker{background:var(--rouge);padding:14px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-family:var(--font-title);font-size:20px;letter-spacing:3px;color:var(--blanc);padding:0 48px}
+.ticker-dot{color:rgba(255,255,255,.4)}
+
+/* SECTIONS */
+section{padding:110px 64px}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--rouge);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-tag::before{content:'';width:22px;height:2px;background:var(--rouge)}
+.section-title{font-family:var(--font-title);font-size:clamp(42px,5vw,68px);line-height:.95;letter-spacing:.5px;margin-bottom:16px}
+.section-title .stroke{-webkit-text-stroke:1.5px var(--noir)}
+.section-desc{font-size:16px;font-weight:300;color:var(--gris-clair);max-width:480px;line-height:1.7}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px}
+
+/* PROGRAMMES */
+.prog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.prog-card{border:1.5px solid rgba(0,0,0,.08);border-radius:14px;padding:36px 28px;position:relative;text-decoration:none;color:inherit;display:block;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s}
+.prog-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--rouge);transform:scaleX(0);transition:transform .3s}
+.prog-card:hover,.prog-card.selected{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1)}
+.prog-card:hover::before,.prog-card.selected::before{transform:scaleX(1)}
+.prog-card.selected,.prog-card.popular{border-color:var(--rouge)}
+.prog-days{font-family:var(--font-title);font-size:72px;line-height:1}
+.prog-days span{color:var(--rouge);font-size:30px}
+.prog-name{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gris-clair);margin-bottom:20px}
+.prog-detail{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
+.prog-detail::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--rouge);flex-shrink:0}
+.badge{position:absolute;top:20px;right:20px;background:var(--rouge);color:var(--blanc);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px}
+
+/* PLAN */
+#plan{background:var(--gris-fonce)}
+#plan .section-title{color:var(--blanc)}#plan .section-desc{color:rgba(255,255,255,.4)}
+.plan-selector{display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap}
+.plan-btn{background:transparent;border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:10px 22px;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.plan-btn:hover,.plan-btn.active{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.phase-label{font-family:var(--font-title);font-size:22px;letter-spacing:1px;color:var(--rouge);margin-bottom:24px}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.day-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:22px 18px;transition:background .3s}
+.day-card:hover{background:rgba(255,255,255,.07)}
+.day-card.rest{opacity:.45}
+.day-card.key{border-color:rgba(230,57,70,.4);background:rgba(230,57,70,.06)}
+.day-name{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
+.day-card.key .day-name{color:var(--rouge)}
+.day-type{font-family:var(--font-title);font-size:20px;color:var(--blanc);margin-bottom:10px;line-height:1.1}
+.day-card.rest .day-type{color:rgba(255,255,255,.3)}
+.day-detail{font-size:12px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.7}
+.bar{margin-top:14px;height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--rouge)}
+
+/* MUSCLES */
+#muscles{background:var(--blanc-off)}
+.lvl-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.lvl-btn{background:var(--blanc);border:1.5px solid rgba(0,0,0,.1);color:var(--noir);padding:12px 26px;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.lvl-btn:hover,.lvl-btn.active{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.lvl-info{font-size:14px;font-weight:300;color:var(--gris-clair);margin-bottom:32px;line-height:1.6}
+.lvl-info b{color:var(--noir);font-weight:600}
+.mus-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.mus-tab{background:var(--blanc);border:1px solid rgba(0,0,0,.08);padding:10px 18px;border-radius:20px;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.mus-tab:hover{border-color:var(--rouge)}
+.mus-tab.active{background:var(--noir);border-color:var(--noir);color:var(--blanc)}
+.ex-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ex-card{background:var(--blanc);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:26px 22px;transition:transform .3s,box-shadow .3s}
+.ex-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
+.ex-num{font-family:var(--font-title);font-size:34px;color:var(--rouge);line-height:1;margin-bottom:12px}
+.ex-name{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:12px;min-height:42px}
+.ex-sets{display:inline-block;font-family:var(--font-title);font-size:20px;letter-spacing:1px;background:var(--noir);color:var(--blanc);padding:4px 12px;border-radius:6px}
+.ex-tip{margin-top:28px;padding:22px 26px;background:var(--noir);color:rgba(255,255,255,.75);border-radius:12px;font-size:14px;font-weight:300;line-height:1.7}
+.ex-tip b{color:var(--rouge);font-weight:700}
+
+/* CONSEILS */
+.conseils-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.conseil-card{background:var(--blanc-off);border-radius:14px;padding:44px;border:1px solid rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s}
+.conseil-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.08)}
+.conseil-card.dark{background:var(--noir);grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.conseil-icon{font-size:36px;margin-bottom:20px;display:block}
+.conseil-title{font-family:var(--font-title);font-size:28px;margin-bottom:14px;line-height:1}
+.dark .conseil-title{color:var(--blanc);font-size:40px}
+.conseil-text{font-size:14px;font-weight:300;color:var(--gris-clair);line-height:1.75}
+.dark .conseil-text{color:rgba(255,255,255,.5);font-size:15px}
+.rep-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.rep-item:last-child{border:none}
+.rep-label{font-size:13px;font-weight:700;color:var(--blanc);min-width:90px}
+.rep-desc{font-size:12px;font-weight:300;color:rgba(255,255,255,.4)}
+.rep-val{font-family:var(--font-title);font-size:22px;color:var(--rouge);margin-left:auto;white-space:nowrap}
+
+/* CTA + FOOTER */
+.cta-strip{background:var(--rouge);padding:80px 64px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cta-strip::before{content:'FORCE';font-family:var(--font-title);font-size:300px;color:rgba(255,255,255,.05);position:absolute;right:-20px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none}
+.cta-title{font-family:var(--font-title);font-size:clamp(40px,5vw,72px);color:var(--blanc);line-height:.95}
+.btn-white{background:var(--blanc);color:var(--rouge);padding:16px 36px;border-radius:6px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;position:relative;transition:transform .2s}
+.btn-white:hover{transform:translateY(-2px)}
+footer{background:var(--noir);color:var(--blanc);padding:80px 64px 40px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:64px;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-logo{font-family:var(--font-title);font-size:32px;letter-spacing:2px;margin-bottom:16px}
+.footer-logo span{color:var(--rouge)}
+.footer-tagline{font-size:14px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:28px;max-width:260px}
+.footer-socials{display:flex;gap:12px}
+.social-btn{width:38px;height:38px;border:1px solid rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(255,255,255,.5);text-decoration:none;transition:.2s}
+.social-btn:hover{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.footer-col-title{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px}
+.footer-links{list-style:none}.footer-links li{margin-bottom:10px}
+.footer-links a{font-size:14px;font-weight:300;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--blanc)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy,.footer-bottom a{font-size:13px;color:rgba(255,255,255,.25);text-decoration:none}
+.footer-bottom ul{display:flex;gap:24px;list-style:none}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes heroZoom{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+@keyframes ticker{to{transform:translateX(-50%)}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* MOBILE */
+@media(max-width:1024px){
+nav,nav.scrolled{padding:16px 28px}.nav-links{gap:20px}
+section{padding:80px 28px}.hero-content{padding:0 28px 80px}
+.prog-grid,.ex-grid{grid-template-columns:1fr 1fr}.week-grid{grid-template-columns:repeat(4,1fr)}
+.conseils-grid{grid-template-columns:1fr}.conseil-card.dark{grid-column:auto;grid-template-columns:1fr}
+.cta-strip{padding:60px 28px}footer{padding:60px 28px 32px}.footer-top{grid-template-columns:1fr 1fr;gap:36px}}
+@media(max-width:640px){
+.nav-links{display:none}.prog-grid,.footer-top,.ex-grid{grid-template-columns:1fr}
+.week-grid{grid-template-columns:1fr 1fr}.hero-stats{gap:20px;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <a href="#">Programmes ▾</a>
+      <div class="nav-drop-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="Cardio.html">Cardio</a>
+        <a href="Mobilite.html">Mobilité</a>
+      </div>
+    </li>
+    <li><a href="#conseils">Santé</a></li>
+    <li class="nav-drop">
+      <a href="#">Nutrition ▾</a>
+      <div class="nav-drop-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </li>
+    <li><a href="#programmes" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=85" alt="Musculation — Esprit Sportif">
+  </div>
+  <div class="hero-content">
+    <span class="hero-tag">Force & Hypertrophie</span>
+    <h1 class="hero-title"><span class="stroke">FORGE</span><br>TON<br><span class="accent">PHYSIQUE</span></h1>
+    <p class="hero-sub">Du full body débutant au split avancé, des programmes structurés pour gagner en force et en masse, séance après séance.</p>
+    <div class="hero-actions">
+      <a href="#programmes" class="btn-primary">Choisir mon programme</a>
+      <a href="#plan" class="btn-ghost-white">Voir la semaine <span class="arrow">→</span></a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">4<span> plans</span></div><div class="stat-label">Selon ton niveau</div></div>
+      <div><div class="stat-num">3<span>-6 j</span></div><div class="stat-label">Séances / semaine</div></div>
+      <div><div class="stat-num">100<span>%</span></div><div class="stat-label">Progressif</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">FULL BODY</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PUSH</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PULL</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">LEGS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FORCE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">HYPERTROPHIE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FULL BODY</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PUSH</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PULL</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">LEGS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FORCE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">HYPERTROPHIE</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<section id="programmes">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Choisir son programme</div>
+      <h2 class="section-title reveal d1">TON <span class="accent">NIVEAU</span>,<br>TON <span class="stroke">SPLIT</span></h2>
+    </div>
+    <p class="section-desc reveal d2">Chaque programme répartit les groupes musculaires différemment pour te laisser le temps de récupérer.</p>
+  </div>
+  <div class="prog-grid">
+    <a href="#plan" class="prog-card reveal" data-plan="fullbody">
+      <div class="prog-days">3<span>j</span></div><div class="prog-name">Full Body · Débutant</div>
+      <div class="prog-detail">Corps entier à chaque séance</div>
+      <div class="prog-detail">Mouvements polyarticulaires</div>
+      <div class="prog-detail">Idéal pour les 6 premiers mois</div>
+    </a>
+    <a href="#plan" class="prog-card popular reveal d1" data-plan="upperlower">
+      <span class="badge">Populaire</span>
+      <div class="prog-days">4<span>j</span></div><div class="prog-name">Haut / Bas · Intermédiaire</div>
+      <div class="prog-detail">2 séances haut, 2 séances bas</div>
+      <div class="prog-detail">Fréquence de 2× par muscle</div>
+      <div class="prog-detail">Équilibre force et volume</div>
+    </a>
+    <a href="#plan" class="prog-card reveal d2" data-plan="ppl">
+      <div class="prog-days">6<span>j</span></div><div class="prog-name">Push Pull Legs · Avancé</div>
+      <div class="prog-detail">Poussée, tirage, jambes ×2</div>
+      <div class="prog-detail">Volume élevé par muscle</div>
+      <div class="prog-detail">Récupération soignée</div>
+    </a>
+    <a href="#plan" class="prog-card reveal d3" data-plan="split5">
+      <div class="prog-days">5<span>j</span></div><div class="prog-name">Split 5 jours · Confirmé</div>
+      <div class="prog-detail">Un groupe musculaire par jour</div>
+      <div class="prog-detail">Séances ciblées et intenses</div>
+      <div class="prog-detail">Pour pratiquants réguliers</div>
+    </a>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Exemple de semaine</div>
+      <h2 class="section-title reveal d1">SEMAINE<br><span class="accent">TYPE</span></h2>
+    </div>
+    <p class="section-desc reveal d2" id="plan-desc"></p>
+  </div>
+  <div class="plan-selector reveal">
+    <button class="plan-btn" data-plan="fullbody">Full Body</button>
+    <button class="plan-btn active" data-plan="upperlower">Haut / Bas</button>
+    <button class="plan-btn" data-plan="split5">Split 5j</button>
+    <button class="plan-btn" data-plan="ppl">PPL</button>
+  </div>
+  <div class="phase-label" id="phase-label"></div>
+  <div class="week-grid" id="week-grid"></div>
+</section>
+
+<section id="muscles">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Par partie du corps</div>
+      <h2 class="section-title reveal d1">CHAQUE <span class="accent">MUSCLE</span>,<br>CHAQUE <span class="stroke">NIVEAU</span></h2>
+    </div>
+    <p class="section-desc reveal d2">Choisis ton niveau puis une partie du corps : les exercices, séries et répétitions s'adaptent.</p>
+  </div>
+  <div class="lvl-bar reveal">
+    <button class="lvl-btn active" data-lvl="d">Débutant</button>
+    <button class="lvl-btn" data-lvl="i">Intermédiaire</button>
+    <button class="lvl-btn" data-lvl="a">Avancé</button>
+  </div>
+  <p class="lvl-info" id="lvl-info"></p>
+  <div class="mus-tabs" id="mus-tabs"></div>
+  <div class="ex-grid" id="ex-grid"></div>
+  <div class="ex-tip" id="ex-tip"></div>
+</section>
+
+<section id="conseils">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Bien s'entraîner</div>
+      <h2 class="section-title reveal d1">LES <span class="accent">CLÉS</span><br>DU <span class="stroke">PROGRÈS</span></h2>
+    </div>
+    <p class="section-desc reveal d2">Les fondamentaux pour progresser durablement et éviter les blessures.</p>
+  </div>
+  <div class="conseils-grid">
+    <div class="conseil-card reveal">
+      <span class="conseil-icon">📈</span>
+      <div class="conseil-title">SURCHARGE PROGRESSIVE</div>
+      <div class="conseil-text">Pour grossir et gagner en force, augmente peu à peu la difficulté : une répétition de plus, un peu plus de poids ou un meilleur contrôle. Note tes séances pour battre ton dernier carnet.</div>
+    </div>
+    <div class="conseil-card reveal d1">
+      <span class="conseil-icon">😴</span>
+      <div class="conseil-title">RÉCUPÉRATION</div>
+      <div class="conseil-text">Le muscle se construit au repos, pas pendant la séance. Vise 7 à 9 h de sommeil, laisse 48 h entre deux séances du même muscle et mange assez de protéines.</div>
+    </div>
+    <div class="conseil-card dark reveal d2">
+      <div>
+        <span class="conseil-icon">🎯</span>
+        <div class="conseil-title">CHOISIS TON OBJECTIF</div>
+        <div class="conseil-text">Le nombre de répétitions et le temps de repos changent selon ce que tu recherches. Adapte tes séries en conséquence.</div>
+      </div>
+      <div>
+        <div class="rep-item"><span class="rep-label">Force</span><span class="rep-desc">Charges lourdes, repos longs</span><span class="rep-val">3-6 reps · 3 min</span></div>
+        <div class="rep-item"><span class="rep-label">Hypertrophie</span><span class="rep-desc">Prise de volume musculaire</span><span class="rep-val">8-12 reps · 90 s</span></div>
+        <div class="rep-item"><span class="rep-label">Endurance</span><span class="rep-desc">Charges légères, séries longues</span><span class="rep-val">15-20 reps · 45 s</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2 class="cta-title reveal">PRÊT(E) À<br>SOULEVER ?</h2>
+  <a href="#programmes" class="btn-white reveal d2">Choisir mon programme</a>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">ESPRIT<span>.</span>SPORTIF</div>
+      <p class="footer-tagline">Forge ton corps, libère ton potentiel. Des programmes conçus pour des résultats réels.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+        <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+        <a href="#" class="social-btn" aria-label="TikTok">♪</a>
+        <a href="#" class="social-btn" aria-label="Twitter">✕</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Programmes</div>
+      <ul class="footer-links">
+        <li><a href="Musculation.html">Musculation</a></li>
+        <li><a href="Triathlon.html">Triathlon</a></li>
+        <li><a href="Running.html">Running</a></li>
+        <li><a href="Rester en forme.html">Rester en forme</a></li>
+        <li><a href="Anatomie.html">Anatomie</a></li>
+        <li><a href="Mobilite.html">Mobilité</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Nutrition</div>
+      <ul class="footer-links">
+        <li><a href="recettes.html">Recettes</a></li>
+        <li><a href="plans-alimentaires.html">Plans alimentaires</a></li>
+        <li><a href="conseils-nutrition.html">Conseils Nutrition</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Infos</div>
+      <ul class="footer-links">
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <ul><li><a href="#">CGU</a></li><li><a href="#">Cookies</a></li><li><a href="#">Accessibilité</a></li></ul>
+  </div>
+</footer>
+
+<script>
+const navbar=document.getElementById('navbar');
+addEventListener('scroll',()=>navbar.classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const R=(n)=>({name:n,type:'REPOS',detail:'Repos complet ou marche légère',rest:true,i:0});
+const D=(n,type,detail,i)=>({name:n,type,detail,key:true,i});
+const plans={
+fullbody:{label:'Full Body — 3 jours / semaine',phase:'Corps entier · séances A / B / A',days:[
+ D('Lundi','FULL BODY A','Squat 4×8<br>Développé couché 4×8<br>Rowing barre 3×10<br>Gainage 3×45 s',70),R('Mardi'),
+ D('Mercredi','FULL BODY B','Soulevé de terre roumain 4×8<br>Développé militaire 3×10<br>Tractions assistées 3×8<br>Fentes 3×10',70),R('Jeudi'),
+ D('Vendredi','FULL BODY A','Presse 4×10<br>Pompes lestées 3×12<br>Tirage vertical 3×10<br>Curl + extensions 2×12',65),
+ {name:'Samedi',type:'CARDIO LÉGER',detail:'30 min marche rapide ou vélo',i:25},R('Dimanche')]},
+upperlower:{label:'Haut / Bas — 4 jours / semaine',phase:'Haut du corps ×2 · Bas du corps ×2',days:[
+ D('Lundi','HAUT · FORCE','Développé couché 4×6<br>Rowing barre 4×6<br>Développé militaire 3×8<br>Tractions 3×6-8',85),
+ D('Mardi','BAS · FORCE','Squat 4×6<br>Soulevé de terre roumain 3×8<br>Presse 3×10<br>Mollets 4×12',85),R('Mercredi'),
+ D('Jeudi','HAUT · VOLUME','Développé incliné 4×10<br>Tirage poulie 4×10<br>Élévations latérales 3×15<br>Biceps + triceps 3×12',70),
+ D('Vendredi','BAS · VOLUME','Fentes bulgares 4×10<br>Leg curl 3×12<br>Leg extension 3×15<br>Gainage 3×1 min',70),
+ {name:'Samedi',type:'MOBILITÉ',detail:'20 min étirements et mobilité',i:15},R('Dimanche')]},
+split5:{label:'Split 5 jours — un muscle par jour',phase:'Pectoraux · Dos · Jambes · Épaules · Bras',days:[
+ D('Lundi','PECTORAUX','Développé couché 4×8<br>Développé incliné haltères 4×10<br>Écartés poulie 3×12',75),
+ D('Mardi','DOS','Tractions 4×8<br>Rowing barre 4×8<br>Tirage horizontal 3×12',75),
+ D('Mercredi','JAMBES','Squat 5×6<br>Presse 4×10<br>Leg curl 3×12<br>Mollets 4×15',90),
+ D('Jeudi','ÉPAULES','Développé militaire 4×8<br>Élévations latérales 4×15<br>Oiseau 3×15',70),
+ D('Vendredi','BRAS','Curl barre 4×10<br>Barre au front 4×10<br>Marteau 3×12<br>Dips 3×12',65),R('Samedi'),R('Dimanche')]},
+ppl:{label:'Push Pull Legs — 6 jours / semaine',phase:'Poussée · Tirage · Jambes, deux fois',days:[
+ D('Lundi','PUSH','Développé couché 4×8<br>Développé militaire 3×10<br>Dips 3×10<br>Triceps poulie 3×12',80),
+ D('Mardi','PULL','Tractions 4×8<br>Rowing barre 4×8<br>Face pull 3×15<br>Curl 3×12',80),
+ D('Mercredi','LEGS','Squat 4×8<br>Soulevé de terre roumain 3×10<br>Presse 3×12<br>Mollets 4×15',90),
+ D('Jeudi','PUSH','Développé incliné 4×10<br>Élévations latérales 4×15<br>Écartés 3×12',70),
+ D('Vendredi','PULL','Tirage vertical 4×10<br>Rowing haltère 3×12<br>Curl marteau 3×12',70),
+ D('Samedi','LEGS','Fentes 4×10<br>Leg curl 4×12<br>Leg extension 3×15',75),R('Dimanche')]}
+};
+const grid=document.getElementById('week-grid'),label=document.getElementById('phase-label'),desc=document.getElementById('plan-desc');
+function select(k){
+ const p=plans[k];
+ grid.innerHTML=p.days.map(d=>`<div class="day-card${d.rest?' rest':''}${d.key?' key':''}"><div class="day-name">${d.name}</div><div class="day-type">${d.type}</div><div class="day-detail">${d.detail}</div><div class="bar"><i style="width:${d.i}%"></i></div></div>`).join('');
+ label.textContent=p.phase;desc.textContent='Programme '+p.label+'.';
+ document.querySelectorAll('.plan-btn').forEach(b=>b.classList.toggle('active',b.dataset.plan===k));
+ document.querySelectorAll('.prog-card').forEach(c=>c.classList.toggle('selected',c.dataset.plan===k));
+}
+document.querySelectorAll('.plan-btn').forEach(b=>b.addEventListener('click',()=>select(b.dataset.plan)));
+document.querySelectorAll('.prog-card').forEach(c=>c.addEventListener('click',e=>{e.preventDefault();select(c.dataset.plan);document.getElementById('plan').scrollIntoView({behavior:'smooth'})}));
+select('upperlower');
+
+/* ===== PAR MUSCLE ET PAR NIVEAU ===== */
+const lvls={
+ d:'<b>Débutant</b> · 2-3 séries · 10-15 répétitions · repos 60-90 s · priorité à la technique, charges légères, machines guidées.',
+ i:'<b>Intermédiaire</b> · 3-4 séries · 8-12 répétitions · repos 90 s · barres et haltères, charges progressives.',
+ a:'<b>Avancé</b> · 4-5 séries · 5-15 répétitions · repos 2-3 min · charges lourdes et techniques d\'intensification.'};
+const tips={
+ d:'<b>Conseil :</b> apprends d\'abord le mouvement avec une charge légère. Quand tu fais toutes les séries proprement, ajoute 1 à 2 kg.',
+ i:'<b>Conseil :</b> note tes charges à chaque séance et essaie de gagner une répétition ou un peu de poids chaque semaine.',
+ a:'<b>Conseil :</b> alterne les semaines lourdes et les semaines de décharge, et garde 1 répétition en réserve sauf sur les dernières séries.'};
+const mus={
+ pecs:{n:'🫁 Pectoraux',d:['Pompes inclinées|3×10','Développé assis machine|3×12','Pec deck|3×12','Développé haltères légers|2×12'],
+  i:['Développé couché barre|4×8','Développé incliné haltères|4×10','Dips pectoraux|3×10','Écartés poulie|3×12'],
+  a:['Développé couché lourd|5×5','Incliné haltères tempo 3-1-1|4×8','Dips lestés|4×8','Écartés poulie + drop set|3×12']},
+ dos:{n:'🧗 Dos',d:['Tirage vertical poulie|3×12','Rowing machine assis|3×12','Rowing haltère un bras|3×10','Extension lombaires|2×12'],
+  i:['Tractions|4×8','Rowing barre|4×8','Tirage horizontal|3×12','Soulevé de terre roumain|3×8'],
+  a:['Tractions lestées|5×6','Rowing Pendlay|4×6','Rowing T-bar|4×10','Soulevé de terre|4×5']},
+ epa:{n:'🏋️ Épaules',d:['Développé épaules machine|3×12','Élévations latérales légères|3×12','Oiseau machine|3×15','Face pull léger|2×15'],
+  i:['Développé militaire|4×8','Élévations latérales|4×15','Oiseau haltères|3×15','Shrugs|3×12'],
+  a:['Développé militaire strict|5×5','Arnold press|4×10','Élévations latérales drop set|4×15','Face pull|4×15']},
+ bras:{n:'💪 Bras',d:['Curl haltères|3×12','Extension triceps poulie|3×12','Curl marteau|2×12','Kickback triceps|2×12'],
+  i:['Curl barre EZ|4×10','Barre au front|4×10','Curl marteau|3×12','Dips sur banc|3×12'],
+  a:['Curl incliné|4×10','Barre au front lourde|4×8','Curl concentré en superset|3×12','Extension nuque|3×12']},
+ jambes:{n:'🦵 Jambes',d:['Goblet squat|3×12','Presse à cuisses|3×12','Leg curl|3×12','Mollets debout|3×15'],
+  i:['Squat barre|4×8','Soulevé de terre roumain|4×8','Fentes marchées|3×12','Leg extension|3×15'],
+  a:['Squat lourd|5×5','Squat bulgare|4×8','Hack squat|4×10','Leg curl nordique|3×8']},
+ abdos:{n:'🔥 Abdos & fessiers',d:['Planche|3×30 s','Crunch au sol|3×15','Pont fessier|3×15','Relevé de jambes allongé|3×10'],
+  i:['Hip thrust|4×10','Planche lestée|3×45 s','Crunch à la poulie|3×15','Relevé de jambes suspendu|3×12'],
+  a:['Hip thrust lourd|5×8','Roue abdominale|4×10','Relevé de jambes à la barre|4×12','Pallof press|3×12']}};
+let lv='d',mk='pecs';
+const tabsEl=document.getElementById('mus-tabs');
+tabsEl.innerHTML=Object.keys(mus).map(k=>`<button class="mus-tab" data-m="${k}">${mus[k].n}</button>`).join('');
+function renderMus(){
+ document.getElementById('lvl-info').innerHTML=lvls[lv];
+ document.getElementById('ex-grid').innerHTML=mus[mk][lv].map((e,i)=>{const[n,s]=e.split('|');return `<div class="ex-card"><div class="ex-num">0${i+1}</div><div class="ex-name">${n}</div><span class="ex-sets">${s}</span></div>`}).join('');
+ document.getElementById('ex-tip').innerHTML=tips[lv];
+ document.querySelectorAll('.lvl-btn').forEach(b=>b.classList.toggle('active',b.dataset.lvl===lv));
+ document.querySelectorAll('.mus-tab').forEach(b=>b.classList.toggle('active',b.dataset.m===mk));
+}
+document.querySelectorAll('.lvl-btn').forEach(b=>b.addEventListener('click',()=>{lv=b.dataset.lvl;renderMus()}));
+tabsEl.addEventListener('click',e=>{const b=e.target.closest('.mus-tab');if(b){mk=b.dataset.m;renderMus()}});
+renderMus();
+</script>
+</body>
+</html>

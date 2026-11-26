@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Running — Esprit Sportif</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --rouge: #e63946;
+      --rouge-dark: #b02532;
+      --noir: #0a0a0a;
+      --gris-fonce: #141414;
+      --gris-mid: #2a2a2a;
+      --gris-clair: #888;
+      --blanc: #ffffff;
+      --blanc-off: #f5f5f5;
+      --font-title: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--blanc);
+      color: var(--noir);
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 64px;
+      transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(14px);
+      padding: 16px 64px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      font-family: var(--font-title);
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--noir);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rouge); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--noir);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 1.5px;
+      background: var(--rouge);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--rouge); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-drop { position: relative; }
+    .nav-drop > a::after { display: none; }
+    .nav-drop-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--blanc);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 10px;
+      min-width: 180px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .nav-drop-menu a {
+      display: block;
+      padding: 11px 18px;
+      font-size: 13.5px;
+      color: var(--noir);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-drop-menu a:hover { background: var(--blanc-off); color: var(--rouge); }
+    .nav-drop:hover .nav-drop-menu { display: block; }
+    .nav-cta {
+      background: var(--rouge);
+      color: var(--blanc) !important;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--rouge-dark) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* ===== HERO RUNNING ===== */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      animation: heroZoom 1.4s ease both;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10,10,10,0.88) 0%,
+        rgba(10,10,10,0.55) 50%,
+        rgba(10,10,10,0.2) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 64px 100px;
+      max-width: 760px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--rouge);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.3s forwards;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 28px; height: 2px;
+      background: var(--rouge);
+    }
+
+    .hero-title {
+      font-family: var(--font-title);
+      font-size: clamp(80px, 10vw, 148px);
+      line-height: 0.88;
+      letter-spacing: 2px;
+      color: var(--blanc);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.45s forwards;
+    }
+    .hero-title .accent { color: var(--rouge); }
+    .hero-title .stroke {
+      -webkit-text-stroke: 2px rgba(255,255,255,0.5);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.75s forwards;
+    }
+
+    .btn-primary {
+      background: var(--rouge);
+      color: var(--blanc);
+      padding: 15px 32px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
+    }
+    .btn-primary:hover {
+      background: var(--rouge-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(230, 57, 70, 0.5);
+    }
+
+    .btn-ghost-white {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: gap 0.25s;
+    }
+    .btn-ghost-white:hover { gap: 14px; }
+    .btn-ghost-white .arrow {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-ghost-white:hover .arrow {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    /* Stats héro */
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .stat-num {
+      font-family: var(--font-title);
+      font-size: 40px;
+      letter-spacing: 1px;
+      color: var(--blanc);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--rouge); }
+    .stat-label { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; margin-top: 4px; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px; right: 64px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.1s forwards;
+    }
+    .scroll-hint span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--rouge), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ===== TICKER ===== */
+    .ticker {
+      background: var(--rouge);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-flex;
+      animation: ticker 20s linear infinite;
+    }
+    .ticker-item {
+      font-family: var(--font-title);
+      font-size: 20px;
+      letter-spacing: 3px;
+      color: var(--blanc);
+      padding: 0 48px;
+    }
+    .ticker-dot { color: rgba(255,255,255,0.4); padding: 0 8px; }
+
+    /* ===== SECTION HELPERS ===== */
+    .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rouge);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--rouge);
+    }
+    .section-title {
+      font-family: var(--font-title);
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 0.95;
+      letter-spacing: 0.5px;
+      color: var(--noir);
+      margin-bottom: 16px;
+    }
+    .section-title .accent { color: var(--rouge); }
+    .section-title .stroke {
+      -webkit-text-stroke: 1.5px var(--noir);
+      color: transparent;
+    }
+    .section-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--gris-clair);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    /* ===== PROGRAMMES RUNNING ===== */
+    #programmes {
+      padding: 120px 64px;
+      background: var(--blanc);
+    }
+
+    .prog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 72px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    /* Grille distances */
+    .dist-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .dist-card {
+      border: 1.5px solid rgba(0,0,0,0.08);
+      border-radius: 14px;
+      padding: 36px 28px;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    .dist-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--rouge);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .dist-card:hover {
+      border-color: transparent;
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+    .dist-card:hover::before { transform: scaleX(1); }
+    .dist-card.selected {
+      border-color: var(--rouge);
+      box-shadow: 0 20px 50px rgba(230,57,70,0.15);
+    }
+    .dist-card.selected::before { transform: scaleX(1); }
+
+    .dist-km {
+      font-family: var(--font-title);
+      font-size: 72px;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--noir);
+      margin-bottom: 4px;
+    }
+    .dist-km span { color: var(--rouge); font-size: 36px; }
+    .dist-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gris-clair);
+      margin-bottom: 20px;
+    }
+    .dist-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dist-detail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--noir);
+    }
+    .dist-detail-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rouge);
+      flex-shrink: 0;
+    }
+    .dist-badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--rouge);
+      color: var(--blanc);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .dist-card.popular { border-color: var(--rouge); }
+
+    /* ===== PLAN SEMAINE ===== */
+    #plan {
+      background: var(--gris-fonce);
+      padding: 120px 64px;
+    }
+
+    .plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .plan-header .section-title { color: var(--blanc); }
+    .plan-header .section-tag { color: var(--rouge); }
+    .plan-header .section-tag::before { background: var(--rouge); }
+    .plan-header .section-desc { color: rgba(255,255,255,0.4); }
+
+    /* Sélecteur programme */
+    .plan-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .plan-btn {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .plan-btn:hover, .plan-btn.active {
+      background: var(--rouge);
+      border-color: var(--rouge);
+      color: var(--blanc);
+    }
+
+    /* Onglets Semaine 1, 2, 3... */
+    .week-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 14px;
+      margin-bottom: 8px;
+      scrollbar-width: thin;
+    }
+    .week-tabs::-webkit-scrollbar { height: 5px; }
+    .week-tabs::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .week-tab {
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.45);
+      padding: 9px 16px;
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .week-tab:hover {
+      border-color: rgba(230,57,70,0.5);
+      color: var(--blanc);
+    }
+    .week-tab.active {
+      background: var(--rouge);
+      border-color: var(--rouge);
+      color: var(--blanc);
+    }
+    .week-tab.race-tab.active,
+    .week-tab.race-tab {
+      background: var(--noir);
+      border-color: var(--rouge);
+      color: var(--rouge);
+    }
+    .week-tab.race-tab.active { background: var(--rouge); color: var(--blanc); }
+
+    .week-phase-label {
+      font-family: var(--font-title);
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--rouge);
+      margin-bottom: 24px;
+    }
+
+    /* Tableau semaine */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 22px 18px;
+      transition: background 0.3s, border-color 0.3s, opacity 0.3s;
+    }
+    .day-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .day-card.rest {
+      opacity: 0.45;
+    }
+    .day-card.key-session {
+      border-color: rgba(230, 57, 70, 0.4);
+      background: rgba(230, 57, 70, 0.06);
+    }
+
+    .day-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 14px;
+    }
+    .day-card.key-session .day-name { color: var(--rouge); }
+
+    .day-type {
+      font-family: var(--font-title);
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      color: var(--blanc);
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    .day-card.rest .day-type { color: rgba(255,255,255,0.3); }
+
+    .day-detail {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    .day-intensity {
+      margin-top: 14px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+    .day-intensity-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--rouge);
+      transition: width 0.8s ease;
+    }
+
+    /* ===== CONSEILS ===== */
+    #conseils {
+      padding: 120px 64px;
+      background: var(--blanc);
+    }
+
+    .conseils-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .conseils-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Carte conseil grande */
+    .conseil-card {
+      background: var(--blanc-off);
+      border-radius: 14px;
+      padding: 44px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .conseil-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    }
+    .conseil-card.dark {
+      background: var(--noir);
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .conseil-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .conseil-title {
+      font-family: var(--font-title);
+      font-size: 28px;
+      letter-spacing: 0.5px;
+      color: var(--noir);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .conseil-card.dark .conseil-title { color: var(--blanc); font-size: 40px; }
+    .conseil-text {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--gris-clair);
+      line-height: 1.75;
+    }
+    .conseil-card.dark .conseil-text { color: rgba(255,255,255,0.5); font-size: 15px; }
+
+    /* Zone vitesse card */
+    .zones-list { margin-top: 20px; }
+    .zone-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .zone-item:last-child { border-bottom: none; }
+    .zone-color {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .zone-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--noir);
+      min-width: 70px;
+    }
+    .zone-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--gris-clair);
+    }
+    .zone-pct {
+      font-family: var(--font-title);
+      font-size: 18px;
+      color: var(--noir);
+      margin-left: auto;
+    }
+
+    /* Progression visuelle */
+    .prog-timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .prog-timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px; top: 8px; bottom: 8px;
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+    .prog-week {
+      position: relative;
+      padding: 0 0 24px 20px;
+    }
+    .prog-week::before {
+      content: '';
+      position: absolute;
+      left: -22px; top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--rouge);
+      border: 2px solid var(--gris-fonce);
+    }
+    .prog-week-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rouge);
+      margin-bottom: 4px;
+    }
+    .prog-week-title {
+      font-family: var(--font-title);
+      font-size: 18px;
+      color: var(--blanc);
+      margin-bottom: 4px;
+    }
+    .prog-week-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ===== FEATURE STRIP ===== */
+    .features {
+      background: var(--gris-fonce);
+      padding: 80px 64px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+    }
+    .feature-item {
+      padding: 40px 36px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s;
+    }
+    .feature-item:last-child { border-right: none; }
+    .feature-item:hover { background: rgba(255,255,255,0.03); }
+    .feature-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+    .feature-title {
+      font-family: var(--font-title);
+      font-size: 22px;
+      letter-spacing: 0.5px;
+      color: var(--blanc);
+      margin-bottom: 10px;
+    }
+    .feature-desc {
+      font-size: 13.5px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.65;
+    }
+
+    /* ===== CTA BANDE ===== */
+    .cta-strip {
+      background: var(--rouge);
+      padding: 80px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-strip::before {
+      content: 'RUN';
+      font-family: var(--font-title);
+      font-size: 320px;
+      color: rgba(255,255,255,0.05);
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .cta-title {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 5vw, 72px);
+      letter-spacing: 1px;
+      color: var(--blanc);
+      line-height: 0.95;
+    }
+    .btn-white {
+      background: var(--blanc);
+      color: var(--rouge);
+      padding: 16px 36px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-white:hover { background: var(--blanc-off); transform: translateY(-2px); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--noir);
+      color: var(--blanc);
+      padding: 80px 64px 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 64px;
+      padding-bottom: 64px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .footer-logo {
+      font-family: var(--font-title);
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--blanc);
+      margin-bottom: 16px;
+    }
+    .footer-logo span { color: var(--rouge); }
+    .footer-tagline {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      max-width: 260px;
+    }
+    .footer-socials { display: flex; gap: 12px; }
+    .social-btn {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .social-btn:hover { background: var(--rouge); border-color: var(--rouge); color: var(--blanc); }
+    .footer-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--blanc); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.25); }
+    .footer-bottom-links { display: flex; gap: 24px; list-style: none; }
+    .footer-bottom-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.25);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroZoom {
+      from { opacity: 0; transform: scale(1.06); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(0.6); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 1024px) {
+      nav { padding: 20px 28px; }
+      nav.scrolled { padding: 14px 28px; }
+      .nav-links { gap: 20px; }
+      .hero-content { padding: 0 28px 80px; }
+      #programmes, #conseils { padding: 80px 28px; }
+      #plan { padding: 80px 28px; }
+      .dist-grid { grid-template-columns: 1fr 1fr; }
+      .week-grid { grid-template-columns: repeat(4, 1fr); }
+      .conseils-grid { grid-template-columns: 1fr; }
+      .conseil-card.dark { grid-column: auto; grid-template-columns: 1fr; }
+      .features { grid-template-columns: 1fr 1fr; padding: 48px 28px; }
+      .cta-strip { padding: 60px 28px; }
+      footer { padding: 60px 28px 32px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .dist-grid { grid-template-columns: 1fr; }
+      .week-grid { grid-template-columns: 1fr 1fr; }
+      .features { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <a href="#">Programmes ▾</a>
+      <div class="nav-drop-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="Cardio.html">Cardio</a>
+      </div>
+    </li>
+    <li><a href="#temoignages">Santé</a></li>
+    <li class="nav-drop">
+      <a href="#">Nutrition ▾</a>
+      <div class="nav-drop-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </li>
+    <li><a href="#programmes" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg">
+    <img
+      src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=1800&q=85"
+      alt="Running — Esprit Sportif"
+    >
+  </div>
+
+  <div class="hero-content">
+    <span class="hero-tag">Cardio & Endurance</span>
+    <h1 class="hero-title">
+      <span class="stroke">DÉ</span><span class="accent">PASSE</span><br>
+      TES<br>
+      LIMITES
+    </h1>
+    <p class="hero-sub">
+      Du 5 km au marathon, nos plans structurés te guident pas à pas — progressif, scientifique, efficace.
+    </p>
+    <div class="hero-actions">
+      <a href="#programmes" class="btn-primary">Choisir mon plan</a>
+      <a href="#plan" class="btn-ghost-white">
+        Voir le programme
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5<span>KM</span></div>
+        <div class="stat-label">Distance départ</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">42<span>KM</span></div>
+        <div class="stat-label">Distance max</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8<span>sem</span></div>
+        <div class="stat-label">Plan 10 km</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Structuré</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">5 KM</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">10 KM</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">SEMI-MARATHON</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">MARATHON</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">TRAIL</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FRACTIONNÉ</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ENDURANCE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">5 KM</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">10 KM</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">SEMI-MARATHON</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">MARATHON</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">TRAIL</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FRACTIONNÉ</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ENDURANCE</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<!-- ===== PROGRAMMES / DISTANCES ===== -->
+<section id="programmes">
+  <div class="prog-header">
+    <div>
+      <div class="section-tag reveal">Choisir sa distance</div>
+      <h2 class="section-title reveal reveal-delay-1">
+        TON <span class="accent">OBJECTIF</span>,<br>
+        TON <span class="stroke">PLAN</span>
+      </h2>
+    </div>
+    <p class="section-desc reveal reveal-delay-2">
+      Chaque distance a son propre plan d'entraînement, pensé pour progresser sans se blesser.
+    </p>
+  </div>
+
+  <div class="dist-grid">
+
+    <a href="#plan" class="dist-card reveal" data-plan="5km">
+      <div class="dist-km">5<span>km</span></div>
+      <div class="dist-name">Débutant</div>
+      <div class="dist-details">
+        <div class="dist-detail"><span class="dist-detail-dot"></span>4 semaines</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>3 séances / sem.</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Course–marche</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Aucun prérequis</div>
+      </div>
+    </a>
+
+    <a href="#plan" class="dist-card popular reveal reveal-delay-1" data-plan="10km">
+      <span class="dist-badge">Populaire</span>
+      <div class="dist-km">10<span>km</span></div>
+      <div class="dist-name">Intermédiaire</div>
+      <div class="dist-details">
+        <div class="dist-detail"><span class="dist-detail-dot"></span>8 semaines</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>4 séances / sem.</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Fractionné inclus</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Objectif sub-60 min</div>
+      </div>
+    </a>
+
+    <a href="#plan" class="dist-card reveal reveal-delay-2" data-plan="semi">
+      <div class="dist-km">21<span>km</span></div>
+      <div class="dist-name">Semi-Marathon</div>
+      <div class="dist-details">
+        <div class="dist-detail"><span class="dist-detail-dot"></span>12 semaines</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>5 séances / sem.</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Sorties longues</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Allure marathon incluse</div>
+      </div>
+    </a>
+
+    <a href="#plan" class="dist-card reveal reveal-delay-3" data-plan="marathon">
+      <div class="dist-km">42<span>km</span></div>
+      <div class="dist-name">Marathon</div>
+      <div class="dist-details">
+        <div class="dist-detail"><span class="dist-detail-dot"></span>16 semaines</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>5–6 séances / sem.</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Sortie longue 35 km</div>
+        <div class="dist-detail"><span class="dist-detail-dot"></span>Niveau confirmé</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ===== PLAN SEMAINE ===== -->
+<section id="plan">
+  <div class="plan-header">
+    <div>
+      <div class="section-tag reveal">Exemple de semaine</div>
+      <h2 class="section-title reveal reveal-delay-1">
+        SEMAINE<br><span class="accent">TYPE</span>
+      </h2>
+    </div>
+    <p class="section-desc reveal reveal-delay-2" id="plan-desc">
+      Le programme complet, semaine par semaine.
+    </p>
+  </div>
+
+  <div class="plan-selector reveal">
+    <button class="plan-btn" data-week="5km">5 km</button>
+    <button class="plan-btn active" data-week="10km">10 km</button>
+    <button class="plan-btn" data-week="semi">Semi</button>
+    <button class="plan-btn" data-week="marathon">Marathon</button>
+  </div>
+
+  <div class="week-tabs reveal" id="week-tabs">
+    <!-- Onglets Semaine 1, 2, 3... injectés dynamiquement -->
+  </div>
+
+  <div class="week-phase-label" id="week-phase-label"></div>
+
+  <div class="week-grid reveal reveal-delay-1" id="week-grid">
+    <!-- Les jours sont injectés dynamiquement par le script en fonction du plan et de la semaine choisis -->
+  </div>
+</section>
+
+<!-- ===== CONSEILS ===== -->
+<section id="conseils">
+  <div class="conseils-header">
+    <div>
+      <div class="section-tag reveal">Bien courir</div>
+      <h2 class="section-title reveal reveal-delay-1">
+        LES <span class="accent">CLÉS</span><br>
+        DU <span class="stroke">PROGRÈS</span>
+      </h2>
+    </div>
+    <p class="section-desc reveal reveal-delay-2">
+      Les fondamentaux pour progresser de façon durable et éviter les blessures.
+    </p>
+  </div>
+
+  <div class="conseils-grid">
+
+    <div class="conseil-card reveal">
+      <span class="conseil-icon">🏃</span>
+      <div class="conseil-title">ZONES DE FRÉQUENCE CARDIAQUE</div>
+      <div class="conseil-text">Courir à la bonne intensité est la clé de tout progrès. Pas trop vite, pas trop lentement.</div>
+      <div class="zones-list">
+        <div class="zone-item">
+          <div class="zone-color" style="background:#4CAF50"></div>
+          <div class="zone-label">Zone 1-2</div>
+          <div class="zone-desc">Endurance fondamentale — conversations possibles</div>
+          <div class="zone-pct">60%</div>
+        </div>
+        <div class="zone-item">
+          <div class="zone-color" style="background:#FF9800"></div>
+          <div class="zone-label">Zone 3</div>
+          <div class="zone-desc">Allure seuil — effort soutenu</div>
+          <div class="zone-pct">25%</div>
+        </div>
+        <div class="zone-item">
+          <div class="zone-color" style="background:var(--rouge)"></div>
+          <div class="zone-label">Zone 4-5</div>
+          <div class="zone-desc">Fractionné — effort maximal</div>
+          <div class="zone-pct">15%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="conseil-card reveal reveal-delay-1">
+      <span class="conseil-icon">🦵</span>
+      <div class="conseil-title">ÉVITER LES BLESSURES</div>
+      <div class="conseil-text">La règle des 10% : n'augmente jamais ton volume hebdomadaire de plus de 10% par semaine. Respecte les séances de récupération — elles font autant progresser que les séances intenses.</div>
+      <br>
+      <div class="conseil-text">Chaussures adaptées à ta foulée, échauffement systématique, et étirements post-séance sont non négociables.</div>
+    </div>
+
+    <div class="conseil-card dark reveal reveal-delay-2">
+      <div>
+        <span class="conseil-icon">📈</span>
+        <div class="conseil-title">PROGRESSION SUR 8 SEMAINES</div>
+        <div class="conseil-text">Le plan 10 km suit une courbe de charge progressive avec des semaines de décharge toutes les 4 semaines pour permettre la supercompensation.</div>
+      </div>
+      <div class="prog-timeline">
+        <div class="prog-week">
+          <div class="prog-week-num">Semaine 1–2</div>
+          <div class="prog-week-title">MISE EN ROUTE</div>
+          <div class="prog-week-desc">3 séances légères — fartlek et footing</div>
+        </div>
+        <div class="prog-week">
+          <div class="prog-week-num">Semaine 3–4</div>
+          <div class="prog-week-title">CONSTRUCTION</div>
+          <div class="prog-week-desc">Introduction du fractionné — 4×800 m</div>
+        </div>
+        <div class="prog-week">
+          <div class="prog-week-num">Semaine 5–6</div>
+          <div class="prog-week-title">INTENSIFICATION</div>
+          <div class="prog-week-desc">Tempo runs + sorties longues à allure cible</div>
+        </div>
+        <div class="prog-week">
+          <div class="prog-week-num">Semaine 7–8</div>
+          <div class="prog-week-title">AFFÛTAGE & COURSE</div>
+          <div class="prog-week-desc">Réduction du volume — fraîcheur pour le jour J</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<div class="features">
+  <div class="feature-item reveal">
+    <span class="feature-icon">⚡</span>
+    <div class="feature-title">Progressif & Structuré</div>
+    <div class="feature-desc">Chaque semaine s'enchaîne logiquement — jamais de saut brutal de charge.</div>
+  </div>
+  <div class="feature-item reveal reveal-delay-1">
+    <span class="feature-icon">🎯</span>
+    <div class="feature-title">Fractionné Intégré</div>
+    <div class="feature-desc">Les séances de vitesse sont planifiées pour maximiser les gains sans sur-entraînement.</div>
+  </div>
+  <div class="feature-item reveal reveal-delay-2">
+    <span class="feature-icon">🧠</span>
+    <div class="feature-title">Basé sur la Science</div>
+    <div class="feature-desc">Méthodes éprouvées : polarisation, zones cardiaques, supercompensation.</div>
+  </div>
+  <div class="feature-item reveal reveal-delay-3">
+    <span class="feature-icon">🛡️</span>
+    <div class="feature-title">Prévention Blessures</div>
+    <div class="feature-desc">Règle des 10%, semaines de décharge et exercices de renforcement inclus.</div>
+  </div>
+</div>
+
+<!-- ===== CTA ===== -->
+<div class="cta-strip">
+  <h2 class="cta-title reveal">
+    PRÊT(E) À<br>CHAUSSER ?
+  </h2>
+  <a href="#programmes" class="btn-white reveal reveal-delay-2">Choisir mon plan</a>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">ESPRIT<span>.</span>SPORTIF</div>
+      <p class="footer-tagline">Forge ton corps, libère ton potentiel. Des programmes conçus pour des résultats réels.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+        <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+        <a href="#" class="social-btn" aria-label="TikTok">♪</a>
+        <a href="#" class="social-btn" aria-label="Twitter">✕</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Programmes</div>
+      <ul class="footer-links">
+        <li><a href="Musculation.html">Musculation</a></li>
+        <li><a href="Triathlon.html">Triathlon</a></li>
+        <li><a href="Running.html">Running</a></li>
+        <li><a href="Rester en forme.html">Rester en forme</a></li>
+        <li><a href="Anatomie.html">Anatomie</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Nutrition</div>
+      <ul class="footer-links">
+        <li><a href="recettes.html">Recettes</a></li>
+        <li><a href="plans-alimentaires.html">Plans alimentaires</a></li>
+        <li><a href="conseils-nutrition.html">Conseils Nutrition</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Infos</div>
+      <ul class="footer-links">
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <ul class="footer-bottom-links">
+      <li><a href="#">CGU</a></li>
+      <li><a href="#">Cookies</a></li>
+      <li><a href="#">Accessibilité</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  /* Navbar scroll */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* Reveal au scroll */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  /* =========================================================
+     DONNÉES DES PLANS D'ENTRAÎNEMENT — PROGRAMME COMPLET
+     Chaque plan contient TOUTES ses semaines, jour par jour.
+     ========================================================= */
+
+  const REST_LABELS_10 = ['Récupération active ou stretching 15 min', 'Repos complet ou yoga'];
+  const REST_LABELS_SEMI = ['Repos complet ou mobilité'];
+  const REST_LABELS_MARA = ['Repos complet ou mobilité', 'Repos complet ou récupération active'];
+
+  const trainingPlans = {};
+
+  /* ---------- PLAN 5 KM — 4 semaines (course-marche) ---------- */
+  trainingPlans['5km'] = {
+    label: '5 km — Débutant',
+    weeks: [
+      { phase: 'Mise en route', days: [
+        { name:'Lundi', type:'REPOS', detail:'Repos complet ou marche 15 min', rest:true, intensity:0 },
+        { name:'Mardi', type:'COURSE-MARCHE', detail:'8 × (1 min course / 2 min marche)', key:true, intensity:40 },
+        { name:'Mercredi', type:'REPOS', detail:'Repos ou étirements doux', rest:true, intensity:0 },
+        { name:'Jeudi', type:'COURSE-MARCHE', detail:'8 × (1 min course / 2 min marche)', key:true, intensity:40 },
+        { name:'Vendredi', type:'REPOS', detail:'Repos complet', rest:true, intensity:0 },
+        { name:'Samedi', type:'FOOTING', detail:'15 min marche rapide + 5 min course facile', intensity:25 },
+        { name:'Dimanche', type:'MARCHE ACTIVE', detail:'20 min marche active', intensity:15 },
+      ]},
+      { phase: 'Construction', days: [
+        { name:'Lundi', type:'REPOS', detail:'Repos complet ou marche 15 min', rest:true, intensity:0 },
+        { name:'Mardi', type:'COURSE-MARCHE', detail:'6 × (2 min course / 2 min marche)', key:true, intensity:45 },
+        { name:'Mercredi', type:'REPOS', detail:'Étirements légers ou repos', rest:true, intensity:0 },
+        { name:'Jeudi', type:'COURSE-MARCHE', detail:"6 × (2 min course / 1 min 30 marche)", key:true, intensity:50 },
+        { name:'Vendredi', type:'REPOS', detail:'Repos complet', rest:true, intensity:0 },
+        { name:'Samedi', type:'FOOTING', detail:'20 min allure très facile, sans coupure', intensity:30 },
+        { name:'Dimanche', type:'MARCHE ACTIVE', detail:'25 min marche active ou repos', intensity:15 },
+      ]},
+      { phase: 'Intensification', days: [
+        { name:'Lundi', type:'REPOS', detail:'Repos complet', rest:true, intensity:0 },
+        { name:'Mardi', type:'COURSE-MARCHE', detail:'5 × (4 min course / 1 min marche)', key:true, intensity:55 },
+        { name:'Mercredi', type:'REPOS', detail:'Repos ou étirements doux', rest:true, intensity:0 },
+        { name:'Jeudi', type:'FOOTING', detail:'20 min course continue à allure facile', key:true, intensity:50 },
+        { name:'Vendredi', type:'REPOS', detail:'Repos complet', rest:true, intensity:0 },
+        { name:'Samedi', type:'FOOTING', detail:'25 min footing facile', intensity:35 },
+        { name:'Dimanche', type:'MARCHE ACTIVE', detail:'30 min marche active ou repos', intensity:15 },
+      ]},
+      { phase: 'Objectif 5 km', days: [
+        { name:'Lundi', type:'REPOS', detail:'Repos complet', rest:true, intensity:0 },
+        { name:'Mardi', type:'FOOTING', detail:'25 min course continue à allure confortable', key:true, intensity:55 },
+        { name:'Mercredi', type:'REPOS', detail:'Repos ou étirements doux', rest:true, intensity:0 },
+        { name:'Jeudi', type:'COURSE-MARCHE', detail:'3 × (8 min course / 2 min marche)', key:true, intensity:55 },
+        { name:'Vendredi', type:'REPOS', detail:'Repos complet — décrassage léger possible', rest:true, intensity:0 },
+        { name:'Samedi', type:'FOOTING', detail:'15 min footing très facile — décrassage', intensity:20 },
+        { name:'Dimanche', type:'COURSE OBJECTIF', detail:'Jour J — 5 km à allure régulière', key:true, intensity:100 },
+      ]},
+    ]
+  };
+
+  /* ---------- Générateur générique pour 10 km / semi / marathon ---------- */
+  function buildDay(name, kind, weekData) {
+    switch (kind) {
+      case 'restA': return { name, type:'REPOS', detail: weekData.restLabel || 'Repos complet', rest:true, intensity:0 };
+      case 'interval': return {
+        name, type:'FRACTIONNÉ',
+        detail: `${weekData.interval.reps} × ${weekData.interval.dist} m à allure ${weekData.interval.allure} — récup. ${weekData.interval.recup}`,
+        key:true, intensity:90
+      };
+      case 'footingMid': return { name, type:'FOOTING', detail:`${weekData.footingMid} min allure confortable (Z2)`, intensity:40 };
+      case 'footingSat': return { name, type:'FOOTING', detail:`${weekData.footingSat} min récupération — allure très facile`, intensity:25 };
+      case 'renfo': return { name, type:'RENFO + FOOTING', detail:`${weekData.renfo} min footing + renforcement musculaire`, intensity:35 };
+      case 'tempo':
+        if (!weekData.tempo) return { name, type:'REPOS', detail:'Repos — pas de tempo cette semaine', rest:true, intensity:0 };
+        return { name, type:'TEMPO', detail:`${weekData.tempo} min à allure seuil + 10 min cool down`, key:true, intensity:75 };
+      case 'long':
+        if (weekData.race) return { name, type:'COURSE OBJECTIF', detail:`Jour J — ${weekData.race}`, key:true, intensity:100 };
+        return { name, type:'SORTIE LONGUE', detail:`${weekData.long} min allure endurance fondamentale`, key:true, intensity: weekData.longIntensity || 55 };
+    }
+  }
+
+  /* ---------- PLAN 10 KM — 8 semaines ---------- */
+  const w10 = [
+    { phase:'Adaptation', interval:{reps:4, dist:800, allure:'5 km', recup:'90 sec'}, tempo:12, footingMid:35, footingSat:20, long:45 },
+    { phase:'Adaptation', interval:{reps:5, dist:800, allure:'5 km', recup:'90 sec'}, tempo:15, footingMid:40, footingSat:20, long:50 },
+    { phase:'Construction', interval:{reps:5, dist:1000, allure:'5 km', recup:'90 sec'}, tempo:15, footingMid:40, footingSat:25, long:55 },
+    { phase:'Récupération', interval:{reps:4, dist:600, allure:'5 km', recup:'90 sec'}, tempo:10, footingMid:30, footingSat:15, long:40, longIntensity:40 },
+    { phase:'Intensification', interval:{reps:6, dist:1000, allure:'5 km', recup:'90 sec'}, tempo:20, footingMid:45, footingSat:25, long:80 },
+    { phase:'Intensification', interval:{reps:6, dist:1000, allure:'5 km', recup:'75 sec'}, tempo:22, footingMid:45, footingSat:25, long:85 },
+    { phase:'Affûtage', interval:{reps:4, dist:1000, allure:'5 km', recup:'90 sec'}, tempo:15, footingMid:35, footingSat:20, long:50, longIntensity:45 },
+    { phase:'Course', interval:{reps:3, dist:400, allure:'10 km', recup:'2 min'}, tempo:0, footingMid:20, footingSat:15, race:'10 km' },
+  ];
+  trainingPlans['10km'] = {
+    label: '10 km — Intermédiaire',
+    weeks: w10.map(w => ({
+      phase: w.phase,
+      days: [
+        buildDay('Lundi', 'restA', { restLabel: 'Récupération active ou stretching 15 min' }),
+        buildDay('Mardi', 'interval', w),
+        buildDay('Mercredi', 'footingMid', w),
+        buildDay('Jeudi', 'restA', { restLabel: 'Repos complet ou yoga' }),
+        buildDay('Vendredi', 'tempo', w),
+        buildDay('Samedi', 'footingSat', w),
+        buildDay('Dimanche', 'long', w),
+      ]
+    }))
+  };
+
+  /* ---------- PLAN SEMI-MARATHON — 12 semaines ---------- */
+  const wSemi = [
+    { phase:'Adaptation', interval:{reps:5, dist:800, allure:'10 km', recup:'90 sec'}, tempo:15, renfo:25, footingMid:35, footingSat:25, long:60 },
+    { phase:'Adaptation', interval:{reps:6, dist:800, allure:'10 km', recup:'90 sec'}, tempo:18, renfo:25, footingMid:40, footingSat:25, long:65 },
+    { phase:'Construction', interval:{reps:6, dist:1000, allure:'10 km', recup:'90 sec'}, tempo:20, renfo:30, footingMid:45, footingSat:30, long:75 },
+    { phase:'Récupération', interval:{reps:5, dist:800, allure:'10 km', recup:'90 sec'}, tempo:15, renfo:20, footingMid:30, footingSat:20, long:55, longIntensity:45 },
+    { phase:'Construction', interval:{reps:7, dist:1000, allure:'10 km', recup:'75 sec'}, tempo:22, renfo:30, footingMid:45, footingSat:30, long:85 },
+    { phase:'Construction', interval:{reps:8, dist:1000, allure:'10 km', recup:'75 sec'}, tempo:25, renfo:30, footingMid:50, footingSat:30, long:95 },
+    { phase:'Récupération', interval:{reps:5, dist:800, allure:'10 km', recup:'90 sec'}, tempo:15, renfo:20, footingMid:35, footingSat:20, long:70, longIntensity:45 },
+    { phase:'Intensification', interval:{reps:8, dist:1000, allure:'semi', recup:'75 sec'}, tempo:28, renfo:35, footingMid:50, footingSat:35, long:100 },
+    { phase:'Intensification', interval:{reps:8, dist:1200, allure:'semi', recup:'75 sec'}, tempo:30, renfo:35, footingMid:50, footingSat:35, long:110 },
+    { phase:'Intensification (pic)', interval:{reps:6, dist:1200, allure:'semi', recup:'90 sec'}, tempo:25, renfo:30, footingMid:45, footingSat:30, long:100 },
+    { phase:'Affûtage', interval:{reps:4, dist:800, allure:'10 km', recup:'90 sec'}, tempo:15, renfo:20, footingMid:30, footingSat:20, long:60, longIntensity:45 },
+    { phase:'Course', interval:{reps:3, dist:400, allure:'10 km', recup:'2 min'}, tempo:0, renfo:15, footingMid:20, footingSat:15, race:'21,1 km (semi-marathon)' },
+  ];
+  trainingPlans['semi'] = {
+    label: 'Semi-marathon',
+    weeks: wSemi.map(w => ({
+      phase: w.phase,
+      days: [
+        buildDay('Lundi', 'restA', { restLabel: 'Repos complet ou mobilité' }),
+        buildDay('Mardi', 'interval', w),
+        buildDay('Mercredi', 'footingMid', w),
+        buildDay('Jeudi', 'renfo', w),
+        buildDay('Vendredi', 'tempo', w),
+        buildDay('Samedi', 'footingSat', w),
+        buildDay('Dimanche', 'long', w),
+      ]
+    }))
+  };
+
+  /* ---------- PLAN MARATHON — 16 semaines ---------- */
+  const wMara = [
+    { phase:'Base', interval:{reps:4, dist:1000, allure:'10 km', recup:'2 min'}, tempo:15, footingMid:40, footingSat:25, long:60 },
+    { phase:'Base', interval:{reps:5, dist:1000, allure:'10 km', recup:'2 min'}, tempo:18, footingMid:45, footingSat:25, long:70 },
+    { phase:'Base', interval:{reps:5, dist:1200, allure:'10 km', recup:'2 min'}, tempo:20, footingMid:50, footingSat:30, long:80 },
+    { phase:'Récupération', interval:{reps:4, dist:800, allure:'10 km', recup:'90 sec'}, tempo:12, footingMid:35, footingSat:20, long:60, longIntensity:45 },
+    { phase:'Construction', interval:{reps:6, dist:1000, allure:'10 km', recup:'2 min'}, tempo:22, footingMid:55, footingSat:30, long:90 },
+    { phase:'Construction', interval:{reps:6, dist:1200, allure:'10 km', recup:'2 min'}, tempo:25, footingMid:60, footingSat:35, long:100 },
+    { phase:'Construction', interval:{reps:7, dist:1000, allure:'10 km', recup:'90 sec'}, tempo:28, footingMid:60, footingSat:35, long:110 },
+    { phase:'Récupération', interval:{reps:4, dist:800, allure:'10 km', recup:'90 sec'}, tempo:15, footingMid:40, footingSat:20, long:75, longIntensity:45 },
+    { phase:'Intensification', interval:{reps:8, dist:1000, allure:'10 km', recup:'90 sec'}, tempo:30, footingMid:65, footingSat:35, long:125 },
+    { phase:'Intensification', interval:{reps:6, dist:1600, allure:'marathon', recup:'2 min'}, tempo:32, footingMid:65, footingSat:35, long:140 },
+    { phase:'Intensification (pic 1)', interval:{reps:6, dist:1600, allure:'marathon', recup:'2 min'}, tempo:35, footingMid:65, footingSat:35, long:150 },
+    { phase:'Récupération', interval:{reps:4, dist:1000, allure:'10 km', recup:'2 min'}, tempo:18, footingMid:45, footingSat:25, long:100, longIntensity:45 },
+    { phase:'Pic (sortie la plus longue)', interval:{reps:4, dist:1600, allure:'marathon', recup:'2 min'}, tempo:35, footingMid:60, footingSat:30, long:160 },
+    { phase:'Affûtage', interval:{reps:3, dist:1000, allure:'marathon', recup:'2 min'}, tempo:25, footingMid:45, footingSat:25, long:110, longIntensity:45 },
+    { phase:'Affûtage', interval:{reps:2, dist:1000, allure:'marathon', recup:'2 min'}, tempo:15, footingMid:35, footingSat:20, long:60, longIntensity:40 },
+    { phase:'Course', interval:{reps:2, dist:400, allure:'10 km', recup:'2 min'}, tempo:0, footingMid:20, footingSat:15, race:'42,195 km (marathon)' },
+  ];
+  trainingPlans['marathon'] = {
+    label: 'Marathon',
+    weeks: wMara.map(w => ({
+      phase: w.phase,
+      days: [
+        buildDay('Lundi', 'restA', { restLabel: 'Repos complet ou mobilité' }),
+        buildDay('Mardi', 'interval', w),
+        buildDay('Mercredi', 'footingMid', w),
+        buildDay('Jeudi', 'tempo', w),
+        buildDay('Vendredi', 'restA', { restLabel: 'Repos complet ou récupération active' }),
+        buildDay('Samedi', 'footingSat', w),
+        buildDay('Dimanche', 'long', w),
+      ]
+    }))
+  };
+
+  /* =========================================================
+     RENDU DYNAMIQUE
+     ========================================================= */
+  const weekGrid = document.getElementById('week-grid');
+  const weekTabsEl = document.getElementById('week-tabs');
+  const phaseLabelEl = document.getElementById('week-phase-label');
+  const planDesc = document.getElementById('plan-desc');
+  const planBtns = document.querySelectorAll('.plan-btn');
+  const distCards = document.querySelectorAll('.dist-card');
+
+  let currentPlan = '10km';
+  let currentWeekIndex = 4; // affichage initial : semaine 5 du plan 10 km
+
+  function renderDays(planKey, weekIndex) {
+    const plan = trainingPlans[planKey];
+    const week = plan.weeks[weekIndex];
+
+    weekGrid.innerHTML = '';
+    week.days.forEach(day => {
+      const card = document.createElement('div');
+      card.className = 'day-card' + (day.rest ? ' rest' : '') + (day.key ? ' key-session' : '');
+      card.innerHTML = `
+        <div class="day-name">${day.name}</div>
+        <div class="day-type">${day.type}</div>
+        <div class="day-detail">${day.detail}</div>
+        <div class="day-intensity"><div class="day-intensity-fill" style="width:${day.intensity}%"></div></div>
+      `;
+      weekGrid.appendChild(card);
+    });
+
+    if (phaseLabelEl) phaseLabelEl.textContent = `Semaine ${weekIndex + 1} / ${plan.weeks.length} — ${week.phase}`;
+    if (planDesc) planDesc.textContent = `Programme ${plan.label} — ${plan.weeks.length} semaines au total.`;
+  }
+
+  function renderWeekTabs(planKey) {
+    const plan = trainingPlans[planKey];
+    weekTabsEl.innerHTML = '';
+    plan.weeks.forEach((week, i) => {
+      const tab = document.createElement('button');
+      const isRace = !!week.days[6].detail.startsWith('Jour J');
+      tab.className = 'week-tab' + (isRace ? ' race-tab' : '') + (i === currentWeekIndex ? ' active' : '');
+      tab.textContent = isRace ? '🏁 Course' : `S${i + 1}`;
+      tab.title = week.phase;
+      tab.addEventListener('click', () => {
+        currentWeekIndex = i;
+        renderDays(currentPlan, currentWeekIndex);
+        weekTabsEl.querySelectorAll('.week-tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+      });
+      weekTabsEl.appendChild(tab);
+    });
+  }
+
+  function selectPlan(planKey, weekIndex) {
+    currentPlan = planKey;
+    currentWeekIndex = (typeof weekIndex === 'number') ? weekIndex : 0;
+
+    renderWeekTabs(planKey);
+    renderDays(planKey, currentWeekIndex);
+
+    planBtns.forEach(b => b.classList.toggle('active', b.dataset.week === planKey));
+    distCards.forEach(c => c.classList.toggle('selected', c.dataset.plan === planKey));
+  }
+
+  /* Sélecteur de plan (boutons) */
+  planBtns.forEach(btn => {
+    btn.addEventListener('click', () => selectPlan(btn.dataset.week));
+  });
+
+  /* Cartes distance → changent le plan affiché puis scrollent vers le programme */
+  distCards.forEach(card => {
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      selectPlan(card.dataset.plan);
+      document.getElementById('plan').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* Affichage initial : plan 10 km, semaine 5 */
+  selectPlan('10km', 4);
+</script>
+
+</body>
+</html>
