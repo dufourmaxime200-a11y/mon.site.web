@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esprit Sportif — Forge ton corps, libère ton potentiel</title>
+  <meta name="description" content="Esprit Sportif : programmes de musculation, triathlon, running, mobilité et nutrition, du niveau débutant au confirmé.">
+  <meta property="og:title" content="Esprit Sportif — Forge ton corps, libère ton potentiel">
+  <meta property="og:description" content="Esprit Sportif : programmes de musculation, triathlon, running, mobilité et nutrition, du niveau débutant au confirmé.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💪%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 
@@ -828,25 +833,51 @@
       .footer-top { grid-template-columns: 1fr; }
       .prog-grid { grid-template-columns: 1fr; }
     }
+  
+/* ===== MENU : burger mobile, page active, accessibilité ===== */
+.nav-burger{display:none;background:none;border:0;font-size:28px;line-height:1;cursor:pointer;color:var(--noir)}
+.nav-drop.open .nav-drop-menu{display:block}
+.nav-drop-menu a.active{color:var(--rouge)!important;font-weight:700}
+.nav-links a:focus-visible,.nav-burger:focus-visible,.btn-primary:focus-visible,.btn-white:focus-visible{outline:2px solid var(--rouge);outline-offset:3px}
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-logo,
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-burger,
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#fff}
+@media(max-width:1024px){
+  .nav-burger{display:block}
+  nav.menu-open{background:#fff}
+  nav.menu-open .nav-logo,nav.menu-open .nav-burger{color:var(--noir)}
+  .nav-links{display:none!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#fff;padding:8px 28px 24px;box-shadow:0 14px 30px rgba(0,0,0,.1)}
+  nav.menu-open .nav-links{display:flex!important}
+  .nav-links>li>a{display:block;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+  nav.menu-open .nav-links>li>a:not(.nav-cta){color:var(--noir)!important}
+  .nav-links>li>a.nav-cta{padding:14px;border-bottom:0;margin-top:14px;text-align:center}
+  .nav-drop-menu{position:static;transform:none;box-shadow:none;border:0;min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
   </style>
 </head>
 <body>
 
 <!-- ===== NAVBAR ===== -->
   <nav id="navbar">
-    <a href="#" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+    <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+    <button class="nav-burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
     <ul class="nav-links">
       <li class="nav-drop">
         <a href="#">Programmes ▾</a>
         <div class="nav-drop-menu">
           <a href="Musculation.html">Musculation</a>
-          <a href="Rester en forme.html">Rester en forme</a>
+          <a href="Triathlon.html">Triathlon</a>
+          <a href="Running.html">Running</a>
+          <a href="Rester%20en%20forme.html">Rester en forme</a>
           <a href="Anatomie.html">Anatomie</a>
-          <a href="Cardio.html">Cardio</a>
           <a href="Mobilite.html">Mobilité</a>
         </div>
       </li>
-      <li><a href="#temoignages">Sante</a></li>
+      <li><a href="#temoignages">Avis</a></li>
       <li class="nav-drop">
         <a href="#">Nutrition ▾</a>
         <div class="nav-drop-menu">
@@ -855,7 +886,7 @@
           <a href="conseils-nutrition.html">Conseils Nutrition</a>
         </div>
       </li>
-      <li><a href="#" class="nav-cta">Commencer</a></li>
+      <li><a href="#programmes" class="nav-cta">Commencer</a></li>
     </ul>
   </nav>
 
@@ -944,7 +975,7 @@
     <div class="prog-grid">
 
       <a href="Musculation.html" class="prog-card reveal">
-        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80" alt="Musculation">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80" alt="Musculation" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Force</span>
@@ -955,7 +986,7 @@
       </a>
 
       <a href="Triathlon.html" class="prog-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80" alt="Triathlon">
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80" alt="Triathlon" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Endurance</span>
@@ -966,7 +997,7 @@
       </a>
 
       <a href="Running.html" class="prog-card reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=800&q=80" alt="Running">
+        <img src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=800&q=80" alt="Running" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Cardio</span>
@@ -977,7 +1008,7 @@
       </a>
 
       <a href="recettes.html" class="prog-card reveal reveal-delay-3">
-        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80" alt="Nutrition">
+        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80" alt="Nutrition" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Nutrition</span>
@@ -988,7 +1019,7 @@
       </a>
 
       <a href="Rester en forme.html" class="prog-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=800&q=80" alt="Rester en forme">
+        <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=800&q=80" alt="Rester en forme" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Bien-être</span>
@@ -999,7 +1030,7 @@
       </a>
 
       <a href="Anatomie.html" class="prog-card reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80" alt="Anatomie">
+        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80" alt="Anatomie" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Savoir</span>
@@ -1010,7 +1041,7 @@
       </a>
 
       <a href="Mobilite.html" class="prog-card reveal reveal-delay-3">
-        <img src="https://images.unsplash.com/photo-1591343395082-e120087004b4?auto=format&fit=crop&w=800&q=80" alt="Mobilité">
+        <img src="https://images.unsplash.com/photo-1591343395082-e120087004b4?auto=format&fit=crop&w=800&q=80" alt="Mobilité" loading="lazy">
         <div class="prog-card-overlay"></div>
         <div class="prog-card-body">
           <span class="prog-card-tag">Mobilité</span>
@@ -1073,7 +1104,7 @@
           "J'ai suivi le programme Triathlon S sur 7 semaines. Jamais je n'aurais cru terminer une course enchaînant natation, vélo et course à pied. La structure des séances est parfaite — on progresse vraiment sans se blesser. C'est la meilleure décision que j'aie prise pour ma santé."
         </p>
         <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Lucas M.">
+          <img class="temo-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Lucas M." loading="lazy">
           <div>
             <div class="temo-name">Lucas M.</div>
             <div class="temo-role">Triathlon S — Format XS complété</div>
@@ -1090,7 +1121,7 @@
           "Les recettes protéinées ont changé ma façon de manger. En 8 semaines de musculation + nutrition, j'ai gagné 4 kg de muscle. Les valeurs nutritionnelles détaillées m'ont aidé à suivre mes macros sans application externe."
         </p>
         <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Amina K.">
+          <img class="temo-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Amina K." loading="lazy">
           <div>
             <div class="temo-name">Amina K.</div>
             <div class="temo-role">Musculation + Recettes</div>
@@ -1106,7 +1137,7 @@
           "Programme Running 10 km : j'ai couru mon premier 10 km en 52 minutes. Le plan sur 8 semaines est progressif, sans se perdre dans des tableaux complexes. Je recommande à 100%."
         </p>
         <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Thomas R.">
+          <img class="temo-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Thomas R." loading="lazy">
           <div>
             <div class="temo-name">Thomas R.</div>
             <div class="temo-role">Running — 10 km en 8 semaines</div>
@@ -1122,7 +1153,7 @@
           "Les séances 'Rester en Forme' sont parfaites pour quelqu'un de chargé comme moi. 30 minutes par jour, et j'ai retrouvé de l'énergie et du tonus. Simple, efficace, pas de superflu."
         </p>
         <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" alt="Sophie D.">
+          <img class="temo-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" alt="Sophie D." loading="lazy">
           <div>
             <div class="temo-name">Sophie D.</div>
             <div class="temo-role">Rester en Forme — 3 mois</div>
@@ -1148,7 +1179,7 @@
         <div class="footer-logo">ESPRIT<span>.</span>SPORTIF</div>
         <p class="footer-tagline">Forge ton corps, libère ton potentiel. Des programmes conçus pour des résultats réels.</p>
         <div class="footer-socials">
-          <a href="#" class="social-btn" aria-label="Instagram"></a>
+          <a href="#" class="social-btn" aria-label="Instagram">📸</a>
           <a href="#" class="social-btn" aria-label="YouTube">▶</a>
           <a href="#" class="social-btn" aria-label="TikTok">♪</a>
           <a href="#" class="social-btn" aria-label="Twitter">✕</a>
@@ -1161,7 +1192,7 @@
           <li><a href="Musculation.html">Musculation</a></li>
           <li><a href="Triathlon.html">Triathlon</a></li>
           <li><a href="Running.html">Running</a></li>
-          <li><a href="Rester en forme.html">Rester en forme</a></li>
+          <li><a href="Rester%20en%20forme.html">Rester en forme</a></li>
           <li><a href="Anatomie.html">Anatomie</a></li>
           <li><a href="Mobilite.html">Mobilité</a></li>
         </ul>
@@ -1188,7 +1219,8 @@
     </div>
 
     <div class="footer-bottom">
-      <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <p class="footer-copy" style="flex-basis:100%">Contenu informatif : demande l'avis d'un médecin avant de commencer ou de reprendre une activité physique.</p>
+      <p class="footer-copy">© 2026 Esprit Sportif. Tous droits réservés.</p>
       <ul class="footer-bottom-links">
         <li><a href="#">CGU</a></li>
         <li><a href="#">Cookies</a></li>
@@ -1201,6 +1233,18 @@
 
     /* ── Navbar scroll ── */
     const navbar = document.getElementById('navbar');
+    /* Menu : burger mobile + menus déroulants au clic */
+    const burger = document.getElementById('burger');
+    burger.addEventListener('click', () => {
+      const open = navbar.classList.toggle('menu-open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    document.querySelectorAll('.nav-drop > a').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); a.parentElement.classList.toggle('open'); });
+    });
+    document.querySelectorAll('.nav-links a:not([href="#"])').forEach(a =>
+      a.addEventListener('click', () => navbar.classList.remove('menu-open'))
+    );
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 40);
     });

@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mobilité — Esprit Sportif</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="description" content="Routines de mobilité et d'étirements : réveil, pause bureau, après sport et soir.">
+  <meta property="og:title" content="Mobilité — Esprit Sportif">
+  <meta property="og:description" content="Routines de mobilité et d'étirements : réveil, pause bureau, après sport et soir.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧘%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -138,35 +143,61 @@ section{padding:72px 28px}.zone-grid,.exo-grid{grid-template-columns:1fr 1fr}.co
 @media(max-width:640px){
 .nav-links{display:none}.hero-stats{gap:20px;flex-wrap:wrap}
 .zone-grid,.exo-grid,.conseils,.footer-top{grid-template-columns:1fr}}
-</style>
+
+/* ===== MENU : burger mobile, page active, accessibilité ===== */
+.nav-burger{display:none;background:none;border:0;font-size:28px;line-height:1;cursor:pointer;color:var(--noir)}
+.nav-drop.open .nav-drop-menu{display:block}
+.nav-drop-menu a.active{color:var(--rouge)!important;font-weight:700}
+.nav-links a:focus-visible,.nav-burger:focus-visible,.btn-primary:focus-visible,.btn-white:focus-visible{outline:2px solid var(--rouge);outline-offset:3px}
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-logo,
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-burger,
+nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#fff}
+@media(max-width:1024px){
+  .nav-burger{display:block}
+  nav.menu-open{background:#fff}
+  nav.menu-open .nav-logo,nav.menu-open .nav-burger{color:var(--noir)}
+  .nav-links{display:none!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#fff;padding:8px 28px 24px;box-shadow:0 14px 30px rgba(0,0,0,.1)}
+  nav.menu-open .nav-links{display:flex!important}
+  .nav-links>li>a{display:block;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+  nav.menu-open .nav-links>li>a:not(.nav-cta){color:var(--noir)!important}
+  .nav-links>li>a.nav-cta{padding:14px;border-bottom:0;margin-top:14px;text-align:center}
+  .nav-drop-menu{position:static;transform:none;box-shadow:none;border:0;min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+  </style>
 </head>
 <body>
 
 <nav id="navbar">
-  <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
-  <ul class="nav-links">
-    <li class="nav-drop">
-      <a href="#">Programmes ▾</a>
-      <div class="nav-drop-menu">
-        <a href="Musculation.html">Musculation</a>
-        <a href="Rester en forme.html">Rester en forme</a>
-        <a href="Anatomie.html">Anatomie</a>
-        <a href="Cardio.html">Cardio</a>
-        <a href="Mobilite.html">Mobilité</a>
-      </div>
-    </li>
-    <li><a href="#conseils">Santé</a></li>
-    <li class="nav-drop">
-      <a href="#">Nutrition ▾</a>
-      <div class="nav-drop-menu">
-        <a href="recettes.html">Recettes</a>
-        <a href="plans-alimentaires.html">Plans alimentaires</a>
-        <a href="conseils-nutrition.html">Conseils Nutrition</a>
-      </div>
-    </li>
-    <li><a href="#routines" class="nav-cta">Commencer</a></li>
-  </ul>
-</nav>
+    <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+    <button class="nav-burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li class="nav-drop">
+        <a href="#">Programmes ▾</a>
+        <div class="nav-drop-menu">
+          <a href="Musculation.html">Musculation</a>
+          <a href="Triathlon.html">Triathlon</a>
+          <a href="Running.html">Running</a>
+          <a href="Rester%20en%20forme.html">Rester en forme</a>
+          <a href="Anatomie.html">Anatomie</a>
+          <a href="Mobilite.html" class="active">Mobilité</a>
+        </div>
+      </li>
+      <li><a href="index.html#temoignages">Avis</a></li>
+      <li class="nav-drop">
+        <a href="#">Nutrition ▾</a>
+        <div class="nav-drop-menu">
+          <a href="recettes.html">Recettes</a>
+          <a href="plans-alimentaires.html">Plans alimentaires</a>
+          <a href="conseils-nutrition.html">Conseils Nutrition</a>
+        </div>
+      </li>
+      <li><a href="#routines" class="nav-cta">Commencer</a></li>
+    </ul>
+  </nav>
 
 <section class="hero" style="padding:0">
   <div class="hero-left">
@@ -278,13 +309,13 @@ section{padding:72px 28px}.zone-grid,.exo-grid{grid-template-columns:1fr 1fr}.co
     <div>
       <div class="footer-col-title">Programmes</div>
       <ul class="footer-links">
-        <li><a href="Musculation.html">Musculation</a></li>
-        <li><a href="Triathlon.html">Triathlon</a></li>
-        <li><a href="Running.html">Running</a></li>
-        <li><a href="Rester en forme.html">Rester en forme</a></li>
-        <li><a href="Anatomie.html">Anatomie</a></li>
-        <li><a href="Mobilite.html">Mobilité</a></li>
-      </ul>
+          <li><a href="Musculation.html">Musculation</a></li>
+          <li><a href="Triathlon.html">Triathlon</a></li>
+          <li><a href="Running.html">Running</a></li>
+          <li><a href="Rester%20en%20forme.html">Rester en forme</a></li>
+          <li><a href="Anatomie.html">Anatomie</a></li>
+          <li><a href="Mobilite.html">Mobilité</a></li>
+        </ul>
     </div>
     <div>
       <div class="footer-col-title">Nutrition</div>
@@ -305,7 +336,8 @@ section{padding:72px 28px}.zone-grid,.exo-grid{grid-template-columns:1fr 1fr}.co
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <p class="footer-copy" style="flex-basis:100%">Contenu informatif : demande l'avis d'un médecin avant de commencer ou de reprendre une activité physique.</p>
+    <p class="footer-copy">© 2026 Esprit Sportif. Tous droits réservés.</p>
     <ul class="footer-bottom-links">
       <li><a href="#">CGU</a></li><li><a href="#">Cookies</a></li><li><a href="#">Accessibilité</a></li>
     </ul>
@@ -314,6 +346,18 @@ section{padding:72px 28px}.zone-grid,.exo-grid{grid-template-columns:1fr 1fr}.co
 
 <script>
 const navbar=document.getElementById('navbar');
+    /* Menu : burger mobile + menus déroulants au clic */
+    const burger = document.getElementById('burger');
+    burger.addEventListener('click', () => {
+      const open = navbar.classList.toggle('menu-open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    document.querySelectorAll('.nav-drop > a').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); a.parentElement.classList.toggle('open'); });
+    });
+    document.querySelectorAll('.nav-links a:not([href="#"])').forEach(a =>
+      a.addEventListener('click', () => navbar.classList.remove('menu-open'))
+    );
 window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40));
 
 const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
