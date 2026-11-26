@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobilité — Esprit Sportif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--rouge:#e63946;--rouge-dark:#b02532;--noir:#0a0a0a;--gris-fonce:#141414;--gris-clair:#888;--blanc:#fff;--blanc-off:#f5f5f5;--font-title:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--blanc);color:var(--noir);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 64px;transition:background .4s,padding .4s}
+nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);padding:16px 64px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.nav-logo{font-family:var(--font-title);font-size:28px;letter-spacing:2px;color:var(--noir);text-decoration:none}
+.nav-logo span{color:var(--rouge)}
+.nav-links{display:flex;align-items:center;gap:40px;list-style:none}
+.nav-links a{font-size:14px;font-weight:500;color:var(--noir);text-decoration:none;letter-spacing:.5px;position:relative;transition:color .2s}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1.5px;background:var(--rouge);transition:width .3s}
+.nav-links a:hover{color:var(--rouge)}.nav-links a:hover::after{width:100%}
+.nav-drop{position:relative}.nav-drop>a::after{display:none}
+.nav-drop-menu{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);background:var(--blanc);border:1px solid rgba(0,0,0,.07);border-radius:10px;min-width:180px;box-shadow:0 12px 40px rgba(0,0,0,.1);overflow:hidden}
+.nav-drop-menu a{display:block;padding:11px 18px;font-size:13.5px}
+.nav-drop-menu a:hover{background:var(--blanc-off)}
+.nav-drop:hover .nav-drop-menu{display:block}
+.nav-cta{background:var(--rouge);color:var(--blanc)!important;padding:10px 22px;border-radius:6px}
+.nav-cta:hover{background:var(--rouge-dark)!important}.nav-cta::after{display:none!important}
+
+/* HERO */
+.hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:140px 64px 80px}
+.hero-tag,.section-tag{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--rouge);margin-bottom:24px}
+.hero-tag::before,.section-tag::before{content:'';width:26px;height:2px;background:var(--rouge)}
+.hero-title{font-family:var(--font-title);font-size:clamp(64px,7.5vw,108px);line-height:.92;letter-spacing:1px;margin-bottom:28px}
+.accent{color:var(--rouge)}
+.hero-sub{font-size:17px;font-weight:300;color:var(--gris-clair);line-height:1.65;max-width:430px;margin-bottom:40px}
+.hero-actions{display:flex;align-items:center;gap:20px}
+.btn-primary{background:var(--rouge);color:var(--blanc);padding:15px 32px;border-radius:6px;font-size:15px;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(230,57,70,.35);transition:background .2s,transform .2s}
+.btn-primary:hover{background:var(--rouge-dark);transform:translateY(-2px)}
+.btn-ghost{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--noir);text-decoration:none}
+.btn-ghost .arrow{width:36px;height:36px;border:1.5px solid var(--noir);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.btn-ghost:hover .arrow{background:var(--noir);color:var(--blanc)}
+.hero-stats{display:flex;gap:36px;margin-top:52px;padding-top:36px;border-top:1px solid rgba(0,0,0,.08)}
+.stat-num{font-family:var(--font-title);font-size:36px;line-height:1}
+.stat-num span{color:var(--rouge)}
+.stat-label{font-size:12px;font-weight:500;color:var(--gris-clair);margin-top:4px}
+.hero-right{position:relative;overflow:hidden}
+.hero-right img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.hero-right::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,var(--blanc) 0%,transparent 30%);z-index:1}
+.hero-badge{position:absolute;bottom:48px;right:40px;z-index:3;background:var(--noir);color:var(--blanc);padding:18px 22px;border-radius:12px;text-align:center}
+.hero-badge-num{font-family:var(--font-title);font-size:34px;color:var(--rouge);line-height:1}
+.hero-badge-text{font-size:11px;color:#aaa;margin-top:4px}
+
+/* TICKER */
+.ticker{background:var(--rouge);padding:14px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:ticker 26s linear infinite}
+.ticker-item{font-family:var(--font-title);font-size:20px;letter-spacing:3px;color:var(--blanc);padding:0 48px}
+.ticker-dot{color:rgba(255,255,255,.4)}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+.section-title{font-family:var(--font-title);font-size:clamp(38px,4.6vw,62px);line-height:.95;letter-spacing:.5px;margin-bottom:16px}
+.section-desc{font-size:16px;font-weight:300;color:var(--gris-clair);max-width:480px;line-height:1.7}
+section{padding:110px 64px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:56px}
+
+/* ZONES */
+.zone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.08);border-radius:14px;overflow:hidden}
+.zone{background:var(--blanc);padding:40px 34px;transition:background .3s}
+.zone:hover{background:var(--blanc-off)}
+.zone-icon{font-size:30px;display:block;margin-bottom:16px}
+.zone-title{font-family:var(--font-title);font-size:30px;margin-bottom:10px}
+.zone-desc{font-size:14px;font-weight:300;color:var(--gris-clair);line-height:1.7;margin-bottom:16px}
+.zone-for{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--rouge)}
+
+/* ROUTINES */
+#routines{background:var(--gris-fonce)}
+#routines .section-title{color:var(--blanc)}
+#routines .section-desc{color:rgba(255,255,255,.45)}
+.routine-tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+.routine-btn{background:transparent;border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:10px 22px;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.routine-btn:hover,.routine-btn.active{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.routine-label{font-family:var(--font-title);font-size:22px;letter-spacing:1px;color:var(--rouge);margin-bottom:24px}
+.exo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.exo{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:24px 22px;transition:border-color .3s}
+.exo:hover{border-color:rgba(230,57,70,.45)}
+.exo-zone{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rouge);margin-bottom:12px}
+.exo-name{font-family:var(--font-title);font-size:22px;color:var(--blanc);margin-bottom:8px;line-height:1.1}
+.exo-detail{font-size:13px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.6}
+.exo-time{margin-top:14px;font-size:12px;font-weight:600;color:var(--blanc)}
+
+/* CONSEILS */
+.conseils{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.conseil{padding:32px 26px;border-radius:14px;background:var(--blanc-off);border:1px solid rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s,background .3s}
+.conseil:hover{transform:translateY(-6px);box-shadow:0 20px 46px rgba(0,0,0,.08);background:var(--blanc)}
+.conseil-icon{font-size:28px;display:block;margin-bottom:14px}
+.conseil-title{font-family:var(--font-title);font-size:24px;margin-bottom:10px}
+.conseil-text{font-size:13.5px;font-weight:300;color:var(--gris-clair);line-height:1.65}
+
+/* CTA */
+.cta-strip{background:var(--rouge);padding:80px 64px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cta-strip::before{content:'FLOW';font-family:var(--font-title);font-size:320px;color:rgba(255,255,255,.05);position:absolute;right:-20px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none}
+.cta-title{font-family:var(--font-title);font-size:clamp(38px,4.6vw,64px);color:var(--blanc);line-height:.95}
+.btn-white{background:var(--blanc);color:var(--rouge);padding:16px 36px;border-radius:6px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;transition:transform .2s;position:relative}
+.btn-white:hover{transform:translateY(-2px)}
+
+/* FOOTER */
+footer{background:var(--noir);color:var(--blanc);padding:80px 64px 40px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:64px;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,.07)}
+.footer-logo{font-family:var(--font-title);font-size:32px;letter-spacing:2px;margin-bottom:16px}
+.footer-logo span{color:var(--rouge)}
+.footer-tagline{font-size:14px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:28px;max-width:260px}
+.footer-socials{display:flex;gap:12px}
+.social-btn{width:38px;height:38px;border:1px solid rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);text-decoration:none;transition:all .2s}
+.social-btn:hover{background:var(--rouge);border-color:var(--rouge);color:var(--blanc)}
+.footer-col-title{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px}
+.footer-links{list-style:none}.footer-links li{margin-bottom:10px}
+.footer-links a{font-size:14px;font-weight:300;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--blanc)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy,.footer-bottom-links a{font-size:13px;color:rgba(255,255,255,.25);text-decoration:none}
+.footer-bottom-links{display:flex;gap:24px;list-style:none}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.ticker-inner{animation:none}}
+
+/* MOBILE */
+@media(max-width:1024px){
+nav,nav.scrolled{padding:16px 28px}.nav-links{gap:20px}
+.hero{grid-template-columns:1fr;min-height:auto}.hero-left{padding:120px 28px 60px}.hero-right{height:50vh}.hero-right::before{display:none}
+section{padding:72px 28px}.zone-grid,.exo-grid{grid-template-columns:1fr 1fr}.conseils{grid-template-columns:1fr 1fr}
+.cta-strip{padding:60px 28px}footer{padding:60px 28px 32px}.footer-top{grid-template-columns:1fr 1fr;gap:36px}}
+@media(max-width:640px){
+.nav-links{display:none}.hero-stats{gap:20px;flex-wrap:wrap}
+.zone-grid,.exo-grid,.conseils,.footer-top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">ESPRIT<span>.</span>SPORTIF</a>
+  <ul class="nav-links">
+    <li class="nav-drop">
+      <a href="#">Programmes ▾</a>
+      <div class="nav-drop-menu">
+        <a href="Musculation.html">Musculation</a>
+        <a href="Rester en forme.html">Rester en forme</a>
+        <a href="Anatomie.html">Anatomie</a>
+        <a href="Cardio.html">Cardio</a>
+        <a href="Mobilite.html">Mobilité</a>
+      </div>
+    </li>
+    <li><a href="#conseils">Santé</a></li>
+    <li class="nav-drop">
+      <a href="#">Nutrition ▾</a>
+      <div class="nav-drop-menu">
+        <a href="recettes.html">Recettes</a>
+        <a href="plans-alimentaires.html">Plans alimentaires</a>
+        <a href="conseils-nutrition.html">Conseils Nutrition</a>
+      </div>
+    </li>
+    <li><a href="#routines" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<section class="hero" style="padding:0">
+  <div class="hero-left">
+    <span class="hero-tag">Souplesse & Récupération</span>
+    <h1 class="hero-title">BOUGE<br><span class="accent">LIBREMENT</span></h1>
+    <p class="hero-sub">Des routines courtes pour gagner en amplitude, soulager les tensions et mieux performer dans tous tes sports. Quelques minutes par jour suffisent.</p>
+    <div class="hero-actions">
+      <a href="#routines" class="btn-primary">Choisir ma routine</a>
+      <a href="#zones" class="btn-ghost">Voir les zones <span class="arrow">→</span></a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">6<span> zones</span></div><div class="stat-label">Du cou aux chevilles</div></div>
+      <div><div class="stat-num">5<span>-15 min</span></div><div class="stat-label">Par routine</div></div>
+      <div><div class="stat-num">4<span> routines</span></div><div class="stat-label">Selon ton moment</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=85" alt="Séance de mobilité et d'étirements">
+    <div class="hero-badge"><div class="hero-badge-num">10 MIN</div><div class="hero-badge-text">PAR JOUR<br>SUFFISENT</div></div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">HANCHES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ÉPAULES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">COLONNE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">CHEVILLES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ÉTIREMENTS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">RÉCUPÉRATION</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">HANCHES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ÉPAULES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">COLONNE</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">CHEVILLES</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">ÉTIREMENTS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">RÉCUPÉRATION</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<section id="zones">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Les zones clés</div>
+      <h2 class="section-title reveal">6 ZONES, <span class="accent">UN CORPS</span></h2>
+    </div>
+    <p class="section-desc reveal">Chaque articulation a son rôle. Travaille celles qui te limitent le plus.</p>
+  </div>
+  <div class="zone-grid">
+    <div class="zone reveal"><span class="zone-icon">🦴</span><div class="zone-title">HANCHES</div><div class="zone-desc">Souvent raides à cause de la position assise. Une hanche libre protège le dos et les genoux.</div><div class="zone-for">Idéal : course, squat</div></div>
+    <div class="zone reveal"><span class="zone-icon">💪</span><div class="zone-title">ÉPAULES</div><div class="zone-desc">Amplitude et stabilité pour les mouvements au-dessus de la tête et les tirages.</div><div class="zone-for">Idéal : natation, développé</div></div>
+    <div class="zone reveal"><span class="zone-icon">🧍</span><div class="zone-title">COLONNE THORACIQUE</div><div class="zone-desc">Récupère la rotation du haut du dos pour soulager les lombaires et la nuque.</div><div class="zone-for">Idéal : bureau, golf, tennis</div></div>
+    <div class="zone reveal"><span class="zone-icon">🦵</span><div class="zone-title">ISCHIO-JAMBIERS</div><div class="zone-desc">Des cuisses arrière souples limitent les blessures et améliorent la foulée.</div><div class="zone-for">Idéal : sprint, soulevé de terre</div></div>
+    <div class="zone reveal"><span class="zone-icon">🦶</span><div class="zone-title">CHEVILLES</div><div class="zone-desc">La flexion de cheville conditionne la profondeur du squat et l'amorti à la course.</div><div class="zone-for">Idéal : squat, trail</div></div>
+    <div class="zone reveal"><span class="zone-icon">🧠</span><div class="zone-title">NUQUE & CERVICALES</div><div class="zone-desc">Relâche les tensions accumulées devant l'écran et améliore la posture de la tête.</div><div class="zone-for">Idéal : télétravail, vélo</div></div>
+  </div>
+</section>
+
+<section id="routines">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Routines guidées</div>
+      <h2 class="section-title reveal">CHOISIS TON <span class="accent">MOMENT</span></h2>
+    </div>
+    <p class="section-desc reveal" id="routine-desc"></p>
+  </div>
+  <div class="routine-tabs reveal">
+    <button class="routine-btn active" data-r="reveil">Réveil</button>
+    <button class="routine-btn" data-r="bureau">Pause bureau</button>
+    <button class="routine-btn" data-r="apres">Après sport</button>
+    <button class="routine-btn" data-r="soir">Soir</button>
+  </div>
+  <div class="routine-label" id="routine-label"></div>
+  <div class="exo-grid" id="exo-grid"></div>
+</section>
+
+<section id="conseils">
+  <div class="head">
+    <div>
+      <div class="section-tag reveal">Bien pratiquer</div>
+      <h2 class="section-title reveal">LES <span class="accent">RÈGLES</span> D'OR</h2>
+    </div>
+    <p class="section-desc reveal">Quelques principes pour progresser en souplesse, sans te faire mal.</p>
+  </div>
+  <div class="conseils">
+    <div class="conseil reveal"><span class="conseil-icon">📅</span><div class="conseil-title">RÉGULARITÉ</div><div class="conseil-text">Mieux vaut 10 minutes chaque jour qu'une longue séance par semaine. L'amplitude se gagne dans la durée.</div></div>
+    <div class="conseil reveal"><span class="conseil-icon">🌬️</span><div class="conseil-title">RESPIRE</div><div class="conseil-text">Expire lentement dans la position d'étirement. Le corps se relâche mieux quand le souffle est long et calme.</div></div>
+    <div class="conseil reveal"><span class="conseil-icon">⚖️</span><div class="conseil-title">PAS DE DOULEUR</div><div class="conseil-text">Tu dois sentir une tension supportable, jamais une douleur vive. En cas de douleur, relâche immédiatement.</div></div>
+    <div class="conseil reveal"><span class="conseil-icon">🔥</span><div class="conseil-title">ÉCHAUFFE-TOI</div><div class="conseil-text">Mouvements dynamiques avant l'effort, étirements tenus après. Évite les étirements longs à froid avant une séance intense.</div></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2 class="cta-title reveal">10 MINUTES POUR<br>MIEUX BOUGER</h2>
+  <a href="#routines" class="btn-white reveal">Choisir ma routine</a>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">ESPRIT<span>.</span>SPORTIF</div>
+      <p class="footer-tagline">Forge ton corps, libère ton potentiel. Des programmes conçus pour des résultats réels.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+        <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+        <a href="#" class="social-btn" aria-label="TikTok">♪</a>
+        <a href="#" class="social-btn" aria-label="Twitter">✕</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Programmes</div>
+      <ul class="footer-links">
+        <li><a href="Musculation.html">Musculation</a></li>
+        <li><a href="Triathlon.html">Triathlon</a></li>
+        <li><a href="Running.html">Running</a></li>
+        <li><a href="Rester en forme.html">Rester en forme</a></li>
+        <li><a href="Anatomie.html">Anatomie</a></li>
+        <li><a href="Mobilite.html">Mobilité</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Nutrition</div>
+      <ul class="footer-links">
+        <li><a href="recettes.html">Recettes</a></li>
+        <li><a href="plans-alimentaires.html">Plans alimentaires</a></li>
+        <li><a href="conseils-nutrition.html">Conseils Nutrition</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Infos</div>
+      <ul class="footer-links">
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Esprit Sportif. Tous droits réservés.</p>
+    <ul class="footer-bottom-links">
+      <li><a href="#">CGU</a></li><li><a href="#">Cookies</a></li><li><a href="#">Accessibilité</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40));
+
+const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+const routines={
+  reveil:{label:'Réveil — 5 minutes',desc:'Réveille les articulations avant de démarrer la journée.',exos:[
+    ['Colonne','Chat-vache','À quatre pattes, alterne dos rond et dos creux en suivant ta respiration.','10 répétitions'],
+    ['Hanches','Cercles de hanches','Debout, dessine de grands cercles avec le bassin, mains sur les hanches.','8 par sens'],
+    ['Épaules','Cercles de bras','Bras tendus, cercles amples vers l\'arrière puis vers l\'avant.','10 par sens'],
+    ['Colonne','Rotation thoracique','À genoux, une main derrière la tête, ouvre le coude vers le plafond.','8 par côté'],
+    ['Chevilles','Cercles de chevilles','Sur une jambe, dessine des cercles avec le pied levé.','10 par sens'],
+    ['Corps entier','Grand étirement','Debout, grandis-toi bras tendus au-dessus de la tête, inspire profondément.','30 secondes']]},
+  bureau:{label:'Pause bureau — 5 minutes',desc:'Casse la position assise et libère nuque, dos et hanches.',exos:[
+    ['Nuque','Inclinaison latérale','Assis, penche l\'oreille vers l\'épaule, sans lever l\'épaule opposée.','30 s par côté'],
+    ['Épaules','Haussements d\'épaules','Monte les épaules vers les oreilles, tiens 3 secondes, relâche.','10 répétitions'],
+    ['Colonne','Rotation sur chaise','Assis, tourne le buste et attrape le dossier, regarde derrière toi.','30 s par côté'],
+    ['Hanches','Figure 4 assis','Cheville sur le genou opposé, penche le buste en gardant le dos droit.','30 s par côté'],
+    ['Poignets','Cercles de poignets','Bras devant toi, dessine des cercles lents, puis étire doigts vers le bas.','10 par sens'],
+    ['Jambes','Debout, flexion avant','Debout, laisse pendre le haut du corps, genoux légèrement fléchis.','30 secondes']]},
+  apres:{label:'Après sport — 10 minutes',desc:'Aide le corps à redescendre et favorise la récupération.',exos:[
+    ['Ischio-jambiers','Étirement assis','Une jambe tendue, penche le buste vers le pied sans arrondir le dos.','40 s par jambe'],
+    ['Quadriceps','Étirement debout','Talon vers la fesse, genoux joints, bassin légèrement basculé.','40 s par jambe'],
+    ['Fessiers','Pigeon','Jambe pliée devant, l\'autre étendue derrière, penche-toi doucement.','45 s par côté'],
+    ['Mollets','Mollet au mur','Mains au mur, jambe arrière tendue, talon au sol.','40 s par jambe'],
+    ['Pectoraux','Ouverture au cadre de porte','Avant-bras contre le montant, avance doucement le buste.','40 s par côté'],
+    ['Dos','Posture de l\'enfant','À genoux, fesses sur les talons, bras allongés devant toi.','60 secondes']]},
+  soir:{label:'Soir — 15 minutes',desc:'Détends le corps et prépare un sommeil de qualité.',exos:[
+    ['Dos','Posture de l\'enfant','À genoux, front au sol, bras allongés, respire dans le dos.','90 secondes'],
+    ['Colonne','Torsion allongée','Sur le dos, genoux pliés basculés d\'un côté, épaules au sol.','60 s par côté'],
+    ['Hanches','Papillon allongé','Plantes de pieds jointes, genoux ouverts, mains sur le ventre.','90 secondes'],
+    ['Ischio-jambiers','Jambes au mur','Allongé, jambes contre le mur, respire lentement.','2 minutes'],
+    ['Épaules','Fil dans l\'aiguille','À quatre pattes, glisse un bras sous le buste, épaule au sol.','45 s par côté'],
+    ['Corps entier','Respiration allongée','Sur le dos, inspire 4 s, expire 6 s, relâche tout le corps.','2 minutes']]}
+};
+const grid=document.getElementById('exo-grid'),lab=document.getElementById('routine-label'),desc=document.getElementById('routine-desc'),btns=document.querySelectorAll('.routine-btn');
+function show(k){
+  const r=routines[k];
+  lab.textContent=r.label;desc.textContent=r.desc;
+  grid.innerHTML=r.exos.map(e=>`<div class="exo"><div class="exo-zone">${e[0]}</div><div class="exo-name">${e[1]}</div><div class="exo-detail">${e[2]}</div><div class="exo-time">${e[3]}</div></div>`).join('');
+  btns.forEach(b=>b.classList.toggle('active',b.dataset.r===k));
+}
+btns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.r)));
+show('reveil');
+</script>
+</body>
+</html>
