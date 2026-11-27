@@ -520,14 +520,14 @@
     }
 
     /* ===== TÉMOIGNAGES ===== */
-    #temoignages {
+    #methode {
       padding: 120px 64px;
       background: var(--blanc-off);
       position: relative;
       overflow: hidden;
     }
-    #temoignages::before {
-      content: '"';
+    #methode::before {
+      content: '✦';
       font-family: var(--font-title);
       font-size: 600px;
       color: rgba(0,0,0,0.03);
@@ -817,7 +817,7 @@
       .prog-grid { grid-template-columns: 1fr; gap: 16px; }
       .prog-card:nth-child(2), .prog-card:nth-child(3) { margin-top: 0; }
       .features { grid-template-columns: 1fr 1fr; padding: 48px 28px; }
-      #temoignages { padding: 80px 28px; }
+      #methode { padding: 80px 28px; }
       .temo-grid { grid-template-columns: 1fr; }
       .temo-card.featured { grid-row: auto; }
       .cta-strip { padding: 60px 28px; }
@@ -857,6 +857,11 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
 }
+  .step-n{font-family:var(--font-title);font-size:46px;color:var(--rouge);line-height:1;margin-bottom:10px}
+.step-t{font-family:var(--font-title);font-size:28px;margin-bottom:12px;line-height:1}
+.temo-card.featured .step-t{color:var(--blanc)}
+.step-link{font-size:13px;font-weight:700;color:var(--rouge);text-decoration:none}
+.step-link:hover{text-decoration:underline}
   </style>
 </head>
 <body>
@@ -877,7 +882,7 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
           <a href="Mobilite.html">Mobilité</a>
         </div>
       </li>
-      <li><a href="#temoignages">Avis</a></li>
+      <li><a href="#methode">Méthode</a></li>
       <li class="nav-drop">
         <a href="#">Nutrition ▾</a>
         <div class="nav-drop-menu">
@@ -900,27 +905,27 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
         <span class="accent">CORPS</span>
       </h1>
       <p class="hero-sub">
-        Des programmes d'entraînement conçus par des experts pour transformer ton corps — quel que soit ton niveau de départ.
+        Des programmes d'entraînement structurés, semaine par semaine, pour progresser à ton rythme — quel que soit ton niveau de départ.
       </p>
       <div class="hero-actions">
         <a href="#programmes" class="btn-primary">Voir les programmes</a>
-        <a href="#temoignages" class="btn-ghost">
-          Résultats
+        <a href="#methode" class="btn-ghost">
+          Comment ça marche
           <span class="arrow">→</span>
         </a>
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">12<span>K+</span></div>
-          <div class="stat-label">Membres actifs</div>
+          <div class="stat-num">100<span>+</span></div>
+          <div class="stat-label">Recettes détaillées</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">98<span>%</span></div>
-          <div class="stat-label">Satisfaction</div>
+          <div class="stat-num">3<span> niveaux</span></div>
+          <div class="stat-label">Débutant à avancé</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">7<span>+</span></div>
-          <div class="stat-label">Disciplines</div>
+          <div class="stat-num">7<span> programmes</span></div>
+          <div class="stat-label">Du cardio à la mobilité</div>
         </div>
       </div>
     </div>
@@ -931,8 +936,8 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
         alt="Athlète en entraînement"
       >
       <div class="hero-badge">
-        <div class="hero-badge-num">#1</div>
-        <div class="hero-badge-text">PLATEFORME<br>SPORT FR</div>
+        <div class="hero-badge-num">7</div>
+        <div class="hero-badge-text">PROGRAMMES<br>COMPLETS</div>
       </div>
     </div>
   </section>
@@ -1078,87 +1083,51 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
     </div>
   </div>
 
-  <!-- ===== TÉMOIGNAGES ===== -->
-  <section id="temoignages">
+  <!-- ===== MÉTHODE ===== -->
+  <section id="methode">
     <div class="temo-header">
       <div>
-        <div class="section-tag reveal">Ils ont transformé leur vie</div>
+        <div class="section-tag reveal">Comment ça marche</div>
         <h2 class="section-title reveal reveal-delay-1">
-          LEURS<br><span class="accent">RÉSULTATS</span>
+          4 ÉTAPES<br><span class="accent">SIMPLES</span>
         </h2>
       </div>
       <p class="section-desc reveal reveal-delay-2">
-        Des milliers de membres ont déjà changé leur rapport au sport grâce à nos programmes.
+        Du choix de ton objectif à la récupération : voici comment tirer le meilleur du site.
       </p>
     </div>
 
     <div class="temo-grid">
 
-      <!-- Grande carte featured -->
       <div class="temo-card featured reveal">
-        <span class="temo-badge">★ Coup de cœur</span>
-        <div class="temo-stars">
-          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-        <p class="temo-quote">
-          "J'ai suivi le programme Triathlon S sur 7 semaines. Jamais je n'aurais cru terminer une course enchaînant natation, vélo et course à pied. La structure des séances est parfaite — on progresse vraiment sans se blesser. C'est la meilleure décision que j'aie prise pour ma santé."
+        <span class="temo-badge">Commence ici</span>
+        <div class="step-n">01</div>
+        <div class="step-t">CHOISIS TON PROGRAMME</div>
+        <p class="temo-quote" style="font-style:normal">
+          Sélectionne un programme selon ton objectif et ton niveau. Chaque plan est découpé semaine par semaine : tu sais toujours quoi faire, sans improviser. Pense à demander l'avis d'un médecin avant de reprendre le sport.
         </p>
-        <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Lucas M." loading="lazy">
-          <div>
-            <div class="temo-name">Lucas M.</div>
-            <div class="temo-role">Triathlon S — Format XS complété</div>
-          </div>
-        </div>
+        <a href="#programmes" class="btn-primary" style="display:inline-block">Voir les programmes</a>
       </div>
 
-      <!-- Petites cartes -->
       <div class="temo-card reveal reveal-delay-1">
-        <div class="temo-stars">
-          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-        <p class="temo-quote">
-          "Les recettes protéinées ont changé ma façon de manger. En 8 semaines de musculation + nutrition, j'ai gagné 4 kg de muscle. Les valeurs nutritionnelles détaillées m'ont aidé à suivre mes macros sans application externe."
-        </p>
-        <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Amina K." loading="lazy">
-          <div>
-            <div class="temo-name">Amina K.</div>
-            <div class="temo-role">Musculation + Recettes</div>
-          </div>
-        </div>
+        <div class="step-n">02</div>
+        <div class="step-t">MANGE EN COHÉRENCE</div>
+        <p class="temo-quote" style="font-style:normal">Associe ton plan à des recettes chiffrées et à des menus de la semaine adaptés à ton objectif.</p>
+        <a href="plans-alimentaires.html" class="step-link">Voir les plans alimentaires →</a>
       </div>
 
       <div class="temo-card reveal reveal-delay-2">
-        <div class="temo-stars">
-          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-        <p class="temo-quote">
-          "Programme Running 10 km : j'ai couru mon premier 10 km en 52 minutes. Le plan sur 8 semaines est progressif, sans se perdre dans des tableaux complexes. Je recommande à 100%."
-        </p>
-        <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Thomas R." loading="lazy">
-          <div>
-            <div class="temo-name">Thomas R.</div>
-            <div class="temo-role">Running — 10 km en 8 semaines</div>
-          </div>
-        </div>
+        <div class="step-n">03</div>
+        <div class="step-t">COMPRENDS TON CORPS</div>
+        <p class="temo-quote" style="font-style:normal">Calcule tes besoins estimés et découvre comment fonctionnent les muscles pour mieux t'entraîner.</p>
+        <a href="conseils-nutrition.html#calcul" class="step-link">Calculer mes besoins →</a>
       </div>
 
       <div class="temo-card reveal reveal-delay-1">
-        <div class="temo-stars">
-          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-        </div>
-        <p class="temo-quote">
-          "Les séances 'Rester en Forme' sont parfaites pour quelqu'un de chargé comme moi. 30 minutes par jour, et j'ai retrouvé de l'énergie et du tonus. Simple, efficace, pas de superflu."
-        </p>
-        <div class="temo-author">
-          <img class="temo-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" alt="Sophie D." loading="lazy">
-          <div>
-            <div class="temo-name">Sophie D.</div>
-            <div class="temo-role">Rester en Forme — 3 mois</div>
-          </div>
-        </div>
+        <div class="step-n">04</div>
+        <div class="step-t">RÉCUPÈRE ET DURE</div>
+        <p class="temo-quote" style="font-style:normal">Mobilité, séances courtes et bonnes habitudes : la régularité fait plus que l'intensité.</p>
+        <a href="Mobilite.html" class="step-link">Voir la mobilité →</a>
       </div>
 
     </div>
@@ -1210,10 +1179,10 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
       <div>
         <div class="footer-col-title">Infos</div>
         <ul class="footer-links">
-          <li><a href="#">À propos</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Mentions légales</a></li>
-          <li><a href="#">Confidentialité</a></li>
+          <li><a href="infos.html#a-propos">À propos</a></li>
+          <li><a href="infos.html#contact">Contact</a></li>
+          <li><a href="infos.html#mentions">Mentions légales</a></li>
+          <li><a href="infos.html#confidentialite">Confidentialité</a></li>
         </ul>
       </div>
     </div>
@@ -1222,9 +1191,9 @@ nav.on-dark:not(.scrolled):not(.menu-open) .nav-links>li>a:not(.nav-cta){color:#
     <p class="footer-copy" style="flex-basis:100%">Contenu informatif : demande l'avis d'un médecin avant de commencer ou de reprendre une activité physique.</p>
       <p class="footer-copy">© 2026 Esprit Sportif. Tous droits réservés.</p>
       <ul class="footer-bottom-links">
-        <li><a href="#">CGU</a></li>
-        <li><a href="#">Cookies</a></li>
-        <li><a href="#">Accessibilité</a></li>
+        <li><a href="infos.html#cgu">CGU</a></li>
+        <li><a href="infos.html#cookies">Cookies</a></li>
+        <li><a href="infos.html#accessibilite">Accessibilité</a></li>
       </ul>
     </div>
   </footer>
